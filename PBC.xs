@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.5 2006/11/11 18:54:42 jettero Exp $ */
+/* $Id: PBC.xs,v 1.6 2006/11/11 19:40:27 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -22,7 +22,7 @@ pairing_init_stream(stream)
     pairing_t * pairing = malloc( sizeof(pairing_t) );
 
     CODE:
-    // fprintf(stderr, " ... mallocing a pairing ... \n");
+    // fprintf(stderr, " ... malloced a pairing ... \n");
     pairing_init_inp_str(*pairing, stream);
     RETVAL = pairing;
 
@@ -37,3 +37,63 @@ pairing_clear(pairing)
     // fprintf(stderr, " ... freeing a pairing ... \n");
     pairing_clear(*pairing);
     free(pairing);
+
+element_t *
+element_init_G1(pairing)
+    pairing_t * pairing
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+
+    CODE:
+    // fprintf(stderr, " ... malloced a G1 element ... \n");
+    element_init_G1(*element, *pairing);
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL
+
+element_t *
+element_init_G2(pairing)
+    pairing_t * pairing
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+
+    CODE:
+    // fprintf(stderr, " ... malloced a G2 element ... \n");
+    element_init_G2(*element, *pairing);
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL
+
+element_t *
+element_init_GT(pairing)
+    pairing_t * pairing
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+
+    CODE:
+    // fprintf(stderr, " ... malloced a GT element ... \n");
+    element_init_GT(*element, *pairing);
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL
+
+element_t *
+element_init_Zr(pairing)
+    pairing_t * pairing
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+
+    CODE:
+    // fprintf(stderr, " ... malloced a Zr element ... \n");
+    element_init_Zr(*element, *pairing);
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL

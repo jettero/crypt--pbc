@@ -1,4 +1,6 @@
+TYPEMAP
 pairing_t * PAIRINGT
+element_t * ELEMENTT
 
 INPUT
 PAIRINGT
@@ -9,6 +11,17 @@ PAIRINGT
         else
             croak(\"$var is not of type Crypt::PBC::Pairing\")
 
+ELEMENTT
+        if (sv_derived_from($arg, \"Crypt::PBC::Element\")) {
+            IV tmp = SvIV((SV*)SvRV($arg));
+            $var = ($type) tmp;
+        }
+        else
+            croak(\"$var is not of type Crypt::PBC::Element\")
+
 OUTPUT
 PAIRINGT
 	sv_setref_pv($arg, \"Crypt::PBC::Pairing\", (void*)$var);
+
+ELEMENTT
+	sv_setref_pv($arg, \"Crypt::PBC::Element\", (void*)$var);
