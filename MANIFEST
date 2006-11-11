@@ -6,3 +6,5 @@ ppport.h
 README
 PBC.pm
 t/01_load.t
+t/05_BLS_signatures.t
+typemap
