@@ -4,7 +4,5 @@ MANIFEST
 PBC.xs
 ppport.h
 README
-t/Crypt-PBC.t
-fallback/const-c.inc
-fallback/const-xs.inc
 lib/Crypt/PBC.pm
+t/01_load.t
