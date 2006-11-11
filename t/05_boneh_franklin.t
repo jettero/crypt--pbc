@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_BLS_signatures.t,v 1.4 2006/11/11 18:54:42 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.1 2006/11/11 18:59:36 jettero Exp $
 
 use strict;
 use Test;
