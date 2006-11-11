@@ -4,5 +4,5 @@ MANIFEST
 PBC.xs
 ppport.h
 README
-lib/Crypt/PBC.pm
+PBC.pm
 t/01_load.t

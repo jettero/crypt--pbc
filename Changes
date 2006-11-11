@@ -1,6 +1,6 @@
 Revision history for Perl extension Crypt::PBC.
 
 0.01  Fri Nov 10 23:07:15 2006
-	- original version; created by h2xs 1.23 with options
-		-n Crypt::PBC /usr/include/pbc/pbc.h -lpbc
+    - I got this package all skeled up ...  I need a small part of it for a
+      school project so I'm going to focus on that part first.
 

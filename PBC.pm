@@ -1,0 +1,111 @@
+package Crypt::PBC;
+
+use 5.008008;
+use strict;
+use warnings;
+use Carp;
+
+require Exporter;
+use AutoLoader;
+
+our @ISA = qw(Exporter);
+
+# Items to export into callers namespace by default. Note: do not export
+# names by default without a very good reason. Use EXPORT_OK instead.
+# Do not simply export all your public functions/methods/constants.
+
+# This allows declaration	use Crypt::PBC ':all';
+# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
+# will save memory.
+our %EXPORT_TAGS = ( 'all' => [ qw(
+	
+) ] );
+
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+
+our @EXPORT = qw(
+	
+);
+
+our $VERSION = '0.01';
+
+sub AUTOLOAD {
+    # This AUTOLOAD is used to 'autoload' constants from the constant()
+    # XS function.
+
+    my $constname;
+    our $AUTOLOAD;
+    ($constname = $AUTOLOAD) =~ s/.*:://;
+    croak "&Crypt::PBC::constant not defined" if $constname eq 'constant';
+    my ($error, $val) = constant($constname);
+    if ($error) { croak $error; }
+    {
+	no strict 'refs';
+	# Fixed between 5.005_53 and 5.005_61
+#XXX	if ($] >= 5.00561) {
+#XXX	    *$AUTOLOAD = sub () { $val };
+#XXX	}
+#XXX	else {
+	    *$AUTOLOAD = sub { $val };
+#XXX	}
+    }
+    goto &$AUTOLOAD;
+}
+
+require XSLoader;
+XSLoader::load('Crypt::PBC', $VERSION);
+
+# Preloaded methods go here.
+
+# Autoload methods go after =cut, and are processed by the autosplit program.
+
+1;
+__END__
+
+=head1 NAME
+
+Crypt::PBC - OO interface for the Lynn's PBC library
+
+=head1 SYNOPSIS
+
+    use Crypt::PBC;
+
+=head1 XS AUTHOR
+
+Paul Miller <japh@voltar-confed.org>
+
+Paul is using this software in his own projects...  If you find bugs, please
+please please let him know. :) Actually, let him know if you find it handy at
+all.  Half the fun of releasing this stuff is knowing that people use it.
+
+Additionally, he is aware that the documentation sucks.  Should you email him
+for help, he will most likely try to give it.
+
+=head1 COPYRIGHT
+
+GPL! (and/or whatever license the gnu regex engine is under)
+
+Though, additionally, I will say that I'll be tickled if you were to include
+this package in any commercial endeavor.  Also, any thoughts to the effect that
+using this module will somehow make your commercial package GPL should be washed
+away.
+
+I hereby release you from any such silly conditions -- if possible while still
+matching the license from gnu regex.
+
+This package and any modifications you make to it must remain GPL.  Any programs
+you (or your company) write shall remain yours (and under whatever copyright you
+choose) even if you use this package's intended and/or exported interfaces in
+them.
+
+(again, if possible)
+
+=head1 SEE ALSO
+
+http://crypto.stanford.edu/pbc/
+
+http://groups.google.com/group/pbc-devel
+
+perl(1)
+
+=cut
