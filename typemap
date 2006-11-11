@@ -1,1 +1,14 @@
-pairing_t T_SV
+pairing_t * PAIRINGT
+
+INPUT
+PAIRINGT
+        if (sv_derived_from($arg, \"Crypt::PBC::Pairing\")) {
+            IV tmp = SvIV((SV*)SvRV($arg));
+            $var = ($type) tmp;
+        }
+        else
+            croak(\"$var is not of type Crypt::PBC::Pairing\")
+
+OUTPUT
+PAIRINGT
+	sv_setref_pv($arg, \"Crypt::PBC::Pairing\", (void*)$var);
