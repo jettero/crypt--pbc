@@ -1,3 +1,15 @@
+package Crypt::PBC::Pairing;
+
+use strict;
+
+1;
+
+sub DESTROY {
+    my $this = shift;
+
+    &Crypt::PBC::pairing_clear( $this );
+}
+
 package Crypt::PBC;
 
 use strict;
@@ -27,6 +39,7 @@ require XSLoader;
 XSLoader::load('Crypt::PBC', $VERSION);
 
 1;
+
 __END__
 
 =head1 NAME

@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_BLS_signatures.t,v 1.3 2006/11/11 18:37:33 jettero Exp $
+# $Id: 05_BLS_signatures.t,v 1.4 2006/11/11 18:54:42 jettero Exp $
 
 use strict;
 use Test;
@@ -14,8 +14,6 @@ use Crypt::PBC;
 my $pairing = &Crypt::PBC::pairing_init_stream(\*DATA);
 
 ok( $pairing );
-
-&Crypt::PBC::pairing_clear($pairing);
 
 # my $g = &Crypt::PBC::element_init_G2( $pairing );
 
