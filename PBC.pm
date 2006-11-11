@@ -17,6 +17,7 @@ use strict;
 1;
 
 sub random  { &Crypt::PBC::element_random( shift ) }
+sub as_str  { &Crypt::PBC::stringify_gmp(  shift ) }
 sub DESTROY { &Crypt::PBC::element_clear(  shift ) }
 
 package Crypt::PBC;

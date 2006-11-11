@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.3 2006/11/11 20:31:49 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.4 2006/11/11 23:41:51 jettero Exp $
 
 use strict;
 use Test;
@@ -24,7 +24,7 @@ my $master  = $pairing->new_Zr; ok( $master );
 my $r       = $pairing->new_Zr; ok( $r      );
 
 $master->random; # generate master secret
-print "master secret: ", $master->as_str;
+print STDERR " master secret: ", $master->as_str, "\n";
 
 __DATA__
 type d

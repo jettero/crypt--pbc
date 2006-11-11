@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.8 2006/11/11 20:31:49 jettero Exp $ */
+/* $Id: PBC.xs,v 1.9 2006/11/11 23:41:51 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -113,3 +113,28 @@ element_random(element)
 
     CODE:
     element_random(*element);
+
+SV *
+stringify_gmp(element)
+    element_t * element
+    // function stolen from Math::GMP (GMP.xs) with only slight modifications
+
+    PREINIT:
+    mpz_t m;
+    int len;
+    
+    CODE:
+    mpz_init(m); // there are (of course) some minor differences from GMP.xs ...
+    (*element)->field->to_mpz(m, *element);
+    len = mpz_sizeinbase(m, 10);
+    {
+        char *buf;
+        buf = malloc(len + 2);
+        mpz_get_str(buf, 10, m);
+        RETVAL = newSVpv(buf, strlen(buf));
+        free(buf);
+    }
+    mpz_clear(m);
+
+    OUTPUT:
+    RETVAL
