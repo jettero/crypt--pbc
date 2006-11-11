@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.7 2006/11/11 19:42:07 jettero Exp $ */
+/* $Id: PBC.xs,v 1.8 2006/11/11 20:31:49 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -106,3 +106,10 @@ element_clear(element)
     // fprintf(stderr, " ... freeing an element ... \n");
     element_clear(*element);
     free(element);
+
+void
+element_random(element)
+    element_t * element;
+
+    CODE:
+    element_random(*element);

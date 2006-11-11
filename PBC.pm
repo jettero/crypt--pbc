@@ -4,11 +4,11 @@ use strict;
 
 1;
 
-sub DESTROY {
-    my $this = shift;
-
-    &Crypt::PBC::pairing_clear( $this );
-}
+sub new_G1  { &Crypt::PBC::element_init_G1( shift ) }
+sub new_G2  { &Crypt::PBC::element_init_G2( shift ) }
+sub new_GT  { &Crypt::PBC::element_init_GT( shift ) }
+sub new_Zr  { &Crypt::PBC::element_init_Zr( shift ) }
+sub DESTROY { &Crypt::PBC::pairing_clear(   shift ) }
 
 package Crypt::PBC::Element;
 
@@ -16,11 +16,8 @@ use strict;
 
 1;
 
-sub DESTROY {
-    my $this = shift;
-
-    &Crypt::PBC::element_clear( $this );
-}
+sub random  { &Crypt::PBC::element_random( shift ) }
+sub DESTROY { &Crypt::PBC::element_clear(  shift ) }
 
 package Crypt::PBC;
 
