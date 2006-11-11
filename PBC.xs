@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.6 2006/11/11 19:40:27 jettero Exp $ */
+/* $Id: PBC.xs,v 1.7 2006/11/11 19:42:07 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -97,3 +97,12 @@ element_init_Zr(pairing)
 
     OUTPUT:
     RETVAL
+
+void
+element_clear(element)
+    element_t * element
+
+    CODE:
+    // fprintf(stderr, " ... freeing an element ... \n");
+    element_clear(*element);
+    free(element);

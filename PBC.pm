@@ -10,6 +10,18 @@ sub DESTROY {
     &Crypt::PBC::pairing_clear( $this );
 }
 
+package Crypt::PBC::Element;
+
+use strict;
+
+1;
+
+sub DESTROY {
+    my $this = shift;
+
+    &Crypt::PBC::element_clear( $this );
+}
+
 package Crypt::PBC;
 
 use strict;
