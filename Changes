@@ -1,3 +1,7 @@
+0.08:  Sun Nov 12 11:23:48 EST 2006
+   - jettero noticed possible bugs in either the init or as_str of
+     elements...
+
 0.07:  Sun Nov 12 09:03:27 EST 2006
    - jettero fixed my changelog app
 
