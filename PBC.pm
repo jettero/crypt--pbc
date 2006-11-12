@@ -1,4 +1,4 @@
-# $Id: PBC.pm,v 1.11 2006/11/12 16:23:48 jettero Exp $
+# $Id: PBC.pm,v 1.12 2006/11/12 20:13:32 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
@@ -19,8 +19,15 @@ use strict;
 1;
 
 sub DESTROY { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
-sub as_str  { my $this = shift; &Crypt::PBC::stringify_gmp(  $this ); } # this returns the string
 sub random  { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+
+sub as_str {
+    my $this = shift;
+    my $str  = &Crypt::PBC::export_element( $this );
+
+    $str = unpack("H*", $str);
+    $str;
+}
 
 sub pow_zn {
     my $this = shift;
@@ -37,11 +44,6 @@ sub pairing_apply {
     my $pairing = shift;
     my $rhs1    = shift;
     my $rhs2    = shift;
-
-    warn "this=" . $this->as_str;
-    warn "rhs1=" . $rhs1->as_str;
-    warn "rhs2=" . $rhs2->as_str;
-    warn "pair=" . ref $pairing;
 
     &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pairing );
 
