@@ -1,10 +1,12 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.7 2006/11/12 02:53:10 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.6 2006/11/12 02:52:41 jettero Exp $
 
 use strict;
 use Test;
 
-plan tests => 1 + 3 + 2 + 1 + 2 + 1;
+plan tests => 
+    1 + 3 + 2 + 1 + 2  # pairing and element inits
+    + 1;
 
 use Crypt::PBC;
 
@@ -13,14 +15,14 @@ use Crypt::PBC;
 # of this test is from testibe.c in the PBC distribution.
 
 my $pairing = &Crypt::PBC::pairing_init_stream(\*DATA); ok( $pairing );
-my $g       = $pairing->new_G1; ok( $g );
-my $zg      = $pairing->new_G1; ok( $zg );
-my $rg      = $pairing->new_G1; ok( $rg );
-my $h       = $pairing->new_G2; ok( $h );
-my $zh      = $pairing->new_G2; ok( $zh );
-my $s       = $pairing->new_GT; ok( $s );
+my $g       = $pairing->new_G1; ok( $g      );
+my $zg      = $pairing->new_G1; ok( $zg     );
+my $rg      = $pairing->new_G1; ok( $rg     );
+my $h       = $pairing->new_G2; ok( $h      );
+my $zh      = $pairing->new_G2; ok( $zh     );
+my $s       = $pairing->new_GT; ok( $s      );
 my $master  = $pairing->new_Zr; ok( $master );
-my $r       = $pairing->new_Zr; ok( $r );
+my $r       = $pairing->new_Zr; ok( $r      );
 
 $master->random; # generate master secret
 $g->random; # g^master is a publically known value
