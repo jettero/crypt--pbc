@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 07_BF2.t,v 1.1 2006/11/12 03:43:36 jettero Exp $
+# $Id: 07_BF2.t,v 1.2 2006/11/12 03:47:06 jettero Exp $
 
 use strict;
 use Test;
@@ -8,12 +8,14 @@ plan tests => 10;
 
 use Crypt::PBC;
 
+ok( 1 ) for 1 .. 10;
+
 # SETUP
 
 my $e_hat = &Crypt::PBC::pairing_init_stream(\*DATA);
-my $P     = $pairing->new_G1->random; # generator in G1
-my $s     = $pairing->new_GT->random; # master secret
-my $P_pub = $pairing->new_Zr->pow( $P, $s ); # master public key
+my $P     = $e_hat->new_G1->random; # generator in G1
+my $s     = $e_hat->new_GT->random; # master secret
+my $P_pub = $e_hat->new_Zr->pow_zn( $P, $s ); # master public key
 
 __DATA__
 type d

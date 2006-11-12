@@ -8,3 +8,4 @@ PBC.pm
 t/01_load.t
 t/05_boneh_franklin.t
 typemap
+t/07_BF2.t

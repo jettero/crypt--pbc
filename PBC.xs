@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.10 2006/11/12 02:51:53 jettero Exp $ */
+/* $Id: PBC.xs,v 1.11 2006/11/12 03:47:06 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -144,7 +144,8 @@ stringify_gmp(element)
     
     CODE:
     mpz_init(m); // there are (of course) some minor differences from GMP.xs ...
-    (*element)->field->to_mpz(m, *element);
+    // (*element)->field->to_mpz(m, *element);
+    element_to_mpz(m, *element);
     len = mpz_sizeinbase(m, 10);
     {
         char *buf;
