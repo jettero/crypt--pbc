@@ -20,3 +20,5 @@ if [ -f $p ]; then
     clear
     head -n 20 $p
 fi
+
+cvs ci -m logged

@@ -1,12 +1,10 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.6 2006/11/12 02:52:41 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.8 2006/11/12 16:23:47 jettero Exp $
 
 use strict;
 use Test;
 
-plan tests => 
-    1 + 3 + 2 + 1 + 2  # pairing and element inits
-    + 1;
+plan tests => 1 + 3 + 2 + 1 + 2 + 1;
 
 use Crypt::PBC;
 
@@ -15,18 +13,22 @@ use Crypt::PBC;
 # of this test is from testibe.c in the PBC distribution.
 
 my $pairing = &Crypt::PBC::pairing_init_stream(\*DATA); ok( $pairing );
-my $g       = $pairing->new_G1; ok( $g      );
-my $zg      = $pairing->new_G1; ok( $zg     );
-my $rg      = $pairing->new_G1; ok( $rg     );
-my $h       = $pairing->new_G2; ok( $h      );
-my $zh      = $pairing->new_G2; ok( $zh     );
-my $s       = $pairing->new_GT; ok( $s      );
-my $master  = $pairing->new_Zr; ok( $master );
-my $r       = $pairing->new_Zr; ok( $r      );
+my $g       = $pairing->new_G1; ok( $g ); # P in BF
+my $zg      = $pairing->new_G1; ok( $zg ); # sP in BF
+my $rg      = $pairing->new_G1; ok( $rg ); # H2(g^r) ... in BF, though H1(g^r) here...
+my $h       = $pairing->new_G2; ok( $h ); # Q_id = H1(ID) in BF ... Q_id = H2(ID) here
+my $zh      = $pairing->new_G2; ok( $zh ); # d_id in BF
+my $s       = $pairing->new_GT; ok( $s ); # V and M and h2(g_id^r) and stuff
+my $master  = $pairing->new_Zr; ok( $master ); # s in BF
+my $r       = $pairing->new_Zr; ok( $r ); # r in BF
 
-$master->random; # generate master secret
-$g->random; # g^master is a publically known value
-$zg->pow_zn( $g, $master );
+$master->random; # generate master secret (s)
+$g->random; # g is a publically known value (P)
+$zg->pow_zn( $g, $master ); # sP is the master-public key P_pub
+
+warn "g=" . $g->as_str;
+warn "master=" . $master->as_str;
+warn "zg=" . $zg->as_str;
 
 # pick random h, which represents what an ID might hash to
 # for toy examples, should check that pairing(g, h) != 1
@@ -36,14 +38,14 @@ $zh->pow_zn( $h, $master ); # and this is the private key
 ## encryption
 ## first pick random r
 $r->random;
-$s->pairing_apply( $pairing => $zg, $h );
-$s->pow_zn( $s, $r );  # s = f(g^master, h)^r, used to encrypt the message
+$s->pairing_apply( $pairing => $zg, $h ); # s = e_hat(P_pub, Q_id)
+$s->pow_zn( $s, $r );  # s = e_hat(P_pub, Q_id)^r, used to encrypt the message
 $rg->pow_zn( $g, $r ); # we transmit g^r along with the encryption
 my $s1 = $s->as_str;
 
 ## decyrption
 ## should equal s
-$s->pairing_apply( $pairing => $rg, $zh );
+$s->pairing_apply( $pairing => $rg, $zh ); # s = e_hat(g^r, d_id)
 my $s2 = $s->as_str;
 
 ok( $s1, $s2 );

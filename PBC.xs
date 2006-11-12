@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.12 2006/11/12 13:47:34 jettero Exp $ */
+/* $Id: PBC.xs,v 1.13 2006/11/12 16:23:47 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -141,12 +141,12 @@ stringify_gmp(element)
     mpz_t m;
     int len;
 
-    // stringify_gmp() stolen from Math::GMP (GMP.xs) with only slight modifications
-    // there are (of course) some minor differences from GMP.xs ...
+    // stringify_gmp() stolen from Math::GMP (GMP.xs)
+    // there are (of course) some minor differences ...
     
     CODE:
     mpz_init(m);
-    // (*element)->field->to_mpz(m, *element); // this works too...
+    // (*element)->field->to_mpz(m, *element); // this works
     element_to_mpz(m, *element); // but this is better
     len = mpz_sizeinbase(m, 10);
     {

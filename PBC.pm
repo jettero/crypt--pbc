@@ -1,4 +1,4 @@
-# $Id: PBC.pm,v 1.9 2006/11/12 14:03:26 jettero Exp $
+# $Id: PBC.pm,v 1.10 2006/11/12 16:23:47 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
@@ -38,10 +38,18 @@ sub pairing_apply {
     my $rhs1    = shift;
     my $rhs2    = shift;
 
+    warn "this=" . $this->as_str;
+    warn "rhs1=" . $rhs1->as_str;
+    warn "rhs2=" . $rhs2->as_str;
+    warn "pair=" . ref $pairing;
+
     &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pairing );
 
     $this;
 }
+
+*ehat  = *pairing_apply;
+*e_hat = *pairing_apply;
 
 package Crypt::PBC;
 
