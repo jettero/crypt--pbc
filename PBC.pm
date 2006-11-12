@@ -16,9 +16,30 @@ use strict;
 
 1;
 
-sub random  { &Crypt::PBC::element_random( shift ) }
-sub as_str  { &Crypt::PBC::stringify_gmp(  shift ) }
-sub DESTROY { &Crypt::PBC::element_clear(  shift ) }
+sub DESTROY { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
+sub as_str  { my $this = shift; &Crypt::PBC::stringify_gmp(  $this ); } # this returns the string
+sub random  { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+
+sub pow_zn {
+    my $this = shift;
+    my $base = shift;
+    my $expo = shift;
+
+    &Crypt::PBC::element_pow_zn( $this, $base, $expo );
+
+    $this;
+}
+
+sub pairing_apply {
+    my $this    = shift;
+    my $pairing = shift;
+    my $rhs1    = shift;
+    my $rhs2    = shift;
+
+    &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pairing );
+
+    $this;
+}
 
 package Crypt::PBC;
 

@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.9 2006/11/11 23:41:51 jettero Exp $ */
+/* $Id: PBC.xs,v 1.10 2006/11/12 02:51:53 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -109,10 +109,29 @@ element_clear(element)
 
 void
 element_random(element)
-    element_t * element;
+    element_t * element
 
     CODE:
     element_random(*element);
+
+void
+element_pow_zn(LHS,RHS_base,RHS_expo)
+    element_t * LHS
+    element_t * RHS_base
+    element_t * RHS_expo
+
+    CODE:
+    element_pow_zn(*LHS, *RHS_base, *RHS_expo);
+
+void
+pairing_apply(LHS,RHS1,RHS2,pairing)
+    element_t * LHS
+    element_t * RHS1
+    element_t * RHS2
+    pairing_t * pairing
+
+    CODE:
+    pairing_apply(*LHS, *RHS1, *RHS2, *pairing);
 
 SV *
 stringify_gmp(element)
