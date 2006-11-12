@@ -1,0 +1,27 @@
+#!/bin/sh
+
+./ci
+
+p=Changes
+pack=PBC.pm
+
+cat $pack | perl -ne 's/(\$VERSION[^0-9]+)([0-9.]+)([^0-9]*)/$1.($2+0.01).$3/e; print "$_";' > fil
+
+#cat fil | grep VER; rm fil ; exit
+
+mv fil $pack
+
+v=`perl -MD20 -e 'print $Crypt::PBC::VERSION'`
+
+if [ -f $p ]; then
+    mv $p $p.bak
+    echo -n $v:'  '       > $p
+    date                 >> $p
+    echo "   - $USER $*" >> $p
+    echo                 >> $p
+    cat $p.bak           >> $p
+    rm $p.bak
+    vi $p -c "set tw=800" -s format.scr
+    clear
+    head -n 20 $p
+fi
