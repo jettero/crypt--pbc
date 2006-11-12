@@ -1,11 +1,12 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.4 2006/11/11 23:41:51 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.5 2006/11/12 02:51:53 jettero Exp $
 
 use strict;
 use Test;
 
 plan tests => 
     1 + 3 + 2 + 1 + 2  # pairing and element inits
+    + 1
     ;
 
 use Crypt::PBC;
@@ -24,7 +25,28 @@ my $master  = $pairing->new_Zr; ok( $master );
 my $r       = $pairing->new_Zr; ok( $r      );
 
 $master->random; # generate master secret
-print STDERR " master secret: ", $master->as_str, "\n";
+$g->random; # g^master is a publically known value
+$zg->pow_zn( $g, $master );
+
+# pick random h, which represents what an ID might hash to
+# for toy examples, should check that pairing(g, h) != 1
+$h->random; # this is the Qi = H1( IDi(params) )
+$zh->pow_zn( $h, $master ); # and this is the private key 
+
+## encryption
+## first pick random r
+$r->random;
+$s->pairing_apply( $pairing => $zg, $h );
+$s->pow_zn( $s, $r );  # s = f(g^master, h)^r, used to encrypt the message
+$rg->pow_zn( $g, $r ); # we transmit g^r along with the encryption
+my $s1 = $s->as_str;
+
+## decyrption
+## should equal s
+$s->pairing_apply( $pairing => $rg, $zh );
+my $s2 = $s->as_str;
+
+ok( $s1, $s2 );
 
 __DATA__
 type d
