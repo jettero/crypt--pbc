@@ -1,4 +1,4 @@
-/* $Id: PBC.xs,v 1.13 2006/11/12 16:23:47 jettero Exp $ */
+/* $Id: PBC.xs,v 1.14 2006/11/12 20:13:32 jettero Exp $ */
 
 #include <pbc.h>
 
@@ -133,30 +133,29 @@ pairing_apply(LHS,RHS1,RHS2,pairing)
     CODE:
     pairing_apply(*LHS, *RHS1, *RHS2, *pairing);
 
-SV *
-stringify_gmp(element)
+void
+element_print(format,element)
+    char * format
+    element_t * element
+
+    CODE:
+    element_printf(format, *element);
+
+SV * 
+export_element(element)
     element_t * element
 
     PREINIT:
-    mpz_t m;
+    char *buf;
     int len;
-
-    // stringify_gmp() stolen from Math::GMP (GMP.xs)
-    // there are (of course) some minor differences ...
     
     CODE:
-    mpz_init(m);
-    // (*element)->field->to_mpz(m, *element); // this works
-    element_to_mpz(m, *element); // but this is better
-    len = mpz_sizeinbase(m, 10);
-    {
-        char *buf;
-        buf = malloc(len + 2);
-        mpz_get_str(buf, 10, m);
-        RETVAL = newSVpv(buf, strlen(buf));
-        free(buf);
-    }
-    mpz_clear(m);
+    len = element_length_in_bytes(*element);
+    buf = malloc( len + 2 );
+
+    RETVAL = newSVpv(buf, len);
+
+    free(buf);
 
     OUTPUT:
     RETVAL
