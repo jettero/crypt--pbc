@@ -1,3 +1,7 @@
+:  Sun Nov 12 08:49:13 EST 2006
+   - jettero got the first test (testibe aka t/05_boneh_franklin.t).
+     That's kindof a big deal I guess
+
 Revision history for Perl extension Crypt::PBC.
 
 0.01  Fri Nov 10 23:07:15 2006

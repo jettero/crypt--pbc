@@ -5,7 +5,7 @@
 p=Changes
 pack=PBC.pm
 
-perl -pie 's/(\$VERSION[^0-9]+)([0-9.]+)([^0-9]*)/$1.($2+0.01).$3/e; print "$_";' $pack
+perl -i -pe 's/(\$VERSION[^0-9]+)([0-9.]+)([^0-9]*)/$1.($2+0.01).$3/e; print "$_";' $pack || exit 1
 
 v=`perl -MPBC -e 'print $Crypt::PBC::VERSION'`
 
