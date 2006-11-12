@@ -1,4 +1,4 @@
-# $Id: PBC.pm,v 1.14 2006/11/12 20:15:30 jettero Exp $
+# $Id: PBC.pm,v 1.13 2006/11/12 20:13:33 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
@@ -18,10 +18,16 @@ use strict;
 
 1;
 
-sub DESTROY  { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
-sub as_bytes { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
-sub as_str   { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
-sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+sub DESTROY { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
+sub random  { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+
+sub as_str {
+    my $this = shift;
+    my $str  = &Crypt::PBC::export_element( $this );
+
+    $str = unpack("H*", $str);
+    $str;
+}
 
 sub pow_zn {
     my $this = shift;

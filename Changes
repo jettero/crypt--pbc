@@ -1,3 +1,8 @@
+0.09:  Sun Nov 12 15:13:33 EST 2006
+   - jettero started using element2bytes instead of element2mpz to print
+     elements. Many of the elements are atually quadratics, and poly coeffs
+     and the PBC crew do not make it simple to get to the mpzs.
+
 0.08:  Sun Nov 12 11:23:48 EST 2006
    - jettero noticed possible bugs in either the init or as_str of
      elements...
