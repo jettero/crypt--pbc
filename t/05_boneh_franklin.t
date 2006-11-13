@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.10 2006/11/12 20:15:30 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.11 2006/11/13 19:15:26 jettero Exp $
 
 use strict;
 use Test;
@@ -47,14 +47,14 @@ $zh->pow_zn( $h, $master ); # and this is the private key
 ## encryption
 ## first pick random r
 $r->random;
-$s->pairing_apply( $pairing => $zg, $h ); # s = e_hat(P_pub, Q_id)
+$s->pairing_apply( $pairing => $zg, $h ); # s = e_hat(P_pub, Q_id) -- GT=e_hat(G1, G2)
 $s->pow_zn( $s, $r );  # s = e_hat(P_pub, Q_id)^r, used to encrypt the message
 $rg->pow_zn( $g, $r ); # we transmit g^r along with the encryption
 my $s1 = $s->as_str;
 
 ## decyrption
 ## should equal s
-$s->pairing_apply( $pairing => $rg, $zh ); # s = e_hat(g^r, d_id)
+$s->pairing_apply( $pairing => $rg, $zh ); # s = e_hat(g^r, d_id) -- GT=e_hat(G1, G2)
 my $s2 = $s->as_str;
 
 ok( $s1, $s2 );

@@ -1,4 +1,4 @@
-# $Id: PBC.pm,v 1.13 2006/11/12 20:13:33 jettero Exp $
+# $Id: PBC.pm,v 1.15 2006/11/13 19:15:26 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
@@ -6,11 +6,11 @@ use strict;
 
 1;
 
-sub new_G1  { &Crypt::PBC::element_init_G1( shift ) }
-sub new_G2  { &Crypt::PBC::element_init_G2( shift ) }
-sub new_GT  { &Crypt::PBC::element_init_GT( shift ) }
-sub new_Zr  { &Crypt::PBC::element_init_Zr( shift ) }
-sub DESTROY { &Crypt::PBC::pairing_clear(   shift ) }
+sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $that }
+sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $that }
+sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $that }
+sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $that }
+sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); $that }
 
 package Crypt::PBC::Element;
 
@@ -18,16 +18,10 @@ use strict;
 
 1;
 
-sub DESTROY { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
-sub random  { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
-
-sub as_str {
-    my $this = shift;
-    my $str  = &Crypt::PBC::export_element( $this );
-
-    $str = unpack("H*", $str);
-    $str;
-}
+sub DESTROY  { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
+sub as_bytes { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
+sub as_str   { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
+sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
 
 sub pow_zn {
     my $this = shift;
