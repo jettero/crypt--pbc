@@ -9,12 +9,7 @@ ebegin "checking MANIFEST";
 ./distclean
 eend $?
 
-ebegin "checking up";
-cvs up
-echo "check up complete"
-eend $?
- 
 ebegin "checking in"
-cvs ci -m ci
+cg commit -m "$0" && cg push
 echo "check in complete"
 eend $?
