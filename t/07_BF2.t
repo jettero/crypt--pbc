@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 07_BF2.t,v 1.4 2006/11/13 19:15:26 jettero Exp $
+# $Id: 07_BF2.t,v 1.5 2006/11/14 12:12:54 jettero Exp $
 
 use strict;
 use Test;
@@ -11,9 +11,8 @@ use Crypt::PBC;
 # SETUP
 
 my $curve = &Crypt::PBC::pairing_init_stream(\*DATA);
-my $P     = $curve->new_G1->random; # generator in G1
+my $P     = $curve->new_G2->random; # generator in G1 -- even though it's in G2
 my $s     = $curve->new_Zr->random; # master secret
-# my $P_pub = $curve->new_G1->pow_zn( $P, $s ); # master public key
 my $P_pub = $curve->new_G2->pow_zn( $P, $s ); # master public key
 
 # EXTRACT
@@ -24,10 +23,7 @@ my $d_id = $curve->new_G1->pow_zn( $Q_id, $s );
 # ENCRYPT
 
 my $r    = $curve->new_Zr->random;
-warn " here";
-# my $g_id = $curve->new_G2->e_hat( $curve => $Q_id, $P_pub );
-my $g_id = $curve->new_GT->e_hat( $curve => $Q_id, $P_pub ); # GT=e_hat(G1, G2)
-warn " here";
+my $g_id = $curve->new_GT->e_hat( $curve => $Q_id, $P_pub );
 my $U    = $curve->new_G2->pow_zn( $P, $r ); # U is the part d_id can use to derive w
 my $w    = $curve->new_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) to get V or xor(w,V) to get M
 

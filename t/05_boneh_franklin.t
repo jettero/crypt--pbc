@@ -1,5 +1,5 @@
 # vi:fdm=marker fdl=0 syntax=perl:
-# $Id: 05_boneh_franklin.t,v 1.11 2006/11/13 19:15:26 jettero Exp $
+# $Id: 05_boneh_franklin.t,v 1.12 2006/11/14 12:12:54 jettero Exp $
 
 use strict;
 use Test;
@@ -28,16 +28,6 @@ $zg->pow_zn( $g, $master ); # sP is the master-public key P_pub
 
 $s->random; # just for the debug messages below
 $h->random; # just for the debug messages below
-
-## DEBUG ## &Crypt::PBC::element_print( "\n[G1] g=\%B\n", $g );
-## DEBUG ## &Crypt::PBC::element_print( "\n[G2] h=\%B\n", $h );
-## DEBUG ## &Crypt::PBC::element_print( "\n[GT] s=\%B\n", $s );
-## DEBUG ## &Crypt::PBC::element_print( "\n[Zr] master=\%B\n\n", $master );
-
-## DEBUG ## print "[G1]      g->as_str: ",      $g->as_str, "\n";
-## DEBUG ## print "[G2]      h->as_str: ",      $h->as_str, "\n";
-## DEBUG ## print "[GT]      s->as_str: ",      $s->as_str, "\n";
-## DEBUG ## print "[Zr] master->as_str: ", $master->as_str, "\n";
 
 # pick random h, which represents what an ID might hash to
 # for toy examples, should check that pairing(g, h) != 1

@@ -1,3 +1,9 @@
+0.10:  Tue Nov 14 07:12:55 EST 2006
+   - jettero added a bit of type-saftey to PBC.pm. It seems libpbc
+     segfaults when the LHS and BASE of pow_zn() aren't in the same group,
+     or when pairing_apply() is applied on arguments that aren't
+     GT=e_hat(G1, G2); and that took some figurin'.
+
 0.09:  Sun Nov 12 15:13:33 EST 2006
    - jettero started using element2bytes instead of element2mpz to print
      elements. Many of the elements are atually quadratics, and poly coeffs
