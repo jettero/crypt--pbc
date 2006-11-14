@@ -30,7 +30,7 @@ my $w    = $curve->new_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) t
 # DECRYPT
 my $w_from_U = $curve->new_GT->e_hat( $curve => $d_id, $U );
 
-ok( $w_from_U->as_str, $w->as_str );
+ok( $w_from_U->is_eq( $w ) );
 
 __DATA__
 type d

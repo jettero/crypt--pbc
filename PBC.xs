@@ -14,6 +14,8 @@ MODULE = Crypt::PBC		PACKAGE = Crypt::PBC
 
 INCLUDE: const-xs.inc
 
+PROTOTYPES: ENABLE
+
 pairing_t *
 pairing_init_stream(stream)
     FILE * stream
@@ -134,12 +136,14 @@ pairing_apply(LHS,RHS1,RHS2,pairing)
     pairing_apply(*LHS, *RHS1, *RHS2, *pairing);
 
 void
-element_print(format,element)
+element_fprintf(stream,format,element)
+    FILE * stream
     char * format
     element_t * element
 
     CODE:
-    element_printf(format, *element);
+    element_fprintf(stream, format, *element);
+
 
 SV * 
 export_element(element)
@@ -159,3 +163,109 @@ export_element(element)
 
     OUTPUT:
     RETVAL
+
+element_t *
+import_element(str)
+    SV * str
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+    
+    CODE:
+    element_from_bytes(*element, SvPV_nolen(str));
+
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL
+
+int
+element_is0(element)
+    element_t * element
+
+    CODE:
+    RETVAL = element_is0(*element);
+
+    OUTPUT:
+    RETVAL
+
+int
+element_is1(element)
+    element_t * element
+
+    CODE:
+    RETVAL = element_is1(*element);
+
+    OUTPUT:
+    RETVAL
+
+int
+element_is_sqr(element)
+    element_t * element
+
+    CODE:
+    RETVAL = element_is_sqr(*element);
+
+    OUTPUT:
+    RETVAL
+
+int
+element_cmp(a,b)
+    element_t * a
+    element_t * b
+
+    CODE:
+    RETVAL = element_cmp(*a, *b);
+
+    OUTPUT:
+    RETVAL
+
+element_t *
+element_from_hash(str)
+    SV * str
+
+    PREINIT:
+    element_t * element = malloc( sizeof(element_t) );
+    int i;
+    char *buf;
+
+    CODE:
+    buf = SvPV_nolen(str);
+    i = strlen(buf);
+
+    element_from_hash(*element, buf, i);
+
+    RETVAL = element;
+
+    OUTPUT:
+    RETVAL
+
+void
+element_set0(element)
+    element_t * element
+
+    CODE:
+    element_set0(*element);
+
+void
+element_set1(element)
+    element_t * element
+
+    CODE:
+    element_set1(*element);
+
+void
+element_set(a,b)
+    element_t * a
+    element_t * b
+
+    CODE:
+    element_set(*a, *b);
+
+void
+element_set_si(a,b)
+    element_t * a
+    long b
+
+    CODE:
+    element_set_si(*a, b);

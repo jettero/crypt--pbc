@@ -27,6 +27,18 @@ sub as_bytes { my $this = shift; &Crypt::PBC::export_element( $this ); } # this 
 sub as_str   { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
 sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
 
+sub stddump { my $this = shift; &Crypt::PBC::element_fprintf(*STDOUT, '%B', $this ); }
+sub errdump { my $this = shift; &Crypt::PBC::element_fprintf(*STDERR, '%B', $this ); }
+
+sub is_eq {
+    my $this = shift;
+    my $that = shift;
+
+    croak "LHS and RHS should both have types" unless $tm{$$this} and $tm{$$that};
+
+    return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
+}
+
 sub pow_zn {
     my $this = shift;
     my $base = shift;
