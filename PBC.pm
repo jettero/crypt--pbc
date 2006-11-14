@@ -1,24 +1,28 @@
-# $Id: PBC.pm,v 1.15 2006/11/13 19:15:26 jettero Exp $
+# $Id: PBC.pm,v 1.16 2006/11/14 12:12:54 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
 use strict;
 
+our %tm = ();
+
 1;
 
-sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $that }
-sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $that }
-sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $that }
-sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $that }
-sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); $that }
+sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $tm{$$that} = "G1"; $that }
+sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $tm{$$that} = "G2"; $that }
+sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $tm{$$that} = "GT"; $that }
+sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $tm{$$that} = "Zr"; $that }
+sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); 1; }
 
 package Crypt::PBC::Element;
 
 use strict;
+use Carp;
 
 1;
 
-sub DESTROY  { my $this = shift; &Crypt::PBC::element_clear(  $this ); } # this doesn't return
+sub DESTROY  { my $this = shift; delete $tm{$$this}; &Crypt::PBC::element_clear( $this ); }
+
 sub as_bytes { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
 sub as_str   { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
 sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
@@ -27,6 +31,8 @@ sub pow_zn {
     my $this = shift;
     my $base = shift;
     my $expo = shift;
+
+    croak "LHS and BASE should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$base};
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
 
@@ -38,6 +44,11 @@ sub pairing_apply {
     my $pairing = shift;
     my $rhs1    = shift;
     my $rhs2    = shift;
+
+    croak "pairing isn't a pairing" unless (ref $pairing) =~ m/Pairing/;
+    croak "group type for LHS must be GT"  unless $tm{$$this} eq "GT";
+    croak "group type for RHS1 must be G1" unless $tm{$$rhs1} eq "G1";
+    croak "group type for RHS2 must be G2" unless $tm{$$rhs2} eq "G2";
 
     &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pairing );
 
