@@ -1,6 +1,3 @@
-:  Tue Nov 14 07:13:41 EST 2006
-   - jettero test
-
 0.10:  Tue Nov 14 07:12:55 EST 2006
    - jettero added a bit of type-saftey to PBC.pm. It seems libpbc
      segfaults when the LHS and BASE of pow_zn() aren't in the same group,
