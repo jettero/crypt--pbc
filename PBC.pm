@@ -1,4 +1,4 @@
-# $Id: PBC.pm,v 1.18 2006/11/14 12:13:40 jettero Exp $
+# $Id: PBC.pm,v 1.17 2006/11/14 12:12:55 jettero Exp $
 
 package Crypt::PBC::Pairing;
 
@@ -72,7 +72,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-our $VERSION = '0.10';
+our $VERSION = '0.1';
 
 sub AUTOLOAD {
     my $constname;
