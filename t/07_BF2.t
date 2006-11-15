@@ -5,11 +5,18 @@ use strict;
 use Test;
 
 my $bf = 0;
+my $sh = 0;
 eval {
     use Crypt::CBC;
     use Crypt::Blowfish;
 
     $bf = 1;
+};
+
+eval {
+    use Digest::SHA1 qw(sha1);
+
+    $sh = 1;
 };
 
 plan tests => 3 + $bf;
@@ -25,7 +32,14 @@ my $P_pub = $curve->new_G2->pow_zn( $P, $s ); # master public key
 
 # EXTRACT
 
-my $Q_id = $curve->new_G1->random;
+my $Q_id = $curve->new_G1;
+if( $sh ) {
+    warn "using Digest::SHA1 to generate Q_id\n";
+    $Q_id->from_hash( sha1("Paul Miller <jettero a gmail or cpan> | expires 2007-11-15") );
+
+} else {
+    $Q_id->random; # this is just a test anyway
+}
 my $d_id = $curve->new_G1->pow_zn( $Q_id, $s );
 
 # ENCRYPT
@@ -52,7 +66,7 @@ if( $bf ) {
     my $encrypt = $cipher1->encrypt($message);
     my $decrypt = $cipher2->decrypt($encrypt);
 
-    warn " using Blowfish for 4th test\n";
+    warn " using Crypt::CBC(Crypt::Blowfish) for 4th test\n";
     ok( $decrypt, $message );
 }
 

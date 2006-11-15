@@ -30,6 +30,15 @@ sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } #
 sub stddump { my $this = shift; &Crypt::PBC::element_fprintf(*STDOUT, '%B', $this ); }
 sub errdump { my $this = shift; &Crypt::PBC::element_fprintf(*STDERR, '%B', $this ); }
 
+sub from_hash {
+    my $this = shift;
+    my $hash = shift;
+
+    &Crypt::PBC::element_from_hash($this, $hash);
+
+    $this;
+}
+
 sub is_eq {
     my $this = shift;
     my $that = shift;
@@ -84,7 +93,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-our $VERSION = '0.10';
+our $VERSION = '0.3.16';
 
 sub AUTOLOAD {
     my $constname;

@@ -169,20 +169,18 @@ export_element(element)
     OUTPUT:
     RETVAL
 
-element_t *
-import_element(str)
-    SV * str
+void
+element_from_hash(element,hash)
+    element_t * element
+    SV * hash
 
     PREINIT:
-    element_t * element = malloc( sizeof(element_t) );
-    
+    STRLEN len;
+    char * ptr;
+
     CODE:
-    element_from_bytes(*element, SvPV_nolen(str));
-
-    RETVAL = element;
-
-    OUTPUT:
-    RETVAL
+    ptr = SvPV(hash, len);
+    element_from_hash(*element, ptr, len);
 
 int
 element_is0(element)
@@ -221,26 +219,6 @@ element_cmp(a,b)
 
     CODE:
     RETVAL = element_cmp(*a, *b);
-
-    OUTPUT:
-    RETVAL
-
-element_t *
-element_from_hash(str)
-    SV * str
-
-    PREINIT:
-    element_t * element = malloc( sizeof(element_t) );
-    int i;
-    char *buf;
-
-    CODE:
-    buf = SvPV_nolen(str);
-    i = strlen(buf);
-
-    element_from_hash(*element, buf, i);
-
-    RETVAL = element;
 
     OUTPUT:
     RETVAL
