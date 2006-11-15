@@ -31,6 +31,23 @@ pairing_init_stream(stream)
     OUTPUT:
     RETVAL
 
+pairing_t *
+pairing_init_str(str)
+    SV * str
+
+    PREINIT:
+    STRLEN len;
+    char * ptr;
+    pairing_t * pairing = malloc( sizeof(pairing_t) );
+
+    CODE:
+    ptr = SvPV(str, len);
+    pairing_init_inp_buf(*pairing, ptr, len);
+    RETVAL = pairing;
+
+    OUTPUT:
+    RETVAL
+
 void
 pairing_clear(pairing)
     pairing_t * pairing

@@ -18,14 +18,16 @@ package Crypt::PBC::Element;
 
 use strict;
 use Carp;
+use MIME::Base64;
 
 1;
 
 sub DESTROY  { my $this = shift; delete $tm{$$this}; &Crypt::PBC::element_clear( $this ); }
 
-sub as_bytes { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
-sub as_str   { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
-sub random   { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+sub as_bytes  { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
+sub as_str    { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
+sub random    { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
+sub as_base64 { my $this = shift; my $that = encode_base64($this->as_bytes); $that =~ s/\n$//s; $that } # this returns base64
 
 sub stddump { my $this = shift; &Crypt::PBC::element_fprintf(*STDOUT, '%B', $this ); }
 sub errdump { my $this = shift; &Crypt::PBC::element_fprintf(*STDERR, '%B', $this ); }

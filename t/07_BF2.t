@@ -34,7 +34,7 @@ my $P_pub = $curve->new_G2->pow_zn( $P, $s ); # master public key
 
 my $Q_id = $curve->new_G1;
 if( $sh ) {
-    warn "using Digest::SHA1 to generate Q_id\n";
+    warn "using Digest::SHA1 to generate Q_id\n" if $ENV{EXTRA_INFO};
     $Q_id->from_hash( sha1("Paul Miller <jettero a gmail or cpan> | expires 2007-11-15") );
 
 } else {
@@ -66,7 +66,7 @@ if( $bf ) {
     my $encrypt = $cipher1->encrypt($message);
     my $decrypt = $cipher2->decrypt($encrypt);
 
-    warn " using Crypt::CBC(Crypt::Blowfish) for 4th test\n";
+    warn " using Crypt::CBC(Crypt::Blowfish) for 4th test\n" if $ENV{EXTRA_INFO};
     ok( $decrypt, $message );
 }
 
