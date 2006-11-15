@@ -41,7 +41,7 @@ element_mul_si(lhs,rhs1,rhs2)
     long rhs2
 
     CODE:
-    element_mu_sil(*lhs, *rhs1, rhs2);
+    element_mul_si(*lhs, *rhs1, rhs2);
 
 void
 element_div(lhs,rhs1,rhs2)

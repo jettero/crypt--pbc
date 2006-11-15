@@ -14,6 +14,11 @@ WriteMakefile(
     INC               => '-I/usr/include/pbc/', # e.g., '-I. -I/usr/include/other'
 	# Un-comment this if you add C files to link with later:
     # OBJECT            => '$(O_FILES)', # link all the C files too
+
+    clean => { FILES => "testibe exportbytes pairings_init" },
+    depend => {
+        "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
+    },
 );
 if  (eval {require ExtUtils::Constant; 1}) {
   # If you edit these definitions to change the constants used by this module,
