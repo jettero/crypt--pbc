@@ -157,7 +157,12 @@ export_element(element)
     len = element_length_in_bytes(*element);
     buf = malloc( len + 2 );
 
-    RETVAL = newSVpv(buf, len);
+    // My bug posted to the pbc-dev newsgroup, where I was getting different
+    // results for different elements that test equal?  Yeah, the following
+    // line was not present when I got that result.  I'm awesome.
+    element_to_bytes(buf, *element);
+
+    RETVAL = newSVpvn(buf, len);
 
     free(buf);
 

@@ -4,7 +4,15 @@
 use strict;
 use Test;
 
-plan tests => 1;
+my $bf = 0;
+eval {
+    use Crypt::CBC;
+    use Crypt::Blowfish;
+
+    $bf = 1;
+};
+
+plan tests => 3 + $bf;
 
 use Crypt::PBC;
 
@@ -31,6 +39,22 @@ my $w    = $curve->new_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) t
 my $w_from_U = $curve->new_GT->e_hat( $curve => $d_id, $U );
 
 ok( $w_from_U->is_eq( $w ) );
+ok( $w_from_U->as_bytes, $w->as_bytes ); # binary gook
+ok( $w_from_U->as_str,   $w->as_str   ); # hexidecimal
+
+if( $bf ) {
+    # If the three comparisons above worked, this is kindof a no-brainer; but,
+    # personally, I was confused on how to M^H2(g^r) -- and here it is:
+
+    my $cipher1 = new Crypt::CBC({header=>"randomiv", key=>$w->as_bytes,        cipher=>'Blowfish'});
+    my $cipher2 = new Crypt::CBC({header=>"randomiv", key=>$w_from_U->as_bytes, cipher=>'Blowfish'});
+    my $message = "Holy smokes, this is secret!!";
+    my $encrypt = $cipher1->encrypt($message);
+    my $decrypt = $cipher2->decrypt($encrypt);
+
+    warn " using Blowfish for 4th test\n";
+    ok( $decrypt, $message );
+}
 
 __DATA__
 type d
