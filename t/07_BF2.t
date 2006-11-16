@@ -35,7 +35,7 @@ my $P_pub = $curve->new_G2->pow_zn( $P, $s ); # master public key
 my $Q_id = $curve->new_G1;
 if( $sh ) {
     warn "using Digest::SHA1 to generate Q_id\n" if $ENV{EXTRA_INFO};
-    $Q_id->from_hash( sha1("Paul Miller <jettero a gmail or cpan> | expires 2007-11-15") );
+    $Q_id->set_to_hash( sha1("Paul Miller <jettero a gmail or cpan> | expires 2007-11-15") );
 
 } else {
     $Q_id->random; # this is just a test anyway

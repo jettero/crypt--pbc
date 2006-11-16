@@ -6,10 +6,6 @@ use Test;
 
 use Crypt::PBC;
 
-my $curv1 = &Crypt::PBC::pairing_init_stream(\*DATA);
-my $g1_1  = $curv1->new_G1->from_hash("test !!");
-my $g2_1  = $curv1->new_G2->from_hash("test !!");
-
 my $str = q(type d
 q 90144054120102937439179516551801119443207521965651508326977
 n 90144054120102937439179516552101359437412329625948146453801
@@ -25,17 +21,27 @@ coeff1 21720089592072695009765372832780685887129370300993349347738
 coeff2 11773373318911376280677890769414834592007872486079550520860
 nqr 4468071665857441743453009416233415235254714637554162977327);
 
-my $curv2 = &Crypt::PBC::pairing_init_str($str);
-my $g1_2  = $curv2->new_G1->from_hash("test !!");
-my $g2_2  = $curv2->new_G2->from_hash("test !!");
+plan tests => 4 * 50;
 
-plan tests => 4;
+for ( 1 .. 50 ) {
+    warn "here";
+    my $curv1 = &Crypt::PBC::pairing_init_stream(\*DATA); warn "here";
+    my $g1_1  = $curv1->new_G1->set_to_hash("test !!");
+    my $g2_1  = $curv1->new_G2->set_to_hash("test !!");
 
-ok( $g1_2->as_base64, $g1_1->as_base64 );
-ok( $g2_2->as_base64, $g2_1->as_base64 );
+    warn "here";
+    my $curv2 = &Crypt::PBC::pairing_init_str($str); warn "here";
+    my $g1_2  = $curv2->new_G1->set_to_hash("test !!");
+    my $g2_2  = $curv2->new_G2->set_to_hash("test !!");
 
-ok( $g1_2->is_eq( $g1_1 ) );
-ok( $g2_2->is_eq( $g2_1 ) );
+    ok( $g1_2->as_base64, $g1_1->as_base64 );
+    ok( $g2_2->as_base64, $g2_1->as_base64 );
+
+    ok( $g1_2->is_eq( $g1_1 ) );
+    ok( $g2_2->is_eq( $g2_1 ) );
+
+    seek DATA, 0, 0 or die "couldn't seek() in DATA: $!";
+}
 
 __DATA__
 type d

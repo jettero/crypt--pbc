@@ -1,18 +1,3 @@
-# $Id: PBC.pm,v 1.21 2006/11/14 12:15:56 jettero Exp $
-
-package Crypt::PBC::Pairing;
-
-use strict;
-
-our %tm = ();
-
-1;
-
-sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $tm{$$that} = "G1"; $that }
-sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $tm{$$that} = "G2"; $that }
-sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $tm{$$that} = "GT"; $that }
-sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $tm{$$that} = "Zr"; $that }
-sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); 1; }
 
 package Crypt::PBC::Element;
 
@@ -20,19 +5,69 @@ use strict;
 use Carp;
 use MIME::Base64;
 
+our %tm;
+
 1;
 
-sub DESTROY  { my $this = shift; delete $tm{$$this}; &Crypt::PBC::element_clear( $this ); }
+# DESTROY {{{
+sub DESTROY {
+    my $this = shift;
+    
+    delete $tm{$$this};
+    &Crypt::PBC::element_clear( $this );
+}
+# }}}
 
-sub as_bytes  { my $this = shift; &Crypt::PBC::export_element( $this ); } # this returns bytes
-sub as_str    { my $this = shift; unpack("H*", $this->as_bytes); }        # this returns hex
-sub random    { my $this = shift; &Crypt::PBC::element_random( $this ); $this } # this is itself
-sub as_base64 { my $this = shift; my $that = encode_base64($this->as_bytes); $that =~ s/\n$//sg; $that } # this returns base64
+# as_bytes {{{
+sub as_bytes {
+    my $this = shift;
+    
+    return &Crypt::PBC::export_element( $this );
+}
+# }}}
+# as_str {{{
+sub as_str {
+    my $this = shift;
+    
+    return unpack("H*", $this->as_bytes);
+}
+# }}}
+# as_base64 {{{
+sub as_base64 {
+    my $this = shift;
+    
+    my $that = encode_base64($this->as_bytes);
+    $that =~ s/\n$//sg;
 
-sub stddump { my $this = shift; &Crypt::PBC::element_fprintf(*STDOUT, '%B', $this ); }
-sub errdump { my $this = shift; &Crypt::PBC::element_fprintf(*STDERR, '%B', $this ); }
+    return $that;
+}
+# }}}
+# stddump {{{
+sub stddump {
+    my $this = shift;
+    
+    &Crypt::PBC::element_fprintf(*STDOUT, '%B', $this );
+}
+# }}}
+# errdump {{{
+sub errdump {
+    my $this = shift;
+    
+    return &Crypt::PBC::element_fprintf(*STDERR, '%B', $this );
+}
+# }}}
 
-sub from_hash {
+# random {{{
+sub random {
+    my $this = shift;
+    
+    &Crypt::PBC::element_random( $this );
+
+    return $this;
+}
+# }}}
+# set_to_hash {{{
+sub set_to_hash {
     my $this = shift;
     my $hash = shift;
 
@@ -40,7 +75,9 @@ sub from_hash {
 
     $this;
 }
+# }}}
 
+# is_eq {{{
 sub is_eq {
     my $this = shift;
     my $that = shift;
@@ -49,7 +86,16 @@ sub is_eq {
 
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
+# }}}
+# is_sqr {{{
+sub is_sqr {
+    my $this = shift;
 
+    return not &Crypt::PBC::element_is_sqr( $this ); # returns 0 if they're the same
+}
+# }}}
+
+# pow_zn {{{
 sub pow_zn {
     my $this = shift;
     my $base = shift;
@@ -61,7 +107,21 @@ sub pow_zn {
 
     $this;
 }
+# }}}
+# square {{{
+sub square {
+    my $lhs  = shift;
+    my $rhs  = shift;
 
+    croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    &Crypt::PBC::element_square( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+
+# pairing_apply {{{
 sub pairing_apply {
     my $this    = shift;
     my $pairing = shift;
@@ -77,9 +137,26 @@ sub pairing_apply {
 
     $this;
 }
-
 *ehat  = *pairing_apply;
 *e_hat = *pairing_apply;
+# }}}
+
+#### package Crypt::PBC::Pairing {{{
+
+package Crypt::PBC::Pairing;
+
+use strict;
+
+1;
+
+sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $Crypt::PBC::Element::tm{$$that} = "G1"; $that }
+sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $Crypt::PBC::Element::tm{$$that} = "G2"; $that }
+sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $Crypt::PBC::Element::tm{$$that} = "GT"; $that }
+sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $Crypt::PBC::Element::tm{$$that} = "Zr"; $that }
+sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); 1; }
+
+# }}}
+#### package Crypt::PBC {{{
 
 package Crypt::PBC;
 
@@ -110,6 +187,8 @@ require XSLoader;
 XSLoader::load('Crypt::PBC', $VERSION);
 
 1;
+
+# }}}
 
 __END__
 

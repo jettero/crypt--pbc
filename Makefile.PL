@@ -15,7 +15,7 @@ WriteMakefile(
 	# Un-comment this if you add C files to link with later:
     # OBJECT            => '$(O_FILES)', # link all the C files too
 
-    clean => { FILES => "testibe exportbytes pairings_init" },
+    clean => { FILES => join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },

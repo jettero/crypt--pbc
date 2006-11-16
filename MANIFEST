@@ -13,3 +13,4 @@ earith.xs
 ecomp.xs
 einit.xs
 pairing.xs
+t/13_element_arith.t
