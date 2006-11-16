@@ -230,23 +230,24 @@ sub pairing_apply {
 package Crypt::PBC::Pairing;
 
 use strict;
+use Carp;
 
 1;
 
 sub new {
     my $this;
-    my $file = shift; 
+    my $arg = shift; 
 
-    if( ref $file eq "GLOB" ) {
-        $this = &Crypt::PBC::pairing_init_stream($file);
+    if( ref($arg) eq "GLOB" ) {
+        $this = &Crypt::PBC::pairing_init_stream($arg);
 
-    } elsif( -f $file ) {
-        open PARAM_IN, $file or die "couldn't open param file ($file): $!";
+    } elsif( -f $arg ) {
+        open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
         $this = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
         close PARAM_IN;
 
-    } elsif( $file ) {
-        $this = &Crypt::PBC::pairing_init_str(\*PARAM_IN); close PARAM_IN;
+    } elsif( $arg ) {
+        $this = &Crypt::PBC::pairing_init_str($arg);
 
     } else {
         croak "you must pass a file, glob (stream), or init params to new()";
