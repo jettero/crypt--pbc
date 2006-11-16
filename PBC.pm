@@ -19,6 +19,7 @@ sub DESTROY {
 }
 # }}}
 
+#### exporters
 # as_bytes {{{
 sub as_bytes {
     my $this = shift;
@@ -58,6 +59,7 @@ sub errdump {
 }
 # }}}
 
+#### initializers and set routines
 # random {{{
 sub random {
     my $this = shift;
@@ -78,6 +80,8 @@ sub set_to_hash {
 }
 # }}}
 
+#### comparisons
+## binary
 # is_eq {{{
 sub is_eq {
     my $this = shift;
@@ -88,6 +92,8 @@ sub is_eq {
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
 # }}}
+
+## urinary
 # is_sqr {{{
 sub is_sqr {
     my $this = shift;
@@ -96,6 +102,7 @@ sub is_sqr {
 }
 # }}}
 
+#### exponentiation
 # pow_zn {{{
 sub pow_zn {
     my $this = shift;
@@ -109,6 +116,9 @@ sub pow_zn {
     $this;
 }
 # }}}
+
+#### arith
+## urinary
 # square {{{
 sub square {
     my $lhs  = shift;
@@ -122,6 +132,74 @@ sub square {
     }
 
     &Crypt::PBC::element_square( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+# double {{{
+sub double {
+    my $lhs  = shift;
+    my $rhs  = shift;
+
+    if( $rhs ) {
+        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    } else {
+        $rhs = $lhs;
+    }
+
+    &Crypt::PBC::element_double( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+# halve {{{
+sub halve {
+    my $lhs  = shift;
+    my $rhs  = shift;
+
+    if( $rhs ) {
+        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    } else {
+        $rhs = $lhs;
+    }
+
+    &Crypt::PBC::element_halve( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+# neg {{{
+sub neg {
+    my $lhs  = shift;
+    my $rhs  = shift;
+
+    if( $rhs ) {
+        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    } else {
+        $rhs = $lhs;
+    }
+
+    &Crypt::PBC::element_neg( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+# invert {{{
+sub invert {
+    my $lhs  = shift;
+    my $rhs  = shift;
+
+    if( $rhs ) {
+        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    } else {
+        $rhs = $lhs;
+    }
+
+    &Crypt::PBC::element_invert( $lhs, $rhs );
 
     $lhs;
 }
