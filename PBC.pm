@@ -277,6 +277,8 @@ sub new {
     my $that;
     my $arg = shift; 
 
+    die "here";
+
     if( ref($arg) eq "GLOB" ) {
         $that = &Crypt::PBC::pairing_init_stream($arg);
 
