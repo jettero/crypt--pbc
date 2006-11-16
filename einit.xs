@@ -6,7 +6,6 @@ element_init_G1(pairing)
     element_t * element = malloc( sizeof(element_t) );
 
     CODE:
-    // fprintf(stderr, " ... malloced a G1 element ... \n");
     element_init_G1(*element, *pairing);
     RETVAL = element;
 
@@ -21,7 +20,6 @@ element_init_G2(pairing)
     element_t * element = malloc( sizeof(element_t) );
 
     CODE:
-    // fprintf(stderr, " ... malloced a G2 element ... \n");
     element_init_G2(*element, *pairing);
     RETVAL = element;
 
@@ -36,7 +34,6 @@ element_init_GT(pairing)
     element_t * element = malloc( sizeof(element_t) );
 
     CODE:
-    // fprintf(stderr, " ... malloced a GT element ... \n");
     element_init_GT(*element, *pairing);
     RETVAL = element;
 
@@ -51,7 +48,6 @@ element_init_Zr(pairing)
     element_t * element = malloc( sizeof(element_t) );
 
     CODE:
-    // fprintf(stderr, " ... malloced a Zr element ... \n");
     element_init_Zr(*element, *pairing);
     RETVAL = element;
 
@@ -63,7 +59,6 @@ element_clear(element)
     element_t * element
 
     CODE:
-    // fprintf(stderr, " ... freeing an element ... \n");
     element_clear(*element);
     free(element);
 

@@ -14,6 +14,7 @@ sub DESTROY {
     my $this = shift;
     
     delete $tm{$$this};
+
     &Crypt::PBC::element_clear( $this );
 }
 # }}}
@@ -91,7 +92,7 @@ sub is_eq {
 sub is_sqr {
     my $this = shift;
 
-    return not &Crypt::PBC::element_is_sqr( $this ); # returns 0 if they're the same
+    return not &Crypt::PBC::element_is_sqr( $this ); # Returns 0 if a is a perfect square (quadratic residue), nonzero otherwise.
 }
 # }}}
 
@@ -111,9 +112,14 @@ sub pow_zn {
 # square {{{
 sub square {
     my $lhs  = shift;
-    my $rhs  = shift; $rhs = $lhs unless $rhs;
+    my $rhs  = shift;
 
-    croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+    if( $rhs ) {
+        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+
+    } else {
+        $rhs = $lhs;
+    }
 
     &Crypt::PBC::element_square( $lhs, $rhs );
 
