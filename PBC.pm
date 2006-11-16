@@ -111,7 +111,7 @@ sub pow_zn {
 # square {{{
 sub square {
     my $lhs  = shift;
-    my $rhs  = shift;
+    my $rhs  = shift; $rhs = $lhs unless $rhs;
 
     croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
 

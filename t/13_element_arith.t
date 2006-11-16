@@ -4,18 +4,19 @@
 use strict;
 use Test;
 
-plan tests => 1; ok(1); exit 0;
+my $epochs = 50;
 
-plan tests => 50;
+plan tests => $epochs * 2;
 
 use Crypt::PBC;
 
 open IN, "params.txt" or die "couldn't open params: $!";
 my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 
-for ( 1 .. 50 ) {
-    my $GT_a  = $curve->new_GT->random;
-    my $GT_b  = $curve->new_GT->square( $GT_a );
+for ( 1 .. $epochs ) {
+    my $GT = $curve->new_GT->square;
+    my $Zr = $curve->new_GT->square;
 
-    ok( $GT_a->is_sqr );
+    ok( $GT->is_sqr );
+    ok( $Zr->is_sqr );
 }
