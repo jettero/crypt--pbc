@@ -9,16 +9,11 @@ ebegin "checking MANIFEST";
 eend $?
 
 ebegin "checking status"
-set -x
 cg update
-cg status
-set +x
 eend $?
 
 ebegin "checking in"
-set -x
 cg commit -m "$0"
 cg push
-set +x
 echo "check in complete"
 eend $?
