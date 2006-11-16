@@ -234,29 +234,6 @@ use Carp;
 
 1;
 
-sub new {
-    my $this;
-    my $arg = shift; 
-
-    if( ref($arg) eq "GLOB" ) {
-        $this = &Crypt::PBC::pairing_init_stream($arg);
-
-    } elsif( -f $arg ) {
-        open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
-        $this = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
-        close PARAM_IN;
-
-    } elsif( $arg ) {
-        $this = &Crypt::PBC::pairing_init_str($arg);
-
-    } else {
-        croak "you must pass a file, glob (stream), or init params to new()";
-    }
-
-    croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $this;
-    return $this;
-}
-
 sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $Crypt::PBC::Element::tm{$$that} = "G1"; $that }
 sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $Crypt::PBC::Element::tm{$$that} = "G2"; $that }
 sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $Crypt::PBC::Element::tm{$$that} = "GT"; $that }
@@ -295,6 +272,29 @@ require XSLoader;
 XSLoader::load('Crypt::PBC', $VERSION);
 
 1;
+
+sub new {
+    my $that;
+    my $arg = shift; 
+
+    if( ref($arg) eq "GLOB" ) {
+        $that = &Crypt::PBC::pairing_init_stream($arg);
+
+    } elsif( -f $arg ) {
+        open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
+        $that = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
+        close PARAM_IN;
+
+    } elsif( $arg ) {
+        $that = &Crypt::PBC::pairing_init_str($arg);
+
+    } else {
+        croak "you must pass a file, glob (stream), or init params to new()";
+    }
+
+    croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $that;
+    return $that;
+}
 
 # }}}
 
