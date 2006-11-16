@@ -1,3 +1,8 @@
+/*
+** This turned out to actually be a bug -- which Ben fixed pretty much the
+** same day.  11/15/06 0.3.16 -> 0.3.17
+*/
+
 #include "pbc.h"
 #include <string.h>
 
