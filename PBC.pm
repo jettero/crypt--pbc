@@ -277,8 +277,6 @@ sub new {
     my $that;
     my $arg = shift; 
 
-    die "here";
-
     if( ref($arg) eq "GLOB" ) {
         $that = &Crypt::PBC::pairing_init_stream($arg);
 
@@ -294,7 +292,7 @@ sub new {
         croak "you must pass a file, glob (stream), or init params to new()";
     }
 
-    croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $that;
+    croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $$that>0;
     return $that;
 }
 
