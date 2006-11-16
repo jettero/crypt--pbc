@@ -274,23 +274,25 @@ XSLoader::load('Crypt::PBC', $VERSION);
 1;
 
 sub new {
+    my $class = shift;
     my $that;
     my $arg = shift; 
 
-    if( ref($arg) eq "GLOB" ) {
-        $that = &Crypt::PBC::pairing_init_stream($arg);
+    # if( ref($arg) eq "GLOB" ) {
+    #     $that = &Crypt::PBC::pairing_init_stream($arg);
 
-    } elsif( -f $arg ) {
+    # } elsif( -f $arg ) {
+
         open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
         $that = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
         close PARAM_IN;
 
-    } elsif( $arg ) {
-        $that = &Crypt::PBC::pairing_init_str($arg);
+    # } elsif( $arg ) {
+    #     $that = &Crypt::PBC::pairing_init_str($arg);
 
-    } else {
-        croak "you must pass a file, glob (stream), or init params to new()";
-    }
+    # } else {
+    #     croak "you must pass a file, glob (stream), or init params to new()";
+    # }
 
     croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $$that>0;
     return $that;
