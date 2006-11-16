@@ -308,6 +308,13 @@ Crypt::PBC - OO interface for the Lynn's PBC library
 
     use Crypt::PBC;
 
+    my $pairing = new Crypt::PBC("params.txt");
+    my $G1      = $pairing->init_G1->random;
+    my $G2      = $pairing->init_G2->random->double->square;
+    my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
+
+    # These methods return the LHS (left hand side of the assignment of an implicit equation).
+
 =head1 XS AUTHOR
 
 Paul Miller <japh@voltar-confed.org>
