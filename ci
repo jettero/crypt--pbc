@@ -8,8 +8,12 @@ ebegin "checking MANIFEST";
 ./distclean
 eend $?
 
-ebegin "checking in"
+ebegin "checking status"
+cg update
 cg status
+eend $?
+
+ebegin "checking in"
 cg commit -m "$0"
 cg push
 echo "check in complete"
