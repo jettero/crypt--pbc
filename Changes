@@ -1,7 +1,7 @@
-0.3.17:  Thu Nov 16 20:03:34 EST 2006
+0.3.17-0.5.00:  Thu Nov 16 20:03:34 EST 2006
    - jettero reversioned the package to represent the version of libpbc it
      is intended to work with in addition to the version of the perl API.
-     0.3.17-0.5 means PBC.pm version 0.5 intended to work with libpbc
+     0.3.17-0.5.00 means PBC.pm version 0.5.00 intended to work with libpbc
      0.3.17.
 
 0.10:  Tue Nov 14 07:12:55 EST 2006
