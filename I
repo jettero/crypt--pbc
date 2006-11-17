@@ -5,9 +5,7 @@
 p=Changes
 pack=PBC.pm
 
-## ## do not update the version automatically ... make it match his lib
-## perl -i -pe 's/(\$VERSION[^0-9]+)([0-9.]+)([^0-9]*)/$1 . sprintf("\%0.2f", $2+0.01)  . $3/e;' $pack
-
+perl -i -pe 's/(\$VERSION[^0-9]+)([0-9.]+)([^0-9]*)/$1 . sprintf("\%0.2f", $2+0.01)  . $3/e;' $pack
 v=`perl -ne 'print "$1\n" if m/\\$VERSION[^0-9]+([0-9.]+)\b/' $pack`
 
 if [ -f $p ]; then
