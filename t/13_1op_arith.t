@@ -13,7 +13,7 @@ my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 my @lhs = ( $curve->new_G1, $curve->new_G2, $curve->new_GT, $curve->new_Zr );
 my @rhs = ( $curve->new_G1, $curve->new_G2, $curve->new_GT, $curve->new_Zr );
 
-my $epochs = 5;
+my $epochs = 1;
 
 plan tests => ( ((int @lhs) * 10 * $epochs) );
 

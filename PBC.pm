@@ -18,6 +18,18 @@ sub DESTROY {
     &Crypt::PBC::element_clear( $this );
 }
 # }}}
+# clone {{{
+sub clone {
+    my $this  = shift;
+    my $curve = shift;
+    my $type  = $tm{$$this};
+
+    no strict 'refs';
+    my $that = $curve->"new_$type";
+
+    return $that->set( $this );
+}
+# }}}
 
 #### exporters
 # as_bytes {{{
