@@ -278,21 +278,29 @@ sub new {
     my $that;
     my $arg = shift; 
 
-    # if( ref($arg) eq "GLOB" ) {
-    #     $that = &Crypt::PBC::pairing_init_stream($arg);
+    if( ref($arg) eq "GLOB" ) {
+        $that = &Crypt::PBC::pairing_init_stream($arg);
 
-    # } elsif( -f $arg ) {
+    } elsif( $arg !~ m/\n/ and -f $arg ) {
 
         open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
         $that = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
         close PARAM_IN;
 
-    # } elsif( $arg ) {
-    #     $that = &Crypt::PBC::pairing_init_str($arg);
+    } elsif( $arg ) {
+        $arg =~ s/^\s*//s;
+        $arg =~ s/\s*$//s;
 
-    # } else {
-    #     croak "you must pass a file, glob (stream), or init params to new()";
-    # }
+        if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+$/s ) {
+            $that = &Crypt::PBC::pairing_init_str($arg);
+
+        } else {
+            croak "either the filename doesn't exist or that param string is unparsable: $arg";
+        }
+
+    } else {
+        croak "you must pass a file, glob (stream), or init params to new()";
+    }
 
     croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $$that>0;
     return $that;
@@ -315,7 +323,8 @@ Crypt::PBC - OO interface for the Lynn's PBC library
     my $G2      = $pairing->init_G2->random->double->square;
     my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
 
-    # These methods return the LHS (left hand side of the assignment of an implicit equation).
+    # These methods return the LHS (left hand side of the assignment of an
+    # implicit equation).
 
 =head1 XS AUTHOR
 
@@ -346,6 +355,9 @@ choose) even if you use this package's intended and/or exported interfaces in
 them.
 
 (again, if possible)
+
+Lastly, having said all the above, there may be certain restrictions from
+the PBC library itself that I cannot amend or take away!
 
 =head1 SEE ALSO
 

@@ -1,12 +1,11 @@
-/*
-*/
-
 #include "pbc.h"
+#include <gmp.h>
 
 int main(void) {
     pairing_t pairing;
 
     element_t G1, G2, GT, Zr;
+    mpz_t titty;
 
     int i;
 
@@ -24,6 +23,10 @@ int main(void) {
         element_random(G2);
         element_random(GT);
         element_random(Zr);
+
+        mpz_init(titty);
+        element_to_mpz(titty, G1);
+        gmp_printf("%s is an mpz %Zd\n", "titty", titty);
 
         element_square(G1, G1);
         element_square(G2, G2);
