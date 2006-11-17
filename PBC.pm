@@ -81,7 +81,7 @@ sub set_to_hash {
 # }}}
 
 #### comparisons
-## binary
+## 2op
 # is_eq {{{
 sub is_eq {
     my $this = shift;
@@ -93,7 +93,7 @@ sub is_eq {
 }
 # }}}
 
-## urinary
+## 1op
 # is_sqr {{{
 sub is_sqr {
     my $this = shift;
@@ -118,7 +118,7 @@ sub pow_zn {
 # }}}
 
 #### arith
-## urinary
+## 1op
 # square {{{
 sub square {
     my $lhs  = shift;
@@ -200,6 +200,96 @@ sub invert {
     }
 
     &Crypt::PBC::element_invert( $lhs, $rhs );
+
+    $lhs;
+}
+# }}}
+
+## 2op
+# add {{{
+sub add {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 and RHS2 should be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+
+        &Crypt::PBC::element_add( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "LHS and RHS hould be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+
+        &Crypt::PBC::element_add( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+# Sub {{{
+sub Sub {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 and RHS2 should be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+
+        &Crypt::PBC::element_sub( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "LHS and RHS hould be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+
+        &Crypt::PBC::element_sub( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+# mul {{{
+sub mul {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 and RHS2 should be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+
+        &Crypt::PBC::element_mul( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "LHS and RHS hould be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+
+        &Crypt::PBC::element_mul( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+# div {{{
+sub div {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 and RHS2 should be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+
+        &Crypt::PBC::element_div( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "LHS and RHS hould be of the same group" 
+        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+
+        &Crypt::PBC::element_div( $lhs, $lhs, $rhs1 );
+    }
 
     $lhs;
 }

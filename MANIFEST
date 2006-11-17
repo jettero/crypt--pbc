@@ -13,5 +13,6 @@ earith.xs
 ecomp.xs
 einit.xs
 pairing.xs
-t/13_urinary_arith.t
 params.txt
+t/13_1op_arith.t
+t/13_2op_arith.t
