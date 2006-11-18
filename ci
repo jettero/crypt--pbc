@@ -5,7 +5,7 @@
 #set -e; trap "eend 997" ERR
 
 #ebegin "checking MANIFEST";
-./distclean
+#./distclean
 #eend $?
 
 #ebegin "checking status"
