@@ -10,7 +10,8 @@ eend $?
 
 ebegin "checking status"
 cg update
-#(git-update-index --refresh >/dev/null; exit 0)
+(git-update-index --refresh >/dev/null; exit 0)
+einfo "here";
 eend $?
 
 ebegin "checking in"
