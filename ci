@@ -10,11 +10,11 @@ eend $?
 
 ebegin "checking status"
 cg update
-cg status &>/dev/null
+cg status
 eend $?
 
 ebegin "checking in"
-cg commit -m "$0"
+cg commit -m "$0" -q
 cg push
 echo "check in complete"
 eend $?
