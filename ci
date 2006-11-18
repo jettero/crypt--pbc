@@ -10,11 +10,11 @@ eend $?
 
 ebegin "checking status"
 cg update
-cg status
+#(git-update-index --refresh >/dev/null; exit 0)
 eend $?
 
 ebegin "checking in"
-cg commit -q -m "$0"
+cg commit -m "$0"
 cg push
 echo "check in complete"
 eend $?
