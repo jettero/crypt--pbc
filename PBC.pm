@@ -145,7 +145,6 @@ sub set {
 # }}}
 
 #### comparisons
-## 2op
 # is_eq {{{
 sub is_eq {
     my $this = shift;
@@ -156,8 +155,6 @@ sub is_eq {
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
 # }}}
-
-## 1op
 # is_sqr {{{
 sub is_sqr {
     my $this = shift;
@@ -174,8 +171,49 @@ sub pow_zn {
     my $expo = shift;
 
     croak "LHS and BASE should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$base};
+    croak "EXPO must be of type Zr"                  unless $tm{$$expo} eq "Zr";
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
+
+    $this;
+}
+# }}}
+# pow2_zn {{{
+sub pow2_zn {
+    my $this = shift;
+    my $a1 = shift;
+    my $n1 = shift;
+    my $a2 = shift;
+    my $n2 = shift;
+
+    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
+    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
+    croak "n1 must be of type Zr"                  unless $tm{$$n1} eq "Zr";
+    croak "n2 must be of type Zr"                  unless $tm{$$n2} eq "Zr";
+
+    &Crypt::PBC::element_pow2_zn( $this, $a1, $n1, $a2, $n2 );
+
+    $this;
+}
+# }}}
+# pow3_zn {{{
+sub pow3_zn {
+    my $this = shift;
+    my $a1 = shift;
+    my $n1 = shift;
+    my $a2 = shift;
+    my $n2 = shift;
+    my $a3 = shift;
+    my $n3 = shift;
+
+    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
+    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
+    croak "LHS and a3 should be of the same group" unless $tm{$$this} eq $tm{$$a3};
+    croak "n1 must be of type Zr"                  unless $tm{$$n1} eq "Zr";
+    croak "n2 must be of type Zr"                  unless $tm{$$n2} eq "Zr";
+    croak "n3 must be of type Zr"                  unless $tm{$$n3} eq "Zr";
+
+    &Crypt::PBC::element_pow3_zn( $this, $a1, $n1, $a2, $n2, $a3, $n3 );
 
     $this;
 }
