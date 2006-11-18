@@ -119,6 +119,18 @@ sub set_to_int {
     $this;
 }
 # }}}
+# set_to_bigint {{{
+sub set_to_bigint {
+    my $this = shift;
+    my $int  = shift;
+
+    croak "int provided is not a bigint" unless ref $int and $int->isa("Math::BigInt");
+
+    &Crypt::PBC::element_set_mpz($this, $int->{value});
+
+    $this;
+}
+# }}}
 # set {{{
 sub set {
     my $this = shift;

@@ -7,7 +7,7 @@ if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { p
 
 use Crypt::PBC;
 
-plan tests => 2;
+plan tests => 3;
 
 my $curve = new Crypt::PBC("params.txt");
 
@@ -22,13 +22,9 @@ TRIVIAL: {
     ok( "$mpz2", 59 );
 }
 
-TRIVIAL: {
+NONTRIVIAL: {
     my $Zr1 = $curve->new_Zr->set_to_int( 53 );
-    my $Zr2 = $curve->new_Zr->set_to_int( 59 );
+    my $Zr2 = $curve->new_Zr->set_to_bigint( $Zr1->as_bigint );
 
-    my $mpz1 = $Zr1->as_bigint;
-    my $mpz2 = $Zr2->as_bigint;
-
-    ok( "$mpz1", 53 );
-    ok( "$mpz2", 59 );
+    ok( $Zr1->is_eq( $Zr2 ) );
 }

@@ -10,7 +10,7 @@ eend $?
 
 ebegin "checking status"
 cg update
-cg status
+# cg status
 eend $?
 
 ebegin "checking in"
