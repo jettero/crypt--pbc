@@ -14,7 +14,7 @@ cg status
 eend $?
 
 ebegin "checking in"
-cg commit -m "$0" -q
+cg commit -q -m "$0"
 cg push
 echo "check in complete"
 eend $?
