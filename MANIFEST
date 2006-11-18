@@ -16,3 +16,4 @@ pairing.xs
 params.txt
 t/13_1op_arith.t
 t/13_2op_arith.t
+t/15_mpz.t
