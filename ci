@@ -1,20 +1,20 @@
 #!/bin/bash
 # vi:syntax=gentoo-init-d:
 
-#source /sbin/functions.sh
-#set -e; trap "eend 997" ERR
+source /sbin/functions.sh
+set -e; trap "eend 997" ERR
 
-#ebegin "checking MANIFEST";
-#./distclean
-#eend $?
+ebegin "checking MANIFEST";
+./distclean
+eend $?
 
-#ebegin "checking status"
-# cg update
-# cg status
-#eend $?
+ebegin "checking status"
+cg update
+cg status
+eend $?
 
-#ebegin "checking in"
+ebegin "checking in"
 cg commit -m "$0"
-#cg push
-#echo "check in complete"
-#eend $?
+cg push
+echo "check in complete"
+eend $?
