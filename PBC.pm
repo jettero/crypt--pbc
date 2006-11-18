@@ -24,8 +24,7 @@ sub clone {
     my $curve = shift;
     my $type  = $tm{$$this};
 
-    no strict 'refs';
-    my $that = $curve->"new_$type";
+    my $that = eval "\$curve->new_$type"; croak $@ if $@;
 
     return $that->set( $this );
 }
@@ -87,6 +86,18 @@ sub set_to_hash {
     my $hash = shift;
 
     &Crypt::PBC::element_from_hash($this, $hash);
+
+    $this;
+}
+# }}}
+# set {{{
+sub set {
+    my $this = shift;
+    my $that = shift;
+
+    croak "LHS and RHS should be the same" unless $tm{$$this} eq $tm{$$that};
+
+    &Crypt::PBC::element_set($this, $that);
 
     $this;
 }

@@ -12,21 +12,26 @@ my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 
 my @lhs = ( $curve->new_G1, $curve->new_G2, $curve->new_Zr, $curve->new_GT, );
 my @rhs = ( $curve->new_G1, $curve->new_G2, $curve->new_Zr, $curve->new_GT, );
+my @shl = ( $curve->new_G1, $curve->new_G2, $curve->new_Zr, $curve->new_GT, );
 
-my $epochs = 1;
+my $epochs = 3;
 
-plan tests => ( ((int @lhs) * 8 * $epochs) );
+plan tests => ( ((int @lhs) * 4 * $epochs) );
 
 for my $i ( 1 .. $epochs ) {
     for my $i ( 0 .. $#lhs ) {
-        $lhs[$i]->add( $lhs[$i]->random, $rhs[$i]->random ); ok(1);
-        $lhs[$i]->Sub( $lhs[$i]->random, $rhs[$i]->random ); ok(1);
-        $lhs[$i]->mul( $lhs[$i]->random, $rhs[$i]->random ); ok(1);
-        $lhs[$i]->div( $lhs[$i]->random, $rhs[$i]->random ); ok(1);
 
-        $lhs[$i]->random->add( $rhs[$i]->random ); ok(1);
-        $lhs[$i]->random->Sub( $rhs[$i]->random ); ok(1);
-        $lhs[$i]->random->mul( $rhs[$i]->random ); ok(1);
-        $lhs[$i]->random->div( $rhs[$i]->random ); ok(1);
+        $rhs[$i]->random;
+        $shl[$i]->random;
+
+        $lhs[$i]->set( $shl[$i] )->add( $lhs[$i], $rhs[$i] );           my $ac = $lhs[$i]->clone( $curve );
+        $lhs[$i]->set( $shl[$i] )->Sub( $lhs[$i], $rhs[$i] );           my $sc = $lhs[$i]->clone( $curve );
+        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->mul( $lhs[$i], $rhs[$i] ); my $mc = $lhs[$i]->clone( $curve );
+        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->div( $lhs[$i], $rhs[$i] ); my $dc = $lhs[$i]->clone( $curve );
+
+        $lhs[$i]->set( $shl[$i] )->add( $rhs[$i] ); ok( $lhs[$i]->is_eq( $ac ) );
+        $lhs[$i]->set( $shl[$i] )->Sub( $rhs[$i] ); ok( $lhs[$i]->is_eq( $sc ) );
+        $lhs[$i]->set( $shl[$i] )->mul( $rhs[$i] ); ok( $lhs[$i]->is_eq( $mc ) );
+        $lhs[$i]->set( $shl[$i] )->div( $rhs[$i] ); ok( $lhs[$i]->is_eq( $dc ) );
     }
 }
