@@ -4,6 +4,7 @@ package Crypt::PBC::Element;
 use strict;
 use Carp;
 use MIME::Base64;
+use Math::BigInt lib => 'GMP';
 
 our %tm;
 
@@ -55,6 +56,22 @@ sub as_base64 {
     return $that;
 }
 # }}}
+# as_bigint {{{
+sub as_bigint {
+    my $this = shift;
+    my $that = &Crypt::PBC::element_to_mpz($this);
+
+    my $int = new Math::BigInt;
+       $int->{value} = $that;
+       $int->{sign}  = '+';
+
+     # I wanted to do something like thits, but I think
+     # the mpz_t's returned from element_to_mpz are always going to be positive...
+     # $int->{sign}  = $this->is_neg ? "-" : "+"; 
+
+    return $int;
+}
+# }}}
 # stddump {{{
 sub stddump {
     my $this = shift;
@@ -86,6 +103,18 @@ sub set_to_hash {
     my $hash = shift;
 
     &Crypt::PBC::element_from_hash($this, $hash);
+
+    $this;
+}
+# }}}
+# set_to_int {{{
+sub set_to_int {
+    my $this = shift;
+    my $int  = shift;
+
+    croak "int provided ($int) is not acceptable" unless $int =~ m/^\-?[0-9]+$/s;
+
+    &Crypt::PBC::element_set_si($this, $int);
 
     $this;
 }

@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'Crypt::PBC',
     VERSION_FROM      => 'PBC.pm', # finds $VERSION
-    PREREQ_PM         => { 'MIME::Base64' => 0 },
+    PREREQ_PM         => { 'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0 },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'PBC.pm', # retrieve abstract from module
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),

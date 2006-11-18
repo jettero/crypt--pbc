@@ -49,3 +49,18 @@ export_element(element)
 
     OUTPUT:
     RETVAL
+
+mpz_t *
+element_to_mpz(element)
+    element_t * element
+
+    PREINIT:
+    mpz_t * ret = malloc (sizeof(mpz_t));
+
+    CODE:
+    mpz_init(*ret);
+    element_to_mpz(*ret, *element);
+    RETVAL = ret;
+
+    OUTPUT:
+    RETVAL

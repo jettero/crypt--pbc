@@ -100,6 +100,14 @@ element_set_si(a,b)
     element_set_si(*a, b);
 
 void
+element_set_mpz(a,m)
+    element_t * a
+    mpz_t     * m
+
+    CODE:
+    element_set_mpz(*a, *m);
+
+void
 element_from_hash(element,hash)
     element_t * element
     SV * hash
