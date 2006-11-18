@@ -9,7 +9,7 @@ ebegin "checking MANIFEST";
 eend $?
 
 ebegin "checking status"
-cg update
+# cg update
 # cg status
 eend $?
 
