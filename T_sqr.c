@@ -24,9 +24,9 @@ int main(void) {
         element_random(GT);
         element_random(Zr);
 
-        mpz_init(titty);
-        element_to_mpz(titty, G1);
-        gmp_printf("%s is an mpz %Zd\n", "titty", titty);
+        // mpz_init(titty);
+        // element_to_mpz(titty, G1);
+        // gmp_printf("%s is an mpz %Zd\n", "titty", titty);
 
         element_square(G1, G1);
         element_square(G2, G2);
