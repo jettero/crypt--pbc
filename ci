@@ -8,14 +8,19 @@ ebegin "checking MANIFEST";
 ./distclean
 eend $?
 
-ebegin "checking status"
+ebegin "pulling/merging updates"
 cg update
-(git-update-index --refresh >/dev/null)
-einfo "updated cache"
 eend $?
 
-ebegin "checking in"
+ebegin "updating update index (cache)"
+(git-update-index --refresh >/dev/null)
+einfo "(updated)";
+eend $?
+
+ebegin "committing changes"
 cg commit -m "$0"
+eend $?
+
+ebegin "pushing commit to repo"
 cg push
-echo "check in complete"
 eend $?
