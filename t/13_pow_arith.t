@@ -21,9 +21,15 @@ for ( 1 .. $epochs ) {
     
     $G1_a->random; $G1_b->random; $G1_c->random; $G1_d->random; $Zr_a->random; $Zr_b->random; $Zr_c->random;
 
-    $G1_a->random->pow_zn(  $G1_b, $Zr_a );
-    $G1_a->random->pow2_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c );
-    $G1_a->random->pow3_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c );
+    my $mpz_a = $Zr_a->as_bigint;
+    my $mpz_b = $Zr_a->as_bigint;
+    my $mpz_c = $Zr_a->as_bigint;
 
-    ok(1);
+    $G1_a->random->pow_zn(  $G1_b, $Zr_a );                             my $c_1 = $G1_a->clone( $curve );
+    $G1_a->random->pow2_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_2 = $G1_a->clone( $curve );
+    $G1_a->random->pow3_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_3 = $G1_a->clone( $curve );
+
+    $G1_a->random->pow_bigint(  $G1_b, $Zr_a );                                ok( $G1_a->is_eq( $c_1 ) );
+    $G1_a->random->pow2_bigint( $G1_b, $mpz_a, $G1_c, $mpz_b, $G1_d, $mpz_c ); ok( $G1_a->is_eq( $c_2 ) );
+    $G1_a->random->pow3_bigint( $G1_b, $mpz_a, $G1_c, $mpz_b, $G1_d, $mpz_c ); ok( $G1_a->is_eq( $c_3 ) );
 }

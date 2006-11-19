@@ -22,10 +22,16 @@ sub DESTROY {
 # clone {{{
 sub clone {
     my $this  = shift;
-    my $curve = shift;
+    my $curve = shift; croak "failed to pass curve to clone()" unless ref $curve and $curve->isa("Crypt::PBC::Pairing");
     my $type  = $tm{$$this};
 
-    my $that = eval "\$curve->new_$type"; croak $@ if $@;
+    my $that = eval "\$curve->new_$type";
+    if( $@ ) {
+        # Can't call method "new_G1" on an undefined value at (eval 2) line 1.
+        # at t/13_pow_arith.t line 28
+        chomp $@; $@ =~ s/at \(eval \d+\) line \d+/during Crypt::PBC::Element::clone()/;
+        croak $@;
+    }
 
     return $that->set( $this );
 }
