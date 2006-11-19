@@ -225,6 +225,62 @@ sub pow3_zn {
 }
 # }}}
 
+# pow_bigint {{{
+sub pow_bigint {
+    my $this = shift;
+    my $base = shift;
+    my $expo = shift;
+
+    croak "EXPO provided is not a bigint" unless ref $expo and $expo->isa("Math::BigInt");
+    croak "LHS and BASE should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$base};
+
+    &Crypt::PBC::element_pow_mpz( $this, $base, $expo->{value} );
+
+    $this;
+}
+# }}}
+# pow2_bigint {{{
+sub pow2_bigint {
+    my $this = shift;
+    my $a1 = shift;
+    my $n1 = shift;
+    my $a2 = shift;
+    my $n2 = shift;
+
+    croak "n1 provided is not a bigint" unless ref $n1 and $n1->isa("Math::BigInt");
+    croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
+    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
+    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
+
+    &Crypt::PBC::element_pow2_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value} );
+
+    $this;
+}
+# }}}
+# pow3_bigint {{{
+sub pow3_bigint {
+    my $this = shift;
+    my $a1 = shift;
+    my $n1 = shift;
+    my $a2 = shift;
+    my $n2 = shift;
+    my $a3 = shift;
+    my $n3 = shift;
+
+    croak "n1 provided is not a bigint" unless ref $n1 and $n1->isa("Math::BigInt");
+    croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
+    croak "n3 provided is not a bigint" unless ref $n3 and $n2->isa("Math::BigInt");
+
+    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
+    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
+    croak "LHS and a3 should be of the same group" unless $tm{$$this} eq $tm{$$a3};
+
+    &Crypt::PBC::element_pow3_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value}, $a3, $n3->{value} );
+
+    $this;
+}
+# }}}
+
 #### arith
 ## 1op
 # square {{{
