@@ -1,7 +1,5 @@
 #!/bin/sh
 
-./ci "$*"
-
 p=Changes
 pack=PBC.pm
 
@@ -20,3 +18,5 @@ if [ -f $p ]; then
     clear
     head -n 20 $p
 fi
+
+./ci "$*"
