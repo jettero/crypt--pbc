@@ -18,7 +18,12 @@ einfo "(updated)";
 eend $?
 
 ebegin "committing changes"
-cg commit -m "$0"
+if [ -z "$*" ]; then
+    cg commit -m "$0"
+
+else 
+    cg commit -m "$*"
+fi
 eend $?
 
 ebegin "pushing commit to repo"

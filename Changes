@@ -1,3 +1,6 @@
+0.3.17-0.5.01:  Mon Nov 20 08:38:04 EST 2006
+   - jettero completed a few more t/ tests (this time for the earith.xs).
+
 0.3.17-0.5.00:  Thu Nov 16 20:03:34 EST 2006
    - jettero reversioned the package to represent the version of libpbc it
      is intended to work with in addition to the version of the perl API.
