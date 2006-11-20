@@ -1,0 +1,9 @@
+
+ - There is no params support at all yet, and there probably should be.
+ - There are no mathematical tests at all yet, and there probably should
+   be.
+ - There should be more type-safety checks.  For instance, element_is_sqr()
+   sagfaults on G1 and G2 elements.  We'd like a croak() instead of an
+   unexplained exit.
+
+Please send feature requests to Paul Miller <japh@voltar-confed.org> and I will try to accommodate.
