@@ -14,7 +14,6 @@ element_sub(lhs,rhs1,rhs2)
     element_t * rhs2
 
     CODE:
-
     element_sub(*lhs, *rhs1, *rhs2);
 
 void
