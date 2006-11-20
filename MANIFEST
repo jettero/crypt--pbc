@@ -19,3 +19,6 @@ t/13_2op_arith.t
 t/15_mpz.t
 t/13_pow_arith.t
 TODO
+lib/Crypt/PBC.pod
+lib/Crypt/PBC/Element.pod
+lib/Crypt/PBC/Pairing.pod

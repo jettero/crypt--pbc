@@ -7,7 +7,7 @@ WriteMakefile(
     VERSION_FROM      => 'PBC.pm', # finds $VERSION
     PREREQ_PM         => { 'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0, 'Math::BigInt' => 0 },
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'PBC.pm', # retrieve abstract from module
+      (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
     LIBS              => ['-lpbc '], # e.g., '-lm'
     DEFINE            => '', # e.g., '-DHAVE_SOMETHING'

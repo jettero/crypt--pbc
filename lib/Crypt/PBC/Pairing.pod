@@ -1,0 +1,12 @@
+=head1 NAME
+
+Crypt::PBC - OO interface for Lynn's PBC library @ Standford
+
+=head1 SYNOPSIS
+
+    use Crypt::PBC;
+
+    my $pairing = new Crypt::PBC("params.txt");
+    my $G1      = $pairing->init_G1->random;
+    my $G2      = $pairing->init_G2->random->double->square;
+    my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
