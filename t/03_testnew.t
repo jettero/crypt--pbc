@@ -11,7 +11,7 @@ my $global_e;
 
 FILE: {
     my $c = new Crypt::PBC("params.txt");
-    my $e = $c->new_G1->set_to_hash( "lol!" );
+    my $e = $c->init_G1->set_to_hash( "lol!" );
 
     $global_e = $e;
 
@@ -21,7 +21,7 @@ FILE: {
 GLOB: {
     open IN, "params.txt" or die "lol: $!";
     my $c = new Crypt::PBC(\*IN); close IN;
-    my $e = $c->new_G1->set_to_hash( "lol!" );
+    my $e = $c->init_G1->set_to_hash( "lol!" );
 
     ok( 1 );
     ok( $e->is_eq( $global_e ) )
@@ -43,7 +43,7 @@ coeff1 21720089592072695009765372832780685887129370300993349347738
 coeff2 11773373318911376280677890769414834592007872486079550520860
 nqr 4468071665857441743453009416233415235254714637554162977327);
     my $c = new Crypt::PBC($settings);
-    my $e = $c->new_G1->set_to_hash( "lol!" );
+    my $e = $c->init_G1->set_to_hash( "lol!" );
 
     ok( 1 );
     ok( $e->is_eq( $global_e ) )

@@ -10,8 +10,8 @@ use Crypt::PBC;
 open IN, "params.txt" or die "couldn't open params: $!";
 my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 
-my @lhs = ( $curve->new_G1, $curve->new_G2, $curve->new_GT, $curve->new_Zr );
-my @rhs = ( $curve->new_G1, $curve->new_G2, $curve->new_GT, $curve->new_Zr );
+my @lhs = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr );
+my @rhs = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr );
 
 my $epochs = 3;
 

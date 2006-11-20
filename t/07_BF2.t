@@ -29,13 +29,13 @@ use Crypt::PBC;
 
 open IN, "params.txt" or die "couldn't open params: $!";
 my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
-my $P     = $curve->new_G2->random; # generator in G1 -- even though it's in G2
-my $s     = $curve->new_Zr->random; # master secret
-my $P_pub = $curve->new_G2->pow_zn( $P, $s ); # master public key
+my $P     = $curve->init_G2->random; # generator in G1 -- even though it's in G2
+my $s     = $curve->init_Zr->random; # master secret
+my $P_pub = $curve->init_G2->pow_zn( $P, $s ); # master public key
 
 # EXTRACT
 
-my $Q_id = $curve->new_G1;
+my $Q_id = $curve->init_G1;
 if( $sh ) {
     warn "using Digest::SHA1 to generate Q_id\n" if $ENV{EXTRA_INFO};
     $Q_id->set_to_hash( sha1("Paul Miller <jettero a gmail or cpan> | expires 2007-11-15") );
@@ -43,17 +43,17 @@ if( $sh ) {
 } else {
     $Q_id->random; # this is just a test anyway
 }
-my $d_id = $curve->new_G1->pow_zn( $Q_id, $s );
+my $d_id = $curve->init_G1->pow_zn( $Q_id, $s );
 
 # ENCRYPT
 
-my $r    = $curve->new_Zr->random;
-my $g_id = $curve->new_GT->e_hat( $curve => $Q_id, $P_pub );
-my $U    = $curve->new_G2->pow_zn( $P, $r ); # U is the part d_id can use to derive w
-my $w    = $curve->new_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) to get V or xor(w,V) to get M
+my $r    = $curve->init_Zr->random;
+my $g_id = $curve->init_GT->e_hat( $curve => $Q_id, $P_pub );
+my $U    = $curve->init_G2->pow_zn( $P, $r ); # U is the part d_id can use to derive w
+my $w    = $curve->init_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) to get V or xor(w,V) to get M
 
 # DECRYPT
-my $w_from_U = $curve->new_GT->e_hat( $curve => $d_id, $U );
+my $w_from_U = $curve->init_GT->e_hat( $curve => $d_id, $U );
 
 ok( $w_from_U->is_eq( $w ) );
 ok( $w_from_U->as_bytes, $w->as_bytes ); # binary gook

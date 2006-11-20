@@ -12,8 +12,8 @@ plan tests => 3;
 my $curve = new Crypt::PBC("params.txt");
 
 TRIVIAL: {
-    my $Zr1 = $curve->new_Zr->set_to_int( 53 );
-    my $Zr2 = $curve->new_Zr->set_to_int( 59 );
+    my $Zr1 = $curve->init_Zr->set_to_int( 53 );
+    my $Zr2 = $curve->init_Zr->set_to_int( 59 );
 
     my $mpz1 = $Zr1->as_bigint;
     my $mpz2 = $Zr2->as_bigint;
@@ -23,8 +23,8 @@ TRIVIAL: {
 }
 
 NONTRIVIAL: {
-    my $Zr1 = $curve->new_Zr->set_to_int( 53 );
-    my $Zr2 = $curve->new_Zr->set_to_bigint( $Zr1->as_bigint );
+    my $Zr1 = $curve->init_Zr->set_to_int( 53 );
+    my $Zr2 = $curve->init_Zr->set_to_bigint( $Zr1->as_bigint );
 
     ok( $Zr1->is_eq( $Zr2 ) );
 }

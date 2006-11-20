@@ -22,12 +22,12 @@ sub DESTROY {
 # clone {{{
 sub clone {
     my $this  = shift;
-    my $curve = shift; croak "failed to pass curve to clone()" unless ref $curve and $curve->isa("Crypt::PBC::Pairing");
+    my $pair = shift; croak "failed to pass pairing to clone()" unless ref $pair and $pair->isa("Crypt::PBC::Pairing");
     my $type  = $tm{$$this};
 
-    my $that = eval "\$curve->new_$type";
+    my $that = eval "\$pair->init_$type";
     if( $@ ) {
-        # Can't call method "new_G1" on an undefined value at (eval 2) line 1.
+        # Can't call method "init_G1" on an undefined value at (eval 2) line 1.
         # at t/13_pow_arith.t line 28
         chomp $@; $@ =~ s/at \(eval \d+\) line \d+/during Crypt::PBC::Element::clone()/;
         croak $@;
@@ -488,10 +488,10 @@ use Carp;
 
 1;
 
-sub new_G1  { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $Crypt::PBC::Element::tm{$$that} = "G1"; $that }
-sub new_G2  { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $Crypt::PBC::Element::tm{$$that} = "G2"; $that }
-sub new_GT  { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $Crypt::PBC::Element::tm{$$that} = "GT"; $that }
-sub new_Zr  { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $Crypt::PBC::Element::tm{$$that} = "Zr"; $that }
+sub init_G1 { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $Crypt::PBC::Element::tm{$$that} = "G1"; $that }
+sub init_G2 { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $Crypt::PBC::Element::tm{$$that} = "G2"; $that }
+sub init_GT { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $Crypt::PBC::Element::tm{$$that} = "GT"; $that }
+sub init_Zr { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $Crypt::PBC::Element::tm{$$that} = "Zr"; $that }
 sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); 1; }
 
 # }}}
@@ -566,7 +566,7 @@ __END__
 
 =head1 NAME
 
-Crypt::PBC - OO interface for the Lynn's PBC library
+Crypt::PBC - OO interface for Lynn's PBC library @ Standford
 
 =head1 SYNOPSIS
 
@@ -577,8 +577,54 @@ Crypt::PBC - OO interface for the Lynn's PBC library
     my $G2      = $pairing->init_G2->random->double->square;
     my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
 
-    # These methods return the LHS (left hand side of the assignment of an
-    # implicit equation).
+=head1 Nomenclature
+
+The documentation (and error messages) for these modules frequently refer
+to the LHS, the RHS, EXPO, and BASE.  They are the left hand side, right
+hand side, exponent and base.  In an algebraic equation: LHS=RHS and
+LHS=BASE^EXPO.  In other words, the LHS is the element to which a value is
+being assigned.  There may sometimes be more than one RHS, or it might be
+called the a1 or n1; but, there will only be one LHS.
+
+=head1 PM Methods
+
+The PM methods implement an OO interface that the author highly recommends
+using.
+
+=head2 new()
+
+Returns a new PBC pairing object.  new() takes, as arguments, either the
+name of a file, a file stream (e.g., new Crypt::PBC(\*STDIN)), or the
+params for a curve as a string.  Ben Lynn provides a zip file of d-type
+curves:
+
+    MNT curve parameters for embedding degree 6 (which I call type D
+    curves), for all D less than a million, and for subgroup sizes at least
+    80 bits and less than 300 bits long. Generated using test programs
+    bundled with PBC library.
+
+http://crypto.stanford.edu/pbc/download.html
+
+=head1 XS Loaded Functions
+
+This section is basically a listing of the PBC functions as they are
+imported.  You can use them directly if you're already comfortable with the
+layout of PBC.  If you're starting from scratch and aren't much of a C
+coder, you'll have an easier time using the PM methods because they
+implement a little type-safety to protect perl coders from segfaults.
+
+Mixing and matching direct calls with the PM methods is a sure way to run
+into trouble, since the PM methods tag the PBC elements with a type...
+
+=head2 Initializer functions
+
+=head2 Exponentiation Functions
+
+=head2 Other Arithmetic Functions
+
+=head2 Comparison Functions
+
+=head2 Misc
 
 =head1 XS AUTHOR
 
