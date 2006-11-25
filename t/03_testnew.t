@@ -7,6 +7,7 @@ plan tests => 5;
 
 use Crypt::PBC;
 
+my $global_c;
 my $global_e;
 
 FILE: {
@@ -14,6 +15,7 @@ FILE: {
     my $e = $c->init_G1->set_to_hash( "lol!" );
 
     $global_e = $e;
+    $global_c = $c; # this shouldn't be necessary -- trying to concoct a smaller example
 
     ok( 1 );
 }
@@ -48,4 +50,3 @@ nqr 4468071665857441743453009416233415235254714637554162977327);
     ok( 1 );
     ok( $e->is_eq( $global_e ) )
 }
-

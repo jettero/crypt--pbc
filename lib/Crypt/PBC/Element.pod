@@ -1,1 +1,18 @@
-lol
+=head1 NAME
+
+Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
+
+=head1 SYNOPSIS
+
+    use Crypt::PBC;
+
+    my $pairing = new Crypt::PBC("params.txt");
+    my $G1      = $pairing->init_G1->random;
+    my $G2      = $pairing->init_G2->random->double->square;
+    my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
+
+=head1 AUTHOR AND LICENSING
+
+GPL-ish and the XS author is Paul Miller <jettero@cpan.org>.
+
+Please see Crypt::PBC(3) for further information.
