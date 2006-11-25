@@ -7,6 +7,8 @@ plan tests => 1;
 
 use Crypt::PBC;
 
+###### ---- This test shouldn't sagfault.  If it does it's probably a bug in libpbc!
+
 BIGGER_SCOPE: {
     my $e;
 
@@ -19,7 +21,9 @@ BIGGER_SCOPE: {
         my $d = new Crypt::PBC("params.txt");
         my $f = $d->init_G1->set_to_hash( "lol!" );
     }
-}
 
-# This test shouldn't sagfault.  If it does it's probably a bug in libpbc!
+    # warn " about to sagfault";
+}
+# warn " (sagfaulted so you don't see this)";
+
 ok(1);
