@@ -22,3 +22,4 @@ TODO
 lib/Crypt/PBC.pod
 lib/Crypt/PBC/Element.pod
 lib/Crypt/PBC/Pairing.pod
+t/35_scopefault.t
