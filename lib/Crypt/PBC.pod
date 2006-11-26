@@ -9,7 +9,7 @@ Crypt::PBC - OO interface for Lynn's PBC library @ Standford
     my $pairing = new Crypt::PBC("params.txt");
     my $G1      = $pairing->init_G1->random;
     my $G2      = $pairing->init_G2->random->double->square;
-    my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
+    my $GT      = $pairing->init_GT->apply_pairing( $G1, $G2 );
 
 =head1 Nomenclature
 
@@ -83,7 +83,8 @@ was described above.
     # Do not forget to clear your memory!
     &Crypt::PBC::element_clear( $element ); # in any group
 
-    # assign some /dev/urandom to $element
+    # assign some random to $element
+    # (uses /dev/urandom if possible, or rand() if necessary)
     &Crypt::PBC::element_random( $element );
     &Crypt::PBC::element_set0( $element ); # set to 0
     &Crypt::PBC::element_set1( $element ); # set to 1
@@ -147,10 +148,10 @@ was described above.
 
 =head2 Comparison Functions
 
-    &Crypt::PBC::element_is0( $a );    # paradoxically, false when $a is 0
-    &Crypt::PBC::element_is1( $a );    # false when $a is 1
-    &Crypt::PBC::element_cmp( $a,$b ); # p., false when $a is the same as $b
-    &Crypt::PBC::element_is_sqr( $a ); # false when perfect square
+    &Crypt::PBC::element_is0( $a );    # 1 when $a is 0
+    &Crypt::PBC::element_is1( $a );    # 1 when $a is 1
+    &Crypt::PBC::element_cmp( $a,$b ); # paradoxically, false when $a == $b
+    &Crypt::PBC::element_is_sqr( $a ); # 1 when $a is a perfect square ...
      # see the PBC docs for words like "residue"
 
 =head2 Export and Output
@@ -172,7 +173,7 @@ was described above.
     });
 
     my $big = &Crypt::PBC::element_to_mpz( $element );
-    # Returns a Math::BigInt::GMP, B<not> a Math::BigInt!  WARNING: the
+    # Returns a Math::BigInt::GMP, not a Math::BigInt!  WARNING: the
     # DESTROY() method from Math::BigInt::GMP will be missing unless you
     # require that package into your program.  You'll want to do that or you'll
     # have a memory leak...  Lastly, this is really only useful for elements in

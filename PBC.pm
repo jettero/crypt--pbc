@@ -152,20 +152,40 @@ sub set {
     $this;
 }
 # }}}
-
-#### comparisons
-# is_0 {{{
-sub is_0 {
+# set0 {{{
+sub set0 {
     my $this = shift;
+    my $that = shift;
 
-    return not &Crypt::PBC::element_is0( $this ); # returns 0 if they're the same
+    &Crypt::PBC::element_set0($this);
+
+    $this;
 }
 # }}}
-# is_1 {{{
-sub is_1 {
+# set1 {{{
+sub set1 {
+    my $this = shift;
+    my $that = shift;
+
+    &Crypt::PBC::element_set1($this);
+
+    $this;
+}
+# }}}
+
+#### comparisons
+# is0 {{{
+sub is0 {
     my $this = shift;
 
-    return not &Crypt::PBC::element_is1( $this ); # returns 0 if they're the same
+    return &Crypt::PBC::element_is0( $this ); # returns 0 if they're the same
+}
+# }}}
+# is1 {{{
+sub is1 {
+    my $this = shift;
+
+    return &Crypt::PBC::element_is1( $this );
 }
 # }}}
 # is_eq {{{
@@ -182,7 +202,7 @@ sub is_eq {
 sub is_sqr {
     my $this = shift;
 
-    return not &Crypt::PBC::element_is_sqr( $this ); # Returns 0 if a is a perfect square (quadratic residue), nonzero otherwise.
+    return &Crypt::PBC::element_is_sqr( $this );
 }
 # }}}
 
