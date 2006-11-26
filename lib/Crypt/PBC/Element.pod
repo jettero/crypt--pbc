@@ -71,9 +71,39 @@ method.  If you overload DESTROY, be sure to call SUPER::DESTROY!
 
 =head1 Comparison Functions
 
+    my $z = $pairing->init_G1->random;
+    my $y = $pairing->init_G1->random;
+
+    print "I say yes here!\n"  if $z->set0->is0;
+    print "I say yes here!\n"  if $z->set1->is1;
+    print "I say nothing...\n" if $z->set1->is0;
+
+    print "This is pretty much always true... unless we're in GT\n" 
+        $z->is_eq( $z );
+
+    print "This is usually not going to print anything...\n"
+        $z->random->is_eq( $y->random );
+
+    my $m = $pairing->init_Zr;
+    print "I say yes here.\n"  if $m->set_to_int(25)->is_sqr;
+    print "I say nothing...\n" if $m->set_to_int(19)->is_sqr;
+
 =head1 Arithmetic Functions
 
 =head1 I/O, Export, and Conversion Functions
+
+libpbc offers a va_args (printf) style output that's probably of limited use
+except for debugging.  Crypt::PBC ports the fprintf() version directly and you
+can use it as incdicated in Crypt::PBC(3).  The Crypt::PBC::Element(3) module
+only uses fprintf() in the stddump and stddump() and errdump() and even then
+only in a limited capacity.
+ 
+    my $element = $pairing->init_G1;
+    print "Hey, these don't look like I thought they would:\n";
+    $element->stddump;
+    print " (huh)\n";
+    # You may be surprised to see that a G1 Element is in fact two MPZs!
+
 
 =head1 Miscellaneous Functions
 

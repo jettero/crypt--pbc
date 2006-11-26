@@ -22,7 +22,7 @@ for my $e (@tz) {
     $e->set_to_int(1); ok( $e->is1 and not $e->is0 );
 }
 
-for my $e (@noT) {
+for my $e (@noT) { # , $all[2]) {
     ok( $e->is_eq( $e ) );
 }
 
