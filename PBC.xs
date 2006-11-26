@@ -40,7 +40,7 @@ export_element(element)
 
     // My bug posted to the pbc-dev newsgroup, where I was getting different
     // results for different elements that test equal?  Yeah, the following
-    // line was not present when I got that result.  I'm awesome.
+    // line was not present when I got that result.  I'm awesome. 11/15/06
     element_to_bytes(buf, *element);
 
     RETVAL = newSVpvn(buf, len);

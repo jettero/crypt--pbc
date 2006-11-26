@@ -41,12 +41,12 @@ $zh->pow_zn( $h, $master ); # and this is the private key
 ## encryption
 ## first pick random r
 $r->random;
-$s->pairing_apply( $pairing => $zg, $h ); # s = e_hat(P_pub, Q_id) -- GT=e_hat(G1, G2)
+$s->pairing_apply( $zg, $h ); # s = e_hat(P_pub, Q_id) -- GT=e_hat(G1, G2)
 $s->pow_zn( $s, $r );  # s = e_hat(P_pub, Q_id)^r, used to encrypt the message
 $rg->pow_zn( $g, $r ); # we transmit g^r along with the encryption
 
 ## decyrption
 ## should equal s
-my $other_s = $pairing->init_GT->pairing_apply( $pairing => $rg, $zh ); # s = e_hat(g^r, d_id) -- GT=e_hat(G1, G2)
+my $other_s = $pairing->init_GT->pairing_apply( $rg, $zh ); # s = e_hat(g^r, d_id) -- GT=e_hat(G1, G2)
 
 ok( $s->is_eq( $other_s ) );

@@ -48,12 +48,12 @@ my $d_id = $curve->init_G1->pow_zn( $Q_id, $s );
 # ENCRYPT
 
 my $r    = $curve->init_Zr->random;
-my $g_id = $curve->init_GT->e_hat( $curve => $Q_id, $P_pub );
+my $g_id = $curve->init_GT->e_hat( $Q_id, $P_pub );
 my $U    = $curve->init_G2->pow_zn( $P, $r ); # U is the part d_id can use to derive w
 my $w    = $curve->init_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) to get V or xor(w,V) to get M
 
 # DECRYPT
-my $w_from_U = $curve->init_GT->e_hat( $curve => $d_id, $U );
+my $w_from_U = $curve->init_GT->e_hat( $d_id, $U );
 
 ok( $w_from_U->is_eq( $w ) );
 ok( $w_from_U->as_bytes, $w->as_bytes ); # binary gook

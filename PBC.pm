@@ -6,24 +6,27 @@ use Carp;
 use MIME::Base64;
 use Math::BigInt lib => 'GMP';
 
-our %tm;
+our %tt; # This maps our element types and our pairings.  Arguably this should be
+         # done in the element references themselves, but those are scalar refs, not
+         # hash refs.
 
 1;
 
 # DESTROY {{{
 sub DESTROY {
     my $this = shift;
-    
-    delete $tm{$$this};
+
+    my $i = $$this;
 
     &Crypt::PBC::element_clear( $this );
+    
+    delete $tt{$i};
 }
 # }}}
 # clone {{{
 sub clone {
-    my $this  = shift;
-    my $pair = shift; croak "failed to pass pairing to clone()" unless ref $pair and $pair->isa("Crypt::PBC::Pairing");
-    my $type  = $tm{$$this};
+    my $this = shift;
+    my ($type, $pair) = @{ $tt{$$this} }{qw(t p)};
 
     my $that = eval "\$pair->init_$type";
     if( $@ ) {
@@ -142,7 +145,7 @@ sub set {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS should be the same" unless $tm{$$this} eq $tm{$$that};
+    croak "LHS and RHS must be the same" unless $tt{$$this}{t} eq $tt{$$that}{t};
 
     &Crypt::PBC::element_set($this, $that);
 
@@ -151,12 +154,26 @@ sub set {
 # }}}
 
 #### comparisons
+# is_0 {{{
+sub is_0 {
+    my $this = shift;
+
+    return not &Crypt::PBC::element_is0( $this ); # returns 0 if they're the same
+}
+# }}}
+# is_1 {{{
+sub is_1 {
+    my $this = shift;
+
+    return not &Crypt::PBC::element_is1( $this ); # returns 0 if they're the same
+}
+# }}}
 # is_eq {{{
 sub is_eq {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS should both have types" unless $tm{$$this} and $tm{$$that};
+    croak "LHS and RHS should both have types" unless $tt{$$this}{t} and $tt{$$that}{t};
 
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
@@ -176,8 +193,8 @@ sub pow_zn {
     my $base = shift;
     my $expo = shift;
 
-    croak "LHS and BASE should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$base};
-    croak "EXPO must be of type Zr"                  unless $tm{$$expo} eq "Zr";
+    croak "LHS and BASE must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$base}{t};
+    croak "EXPO must be of type Zr"                  unless $tt{$$expo}{t} eq "Zr";
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
 
@@ -192,10 +209,10 @@ sub pow2_zn {
     my $a2 = shift;
     my $n2 = shift;
 
-    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
-    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
-    croak "n1 must be of type Zr"                  unless $tm{$$n1} eq "Zr";
-    croak "n2 must be of type Zr"                  unless $tm{$$n2} eq "Zr";
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "n1 must be of type Zr"                  unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                  unless $tt{$$n2}{t} eq "Zr";
 
     &Crypt::PBC::element_pow2_zn( $this, $a1, $n1, $a2, $n2 );
 
@@ -212,12 +229,12 @@ sub pow3_zn {
     my $a3 = shift;
     my $n3 = shift;
 
-    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
-    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
-    croak "LHS and a3 should be of the same group" unless $tm{$$this} eq $tm{$$a3};
-    croak "n1 must be of type Zr"                  unless $tm{$$n1} eq "Zr";
-    croak "n2 must be of type Zr"                  unless $tm{$$n2} eq "Zr";
-    croak "n3 must be of type Zr"                  unless $tm{$$n3} eq "Zr";
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "LHS and a3 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a3}{t};
+    croak "n1 must be of type Zr"                  unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                  unless $tt{$$n2}{t} eq "Zr";
+    croak "n3 must be of type Zr"                  unless $tt{$$n3}{t} eq "Zr";
 
     &Crypt::PBC::element_pow3_zn( $this, $a1, $n1, $a2, $n2, $a3, $n3 );
 
@@ -232,7 +249,7 @@ sub pow_bigint {
     my $expo = shift;
 
     croak "EXPO provided is not a bigint" unless ref $expo and $expo->isa("Math::BigInt");
-    croak "LHS and BASE should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$base};
+    croak "LHS and BASE must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$base}{t};
 
     &Crypt::PBC::element_pow_mpz( $this, $base, $expo->{value} );
 
@@ -249,8 +266,8 @@ sub pow2_bigint {
 
     croak "n1 provided is not a bigint" unless ref $n1 and $n1->isa("Math::BigInt");
     croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
-    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
-    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
 
     &Crypt::PBC::element_pow2_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value} );
 
@@ -271,9 +288,9 @@ sub pow3_bigint {
     croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
     croak "n3 provided is not a bigint" unless ref $n3 and $n2->isa("Math::BigInt");
 
-    croak "LHS and a1 should be of the same group" unless $tm{$$this} and $tm{$$this} eq $tm{$$a1};
-    croak "LHS and a2 should be of the same group" unless $tm{$$this} eq $tm{$$a2};
-    croak "LHS and a3 should be of the same group" unless $tm{$$this} eq $tm{$$a3};
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "LHS and a3 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a3}{t};
 
     &Crypt::PBC::element_pow3_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value}, $a3, $n3->{value} );
 
@@ -289,7 +306,7 @@ sub square {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -306,7 +323,7 @@ sub double {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -323,7 +340,7 @@ sub halve {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -340,7 +357,7 @@ sub neg {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -357,7 +374,7 @@ sub invert {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS should be of the same group" unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -377,14 +394,14 @@ sub add {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 should be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_add( $lhs, $rhs1, $rhs2 );
 
     } else {
         croak "LHS and RHS hould be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_add( $lhs, $lhs, $rhs1 );
     }
@@ -399,14 +416,14 @@ sub Sub {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 should be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_sub( $lhs, $rhs1, $rhs2 );
 
     } else {
         croak "LHS and RHS hould be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_sub( $lhs, $lhs, $rhs1 );
     }
@@ -421,14 +438,14 @@ sub mul {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 should be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_mul( $lhs, $rhs1, $rhs2 );
 
     } else {
         croak "LHS and RHS hould be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_mul( $lhs, $lhs, $rhs1 );
     }
@@ -443,14 +460,14 @@ sub div {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 should be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1} and $tm{$$rhs1} eq $tm{$$rhs2};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_div( $lhs, $rhs1, $rhs2 );
 
     } else {
         croak "LHS and RHS hould be of the same group" 
-        unless $tm{$$lhs} and $tm{$$lhs} eq $tm{$$rhs1};
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_div( $lhs, $lhs, $rhs1 );
     }
@@ -461,17 +478,16 @@ sub div {
 
 # pairing_apply {{{
 sub pairing_apply {
-    my $this    = shift;
-    my $pairing = shift;
-    my $rhs1    = shift;
-    my $rhs2    = shift;
+    my $this = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+    my $pair = $tt{$$this}{p};
 
-    croak "pairing isn't a pairing" unless (ref $pairing) =~ m/Pairing/;
-    croak "group type for LHS must be GT"  unless $tm{$$this} eq "GT";
-    croak "group type for RHS1 must be G1" unless $tm{$$rhs1} eq "G1";
-    croak "group type for RHS2 must be G2" unless $tm{$$rhs2} eq "G2";
+    croak "group type for LHS must be GT"  unless $tt{$$this}{t} eq "GT";
+    croak "group type for RHS1 must be G1" unless $tt{$$rhs1}{t} eq "G1";
+    croak "group type for RHS2 must be G2" unless $tt{$$rhs2}{t} eq "G2";
 
-    &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pairing );
+    &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pair );
 
     $this;
 }
@@ -488,11 +504,24 @@ use Carp;
 
 1;
 
-sub init_G1 { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $Crypt::PBC::Element::tm{$$that} = "G1"; $that }
-sub init_G2 { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $Crypt::PBC::Element::tm{$$that} = "G2"; $that }
-sub init_GT { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $Crypt::PBC::Element::tm{$$that} = "GT"; $that }
-sub init_Zr { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $Crypt::PBC::Element::tm{$$that} = "Zr"; $that }
-sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); 1; }
+sub _stype {
+    my $this = shift;
+    my $that = shift;
+    my $type = shift;
+
+    $Crypt::PBC::Element::tt{$$that} = {
+        t => $type,
+        p => $this,
+    };
+
+    return;
+}
+
+sub init_G1 { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $this->_stype($that, "G1"); $that }
+sub init_G2 { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $this->_stype($that, "G2"); $that }
+sub init_GT { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $this->_stype($that, "GT"); $that }
+sub init_Zr { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $this->_stype($that, "Zr"); $that }
+sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); }
 
 # }}}
 #### package Crypt::PBC {{{

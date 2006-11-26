@@ -24,10 +24,10 @@ for my $i ( 1 .. $epochs ) {
         $rhs[$i]->random;
         $shl[$i]->random;
 
-        $lhs[$i]->set( $shl[$i] )->add( $lhs[$i], $rhs[$i] );           my $ac = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $shl[$i] )->Sub( $lhs[$i], $rhs[$i] );           my $sc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->mul( $lhs[$i], $rhs[$i] ); my $mc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->div( $lhs[$i], $rhs[$i] ); my $dc = $lhs[$i]->clone( $curve );
+        $lhs[$i]->set( $shl[$i] )->add( $lhs[$i], $rhs[$i] );           my $ac = $lhs[$i]->clone;
+        $lhs[$i]->set( $shl[$i] )->Sub( $lhs[$i], $rhs[$i] );           my $sc = $lhs[$i]->clone;
+        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->mul( $lhs[$i], $rhs[$i] ); my $mc = $lhs[$i]->clone;
+        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->div( $lhs[$i], $rhs[$i] ); my $dc = $lhs[$i]->clone;
 
         $lhs[$i]->set( $shl[$i] )->add( $rhs[$i] ); ok( $lhs[$i]->is_eq( $ac ) );
         $lhs[$i]->set( $shl[$i] )->Sub( $rhs[$i] ); ok( $lhs[$i]->is_eq( $sc ) );

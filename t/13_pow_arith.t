@@ -25,9 +25,9 @@ for ( 1 .. $epochs ) {
     my $mpz_b = $Zr_b->as_bigint;
     my $mpz_c = $Zr_c->as_bigint;
 
-    $G1_a->random->pow_zn(  $G1_b, $Zr_a );                             my $c_1 = $G1_a->clone( $curve );
-    $G1_a->random->pow2_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_2 = $G1_a->clone( $curve );
-    $G1_a->random->pow3_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_3 = $G1_a->clone( $curve );
+    $G1_a->random->pow_zn(  $G1_b, $Zr_a );                             my $c_1 = $G1_a->clone;
+    $G1_a->random->pow2_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_2 = $G1_a->clone;
+    $G1_a->random->pow3_zn( $G1_b, $Zr_a, $G1_c, $Zr_b, $G1_d, $Zr_c ); my $c_3 = $G1_a->clone;
 
     $G1_a->random->pow_bigint(  $G1_b, $mpz_a );                               ok( $G1_a->is_eq( $c_1 ) );
     $G1_a->random->pow2_bigint( $G1_b, $mpz_a, $G1_c, $mpz_b, $G1_d, $mpz_c ); ok( $G1_a->is_eq( $c_2 ) );

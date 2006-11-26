@@ -22,11 +22,11 @@ for my $i ( 1 .. $epochs ) {
 
         $rhs[$i]->random;
 
-        $lhs[$i]->set( $rhs[$i] )->square;           my $sc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $rhs[$i] )->double;           my $dc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $rhs[$i] )->halve;            my $hc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $rhs[$i] ); $lhs[$i]->neg;    my $nc = $lhs[$i]->clone( $curve );
-        $lhs[$i]->set( $rhs[$i] ); $lhs[$i]->invert; my $ic = $lhs[$i]->clone( $curve );
+        $lhs[$i]->set( $rhs[$i] )->square;           my $sc = $lhs[$i]->clone;
+        $lhs[$i]->set( $rhs[$i] )->double;           my $dc = $lhs[$i]->clone;
+        $lhs[$i]->set( $rhs[$i] )->halve;            my $hc = $lhs[$i]->clone;
+        $lhs[$i]->set( $rhs[$i] ); $lhs[$i]->neg;    my $nc = $lhs[$i]->clone;
+        $lhs[$i]->set( $rhs[$i] ); $lhs[$i]->invert; my $ic = $lhs[$i]->clone;
 
         $lhs[$i]->square( $rhs[$i] ); ok( $lhs[$i]->is_eq( $sc ) );
         $lhs[$i]->double( $rhs[$i] ); ok( $lhs[$i]->is_eq( $dc ) );

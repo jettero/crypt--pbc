@@ -7,3 +7,27 @@
    unexplained exit.
 
 Please send feature requests to Paul Miller <japh@voltar-confed.org> and I will try to accommodate.
+
+The following table lists the libpbc functions, whether they're ported in the
+.xs files, whether they've been exported by the PM, whether they've been
+documented, called in a test and finally; whether they've been tested for
+mathematical accuracy (usually not) or whether they've been "slammed" with all
+ther permutations of wrong group types inside an eval {}s.
+
+libpbc function | XS port | PM port | PM Docs | t/ called | t/ slammed | t/ accuracy |
+----------------+---------+---------+---------+-----------+------------+-------------+
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
+                |         |         |         |           |            |             |
