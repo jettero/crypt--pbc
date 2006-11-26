@@ -9,7 +9,26 @@ Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
     my $pairing = new Crypt::PBC("params.txt");
     my $G1      = $pairing->init_G1->random;
     my $G2      = $pairing->init_G2->random->double->square;
-    my $GT      = $pairing->init_GT->apply_pairing( $pairing => $G1, $G2 );
+    my $GT      = $pairing->init_GT->apply_pairing( $G1, $G2 );
+
+=head1 OO Functions
+
+The only thing of use this package does is initialize elements in the
+pairing.  It does many other things behind the scenes though.
+
+    my $G1_element = $pairing->init_G1;
+    my $G2_element = $pairing->init_G2;
+    my $GT_element = $pairing->init_GT;
+    my $Zr_element = $pairing->init_Zr;
+
+The most important thing the Pairing package does is handle memory for you.
+The package is a scalar ref of the C-pointer.  $$pairing is the "address"
+as an integer!
+
+It's important when clearing the PBC memory that pairings get cleared after
+elements and the Element and Pairing objects handle that on their own.  You
+may safely ignore clearing elements and pairings if you use the OO
+interface.
 
 =head1 AUTHOR AND LICENSING
 
