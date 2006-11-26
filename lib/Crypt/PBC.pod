@@ -27,7 +27,7 @@ highly recommends using.  The only Perl Module OO function in the
 Crypt::PBC package is new().  Please see Crypt::PBC::Pairing(3) and
 Crypt::PBC::Element(3) for the guts of the intended OO interface.
 
-=head2 new()
+=head2 Crypt::PBC::new()
 
 Returns a new PBC pairing object.  new() takes, as arguments, either the
 name of a file, a file stream (e.g., new Crypt::PBC(\*STDIN)), or the

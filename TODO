@@ -52,12 +52,12 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | element_set_si      |    x      x    |    x          |           |            |             |
 | element_set_mpz     |    x      x    |    x          |           |            |             |
 | element_from_hash   |    x      x    |    x          |           |            |             |
-| pairing_init_stream |    x      x    |    x          |           |            |             |
-| pairing_init_str    |    x      x    |    x          |           |            |             |
-| pairing_clear       |    x      x    |    x          |           |            |             |
+| pairing_init_stream |    x      x    |    x     x    |           |            |             |
+| pairing_init_str    |    x      x    |    x     x    |           |            |             |
+| pairing_clear       |    x      x    |    x     x    |           |            |             |
 | pairing_apply       |    x      x    |    x          |           |            |             |
-| element_init_G1     |    x      x    |    x          |           |            |             |
-| element_init_G2     |    x      x    |    x          |           |            |             |
-| element_init_GT     |    x      x    |    x          |           |            |             |
-| element_init_Zr     |    x      x    |    x          |           |            |             |
+| element_init_G1     |    x      x    |    x     x    |           |            |             |
+| element_init_G2     |    x      x    |    x     x    |           |            |             |
+| element_init_GT     |    x      x    |    x     x    |           |            |             |
+| element_init_Zr     |    x      x    |    x     x    |           |            |             |
 +---------------------+----------------+---------------+-----------+------------+-------------+
