@@ -14,7 +14,7 @@ whether they've been documented, called in a test and finally; whether they've
 been tested for mathematical accuracy (usually not) or whether they've been
 "slammed" with all ther permutations of wrong group types inside an eval {}s.
 
-[Note: these are the XS names, not the "PBC" names (mostly).]
+[Note: these are the XS names, not the PBC names (mostly).]
 
 +---------------------+----------------+---------------+-----------+------------+-------------+
 | libpbc function     | XS port / Docs | PM OOi / Docs | t/ called | t/ slammed | t/ accuracy |
@@ -44,14 +44,14 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | element_is1         |    x      x    |    x          |           |            |             |
 | element_is_sqr      |    x      x    |    x          |           |            |             |
 | element_cmp         |    x      x    |    x          |           |            |             |
-| element_clear       |    x      x    |    x          |           |            |             |
-| element_random      |    x      x    |    x          |           |            |             |
-| element_set0        |    x      x    |    x          |           |            |             |
-| element_set1        |    x      x    |    x          |           |            |             |
-| element_set         |    x      x    |    x          |           |            |             |
-| element_set_si      |    x      x    |    x          |           |            |             |
-| element_set_mpz     |    x      x    |    x          |           |            |             |
-| element_from_hash   |    x      x    |    x          |           |            |             |
+| element_clear       |    x      x    |    x     e    |           |            |             |
+| element_random      |    x      x    |    x     e    |           |            |             |
+| element_set0        |    x      x    |    x     e    |           |            |             |
+| element_set1        |    x      x    |    x     e    |           |            |             |
+| element_set         |    x      x    |    x     e    |           |            |             |
+| element_set_si      |    x      x    |    x     e    |           |            |             |
+| element_set_mpz     |    x      x    |    x     e    |           |            |             |
+| element_from_hash   |    x      x    |    x     e    |           |            |             |
 | pairing_init_stream |    x      x    |    x     c    |           |            |             |
 | pairing_init_str    |    x      x    |    x     c    |           |            |             |
 | pairing_clear       |    x      x    |    x     p    |           |            |             |
