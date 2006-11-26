@@ -11,6 +11,77 @@ Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
     my $G2      = $pairing->init_G2->random->double->square;
     my $GT      = $pairing->init_GT->apply_pairing( $G1, $G2 );
 
+=head1 Overview
+
+Throughout the entire OO interface I have attempted to be consistant that the
+Element return itself where it isn't immediately obvious that some other thing
+should be returned instead.
+
+  my $x = $pairing->init_G1;  # $x is an element
+     $x->random;              # randomize the element.
+     $x->set0;                # set element to 0
+     $x->set_to_hash("lol!"); # set element to lol ...
+
+  # All the above can instead be written as:
+  my $x = $pairing->init_G1->random->set0->set_to_hash("lol!");
+
+However, functions that return something else ... dont' return elements.
+$string (below) is a MIME encoded string, not an element.
+
+  my $string = $x->as_base64;
+
+For more help seting up a new Pairing, see the Crypt::PBC(3) manpage (under new).
+
+Best of all, you do not need to keep track of which elements need to be cleared
+when using the OO interface.  Crypt::PBC::Pairing(3) and Crypt::PBC::Element(3)
+keep track of which elements and pairings need to be cleared in the DESTROY
+method.  If you overload DESTROY, be sure to call SUPER::DESTROY!
+
+=head1 Assignment Functions
+
+    my $x = $pairing->init_G1;
+
+       $x->set0; # sets the element to 0
+       $x->set1; # sets the element to 1
+
+    my $y = $pairing->init_Zr->set_to_int( 19 ); # set a new element to 19
+
+    my $i = new Math::Bigint( 25 );
+    my $z = $pairing->init_Zr->set_to_bigint( $i ):
+     # $z is now the bigint 25 ah, magic.
+
+    $z->random; # ruin the bigint and replace with boring random bytes
+
+    $y->set_to_hash("Poru Mira"); 
+      # Set $element based on the bytes "Poru Mira".  Though, you must use some
+      # kind of hashing algorithm (e.g., Digest::SHA1) to map data to an
+      # element:
+      #
+      # "In general you cannot feed it plaintext. You should only give it
+      # short strings of bytes (e.g. 160 bits if G1 has order around 2^160,
+      # which is the case for most of the bundled pairing parameters)."
+      # -- Lynn
+
+    my $a = $pairing->init_G1->random;
+    my $b = $pairing->init_G1->set( $a );
+     # this makes a new G1 element ($a), sets it to random, makes another G1
+     # ($b) and sets it to the random element $a.  It's probably faster 
+     # this is identical to issuing:
+    my $c = $a->clone;
+
+=head1 Comparison Functions
+
+=head1 Arithmetic Functions
+
+=head1 I/O, Export, and Conversion Functions
+
+=head1 Miscellaneous Functions
+
+    my $z = $pairing->init_Zr->random;
+    my $c = $z->clone;# creates a copy of $z in $c.
+    my $d = $z->copy; # copy is an alias for clone
+    # ($c is a new Element in new memory with the same value as $z)
+
 =head1 AUTHOR AND LICENSING
 
 GPL-ish and the XS author is Paul Miller <jettero@cpan.org>.

@@ -11,7 +11,7 @@ Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
     my $G2      = $pairing->init_G2->random->double->square;
     my $GT      = $pairing->init_GT->apply_pairing( $G1, $G2 );
 
-=head1 Crypt::PBC::init_G1, G2, GT and Zr
+=head1 Initializer Functions
 
 The only thing of use this package does is initialize elements in the
 pairing.  It does many other things behind the scenes though.
@@ -29,6 +29,8 @@ It's important when clearing the PBC memory that pairings get cleared after
 elements and the Element and Pairing objects handle that on their own.  You
 may safely ignore clearing elements and pairings if you use the OO
 interface.
+
+Although, be sure that if you overload DESTROY that you call SUPER::DESTROY!
 
 =head1 AUTHOR AND LICENSING
 

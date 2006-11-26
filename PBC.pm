@@ -38,6 +38,7 @@ sub clone {
 
     return $that->set( $this );
 }
+*copy = *clone;
 # }}}
 
 #### exporters
