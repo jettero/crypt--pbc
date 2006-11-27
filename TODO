@@ -1,7 +1,5 @@
 
-
  - DUE BEFORE LAUNCH: slam testing
- - DUE BEFORE LAUNCH: memory leak testing
 
  - There is no params support at all yet, and there probably should be.
  - There are no mathematical tests at all yet, and there probably should
