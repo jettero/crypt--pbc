@@ -422,7 +422,7 @@ sub add {
         &Crypt::PBC::element_add( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS hould be of the same group" 
+        croak "LHS and RHS should be of the same group" 
         unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_add( $lhs, $lhs, $rhs1 );
@@ -444,7 +444,7 @@ sub Sub {
         &Crypt::PBC::element_sub( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS hould be of the same group" 
+        croak "LHS and RHS should be of the same group" 
         unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_sub( $lhs, $lhs, $rhs1 );
@@ -466,7 +466,7 @@ sub mul {
         &Crypt::PBC::element_mul( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS hould be of the same group" 
+        croak "LHS and RHS should be of the same group" 
         unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_mul( $lhs, $lhs, $rhs1 );
@@ -488,10 +488,77 @@ sub div {
         &Crypt::PBC::element_div( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS hould be of the same group" 
+        croak "LHS and RHS should be of the same group" 
         unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_div( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+
+# mul_zn {{{
+sub mul_zn {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs2}{t} eq "Zr";
+
+        &Crypt::PBC::element_mul_zn( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$rhs1}{t} eq "Zr";
+
+        &Crypt::PBC::element_mul_zn( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+# mul_int {{{
+sub mul_int {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
+        croak "int provided ($rhs2) is not acceptable" unless $rhs2 =~ m/^\-?[0-9]+$/s;
+
+        &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "int provided ($rhs1) is not acceptable" unless $rhs1 =~ m/^\-?[0-9]+$/s;
+
+        &Crypt::PBC::element_mul_si( $lhs, $lhs, $rhs1 );
+    }
+
+    $lhs;
+}
+# }}}
+# mul_int {{{
+sub mul_int {
+    my $lhs  = shift;
+    my $rhs1 = shift;
+    my $rhs2 = shift;
+
+    if( $rhs2 ) {
+        croak "LHS, RHS1 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
+        croak "int provided is not a bigint" unless ref $rhs2 and $rhs2->isa("Math::BigInt");
+
+        &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
+
+    } else {
+        croak "int provided is not a bigint" unless ref $rhs1 and $rhs1->isa("Math::BigInt");
+
+        &Crypt::PBC::element_mul_si( $lhs, $lhs, $rhs1 );
     }
 
     $lhs;
