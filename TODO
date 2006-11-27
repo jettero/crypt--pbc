@@ -2,8 +2,6 @@
 
  - DUE BEFORE LAUNCH: slam testing
  - DUE BEFORE LAUNCH: memory leak testing
- - DUE BEFORE LAUNCH: document pairing_apply
-
 
  - There is no params support at all yet, and there probably should be.
  - There are no mathematical tests at all yet, and there probably should
@@ -25,7 +23,7 @@ been tested for mathematical accuracy (usually not) or whether they've been
 +---------------------+----------------+---------------+-----------+------------+-------------+
 | libpbc function     | XS port / Docs | PM OOi / Docs | t/ called | t/ slammed | t/ accuracy |
 +---------------------+----------------+---------------+-----------+------------+-------------+
-| element_fprintf     |    x      x    |    x     e    |           |            |             |
+| element_fprintf     |    x      x    |    x     e    |   \0      |            |             |
 | element_export      |    x      x    |    x     e    |    x      |            |             |
 | element_to_mpz      |    x      x    |    x     e    |    x      |            |             |
 | element_add         |    x      x    |    x     e    |    2      |            |             |
@@ -61,7 +59,7 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | pairing_init_stream |    x      x    |    x     c    |    x      |            |             |
 | pairing_init_str    |    x      x    |    x     c    |    x      |            |             |
 | pairing_clear       |    x      x    |    x     p    |           |            |             |
-| pairing_apply       |    x      x    |    x          |    x      |            |             |
+| pairing_apply       |    x      x    |    x     e    |    x      |            |             |
 | element_init_G1     |    x      x    |    x     p    |    x      |            |             |
 | element_init_G2     |    x      x    |    x     p    |    x      |            |             |
 | element_init_GT     |    x      x    |    x     p    |    x      |            |             |
