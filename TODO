@@ -1,4 +1,10 @@
 
+
+ - DUE BEFORE LAUNCH: slam testing
+ - DUE BEFORE LAUNCH: memory leak testing
+ - DUE BEFORE LAUNCH: document pairing_apply
+
+
  - There is no params support at all yet, and there probably should be.
  - There are no mathematical tests at all yet, and there probably should
    be.
@@ -20,44 +26,44 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | libpbc function     | XS port / Docs | PM OOi / Docs | t/ called | t/ slammed | t/ accuracy |
 +---------------------+----------------+---------------+-----------+------------+-------------+
 | element_fprintf     |    x      x    |    x     e    |           |            |             |
-| element_export      |    x      x    |    x     e    |           |            |             |
-| element_to_mpz      |    x      x    |    x     e    |           |            |             |
-| element_add         |    x      x    |    x     e    |           |            |             |
-| element_sub         |    x      x    |    x     e    |           |            |             |
-| element_mul         |    x      x    |    x     e    |           |            |             |
-| element_mul_zn      |    x      x    |    x          |           |            |             |
-| element_mul_mpz     |    x      x    |    x          |           |            |             |
-| element_mul_si      |    x      x    |    x          |           |            |             |
-| element_div         |    x      x    |    x     e    |           |            |             |
-| element_double      |    x      x    |    x     e    |           |            |             |
-| element_halve       |    x      x    |    x     e    |           |            |             |
-| element_square      |    x      x    |    x     e    |           |            |             |
-| element_neg         |    x      x    |    x     e    |           |            |             |
-| element_invert      |    x      x    |    x     e    |           |            |             |
-| element_pow_zn      |    x      x    |    x     e    |           |            |             |
-| element_pow_mpz     |    x      x    |    x     e    |           |            |             |
-| element_pow2_zn     |    x      x    |    x     e    |           |            |             |
-| element_pow3_zn     |    x      x    |    x     e    |           |            |             |
-| element_pow2_mpz    |    x      x    |    x     e    |           |            |             |
-| element_pow3_mpz    |    x      x    |    x     e    |           |            |             |
-| element_is0         |    x      x    |    x     e    |           |            |             |
-| element_is1         |    x      x    |    x     e    |           |            |             |
-| element_is_sqr      |    x      x    |    x     e    |           |            |             |
-| element_cmp         |    x      x    |    x     e    |           |            |             |
+| element_export      |    x      x    |    x     e    |    x      |            |             |
+| element_to_mpz      |    x      x    |    x     e    |    x      |            |             |
+| element_add         |    x      x    |    x     e    |    2      |            |             |
+| element_sub         |    x      x    |    x     e    |    2      |            |             |
+| element_mul         |    x      x    |    x     e    |    2      |            |             |
+| element_mul_zn      |    x      x    |    x          |    2      |            |             |
+| element_mul_mpz     |    x      x    |    x          |    2      |            |             |
+| element_mul_si      |    x      x    |    x          |    2      |            |             |
+| element_div         |    x      x    |    x     e    |    2      |            |             |
+| element_double      |    x      x    |    x     e    |    2      |            |             |
+| element_halve       |    x      x    |    x     e    |    2      |            |             |
+| element_square      |    x      x    |    x     e    |    2      |            |             |
+| element_neg         |    x      x    |    x     e    |    2      |            |             |
+| element_invert      |    x      x    |    x     e    |    2      |            |             |
+| element_pow_zn      |    x      x    |    x     e    |    x      |            |             |
+| element_pow_mpz     |    x      x    |    x     e    |    x      |            |             |
+| element_pow2_zn     |    x      x    |    x     e    |    x      |            |             |
+| element_pow3_zn     |    x      x    |    x     e    |    x      |            |             |
+| element_pow2_mpz    |    x      x    |    x     e    |    x      |            |             |
+| element_pow3_mpz    |    x      x    |    x     e    |    x      |            |             |
+| element_is0         |    x      x    |    x     e    |    x      |            |             |
+| element_is1         |    x      x    |    x     e    |    x      |            |             |
+| element_is_sqr      |    x      x    |    x     e    |    x      |            |             |
+| element_cmp         |    x      x    |    x     e    |    x      |            |             |
 | element_clear       |    x      x    |    x     e    |           |            |             |
-| element_random      |    x      x    |    x     e    |           |            |             |
-| element_set0        |    x      x    |    x     e    |           |            |             |
-| element_set1        |    x      x    |    x     e    |           |            |             |
-| element_set         |    x      x    |    x     e    |           |            |             |
-| element_set_si      |    x      x    |    x     e    |           |            |             |
-| element_set_mpz     |    x      x    |    x     e    |           |            |             |
-| element_from_hash   |    x      x    |    x     e    |           |            |             |
-| pairing_init_stream |    x      x    |    x     c    |           |            |             |
-| pairing_init_str    |    x      x    |    x     c    |           |            |             |
+| element_random      |    x      x    |    x     e    |    x      |            |             |
+| element_set0        |    x      x    |    x     e    |    x      |            |             |
+| element_set1        |    x      x    |    x     e    |    x      |            |             |
+| element_set         |    x      x    |    x     e    |    x      |            |             |
+| element_set_si      |    x      x    |    x     e    |    x      |            |             |
+| element_set_mpz     |    x      x    |    x     e    |    x      |            |             |
+| element_from_hash   |    x      x    |    x     e    |    x      |            |             |
+| pairing_init_stream |    x      x    |    x     c    |    x      |            |             |
+| pairing_init_str    |    x      x    |    x     c    |    x      |            |             |
 | pairing_clear       |    x      x    |    x     p    |           |            |             |
-| pairing_apply       |    x      x    |    x          |           |            |             |
-| element_init_G1     |    x      x    |    x     p    |           |            |             |
-| element_init_G2     |    x      x    |    x     p    |           |            |             |
-| element_init_GT     |    x      x    |    x     p    |           |            |             |
-| element_init_Zr     |    x      x    |    x     p    |           |            |             |
+| pairing_apply       |    x      x    |    x          |    x      |            |             |
+| element_init_G1     |    x      x    |    x     p    |    x      |            |             |
+| element_init_G2     |    x      x    |    x     p    |    x      |            |             |
+| element_init_GT     |    x      x    |    x     p    |    x      |            |             |
+| element_init_Zr     |    x      x    |    x     p    |    x      |            |             |
 +---------------------+----------------+---------------+-----------+------------+-------------+

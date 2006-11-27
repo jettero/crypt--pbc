@@ -161,6 +161,19 @@ if the RHS-n arguments aren't Math::BigInt(3) objects.
     $G1_l->pow2_bigint( $G1_a1, $BI_n1, $G1_a2, $BI_n2 );
     $G1_l->pow3_bigint( $G1_a1, $BI_n1, $G1_a2, $BI_n2, $G1_a3, $BI_n3 );
 
+Arguably the most important arithmetic function of all is saved for last.  The
+C<pairing_apply> function is special, in that it has more restrictions on the
+LHS, RHS1 and RHS2 than most other functions.  The LHS must be in GT, RHS1 must
+be in G1 and RHS2 must be in G2.
+
+    my $GT = $pairing->init_GT;
+    my $G1 = $pairing->init_G1;
+    my $G2 = $pairing->init_G2;
+
+    $GT->pairing_apply( $G1, $G2 ); 
+    $GT->ehat(  $G1, $G2 ); # synonym for pairing_apply
+    $GT->e_hat( $G1, $G2 ); # synonym for pairing_apply
+
 =head1 I/O, Export, and Conversion Functions
 
 libpbc offers a va_args (printf) style output that's probably of limited use
