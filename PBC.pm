@@ -216,7 +216,7 @@ sub pow_zn {
     my $expo = shift;
 
     croak "LHS and BASE must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$base}{t};
-    croak "EXPO must be of type Zr"                  unless $tt{$$expo}{t} eq "Zr";
+    croak "EXPO must be of type Zr"                unless $tt{$$expo}{t} eq "Zr";
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
 
@@ -233,8 +233,8 @@ sub pow2_zn {
 
     croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
     croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
-    croak "n1 must be of type Zr"                  unless $tt{$$n1}{t} eq "Zr";
-    croak "n2 must be of type Zr"                  unless $tt{$$n2}{t} eq "Zr";
+    croak "n1 must be of type Zr"                unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                unless $tt{$$n2}{t} eq "Zr";
 
     &Crypt::PBC::element_pow2_zn( $this, $a1, $n1, $a2, $n2 );
 
@@ -254,9 +254,9 @@ sub pow3_zn {
     croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
     croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
     croak "LHS and a3 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a3}{t};
-    croak "n1 must be of type Zr"                  unless $tt{$$n1}{t} eq "Zr";
-    croak "n2 must be of type Zr"                  unless $tt{$$n2}{t} eq "Zr";
-    croak "n3 must be of type Zr"                  unless $tt{$$n3}{t} eq "Zr";
+    croak "n1 must be of type Zr"                unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                unless $tt{$$n2}{t} eq "Zr";
+    croak "n3 must be of type Zr"                unless $tt{$$n3}{t} eq "Zr";
 
     &Crypt::PBC::element_pow3_zn( $this, $a1, $n1, $a2, $n2, $a3, $n3 );
 
