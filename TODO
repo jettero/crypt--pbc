@@ -62,4 +62,16 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | element_init_G2     |    x      x    |    x     p    |    x      |            |             |
 | element_init_GT     |    x      x    |    x     p    |    x      |            |             |
 | element_init_Zr     |    x      x    |    x     p    |    x      |            |             |
+| element_pp_init     |                |               |           |            |             |
+| element_pp_clear    |                |               |           |            |             |
+| element_pp_pow      |                |               |           |            |             |
+| a_param_init        |                |               |           |            |             |
+| a_param_clear       |                |               |           |            |             |
+| a_param_gen         |                |               |           |            |             |
+| a_param_out_str     |                |               |           |            |             |
+|     ...             |                |               |           |            |             |
+| f_param_init        |                |               |           |            |             |
+| f_param_clear       |                |               |           |            |             |
+| f_param_gen         |                |               |           |            |             |
+| f_param_out_str     |                |               |           |            |             |
 +---------------------+----------------+---------------+-----------+------------+-------------+
