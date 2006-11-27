@@ -20,18 +20,17 @@ plan tests => ( ((int @lhs) * 4 * $epochs) );
 
 for my $i ( 1 .. $epochs ) {
     for my $i ( 0 .. $#lhs ) {
-
         $rhs[$i]->random;
         $shl[$i]->random;
 
         $lhs[$i]->set( $shl[$i] )->add( $lhs[$i], $rhs[$i] );           my $ac = $lhs[$i]->clone;
         $lhs[$i]->set( $shl[$i] )->Sub( $lhs[$i], $rhs[$i] );           my $sc = $lhs[$i]->clone;
-        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->mul( $lhs[$i], $rhs[$i] ); my $mc = $lhs[$i]->clone;
         $lhs[$i]->set( $shl[$i] ); $lhs[$i]->div( $lhs[$i], $rhs[$i] ); my $dc = $lhs[$i]->clone;
+        $lhs[$i]->set( $shl[$i] ); $lhs[$i]->mul( $lhs[$i], $rhs[$i] ); my $mc = $lhs[$i]->clone;
 
         $lhs[$i]->set( $shl[$i] )->add( $rhs[$i] ); ok( $lhs[$i]->is_eq( $ac ) );
         $lhs[$i]->set( $shl[$i] )->Sub( $rhs[$i] ); ok( $lhs[$i]->is_eq( $sc ) );
-        $lhs[$i]->set( $shl[$i] )->mul( $rhs[$i] ); ok( $lhs[$i]->is_eq( $mc ) );
         $lhs[$i]->set( $shl[$i] )->div( $rhs[$i] ); ok( $lhs[$i]->is_eq( $dc ) );
+        $lhs[$i]->set( $shl[$i] )->mul( $rhs[$i] ); ok( $lhs[$i]->is_eq( $mc ) );
     }
 }

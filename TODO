@@ -25,9 +25,9 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | element_add         |    x      x    |    x     e    |           |            |             |
 | element_sub         |    x      x    |    x     e    |           |            |             |
 | element_mul         |    x      x    |    x     e    |           |            |             |
-| element_mul_zn      |    x      x    |               |           |            |             |
-| element_mul_mpz     |    x      x    |               |           |            |             |
-| element_mul_si      |    x      x    |               |           |            |             |
+| element_mul_zn      |    x      x    |    x          |           |            |             |
+| element_mul_mpz     |    x      x    |    x          |           |            |             |
+| element_mul_si      |    x      x    |    x          |           |            |             |
 | element_div         |    x      x    |    x     e    |           |            |             |
 | element_double      |    x      x    |    x     e    |           |            |             |
 | element_halve       |    x      x    |    x     e    |           |            |             |

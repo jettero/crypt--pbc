@@ -105,6 +105,16 @@ elements in G1, G2, and GT -- although that's not pictured.
     $Zr->halve;  # $Zr = $Zr/2
     $Zr->neg;    # $Zr = -$Zr
 
+All the the functions above will work with arguments instead.  The following
+examples are logically equivelent, but the shorter form is probably also a great
+deal faster.
+
+    $Zr->set( $a )->halve;
+    $Zr->halve( $a );
+
+    $Zr->square( $a );
+    $Zr->set( $a )->square;
+
 The following one-argument functions are probably just as clear as the ones
 above.  The B<set>ing of Zr is implicit as it is above and, as above, the
 operations work in G1, G2, and GT.  Watch out though, for these, the element
@@ -115,8 +125,23 @@ error if the types don't match.
 
     $Zr->add( $Zr2 ); # Zr = Zr + Zr2
     $Zr->Sub( $Zr2 ); # Zr = Zr - Zr2 -- note the capital S
-    $Zr->mul( $Zr2 ); # Zr = Zr * Zr2
     $Zr->div( $Zr2 ); # Zr = Zr / Zr2
+    $Zr->mul( $Zr2 ); # Zr = Zr * Zr2
+
+All the the functions above will work with another argument instead.  The
+following example is logically equivelent, but the shorter form is probably
+also a great deal faster.
+
+    $Zr->div( $a, $Zr2 );        # Zr = $a/$Zr2
+    $Zr->set( $a )->div( $Zr2 ); # Zr = $Zr/$Zr2
+
+There are two more multiplication functions to choose from.  They take perl
+integers and Math::BigInt(3) objects.
+   
+    my $a = $Zr->set_to_int(7)->mul_int( 5 )->clone;
+    my $b = $Zr->set_to_int(7)->mul_bigint( new Math::BigInt( 5 ) )->clone;
+
+    # here, $a and $b will test equal with $a->is_eq( $b )
 
 Assume all the following variables are elements in the indicated groups.  Beware
 that the RHS-a elements must all be the same type as the LHS element.  The RHS-n

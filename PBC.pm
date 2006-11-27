@@ -542,8 +542,8 @@ sub mul_int {
     $lhs;
 }
 # }}}
-# mul_int {{{
-sub mul_int {
+# mul_bigint {{{
+sub mul_bigint {
     my $lhs  = shift;
     my $rhs1 = shift;
     my $rhs2 = shift;
