@@ -19,9 +19,9 @@ been tested for mathematical accuracy (usually not) or whether they've been
 +---------------------+----------------+---------------+-----------+------------+-------------+
 | libpbc function     | XS port / Docs | PM OOi / Docs | t/ called | t/ slammed | t/ accuracy |
 +---------------------+----------------+---------------+-----------+------------+-------------+
-| element_fprintf     |    x      x    |    x          |           |            |             |
-| element_export      |    x      x    |    x          |           |            |             |
-| element_to_mpz      |    x      x    |    x          |           |            |             |
+| element_fprintf     |    x      x    |    x     x    |           |            |             |
+| element_export      |    x      x    |    x     x    |           |            |             |
+| element_to_mpz      |    x      x    |    x     x    |           |            |             |
 | element_add         |    x      x    |    x          |           |            |             |
 | element_sub         |    x      x    |    x          |           |            |             |
 | element_mul         |    x      x    |    x          |           |            |             |
@@ -40,10 +40,10 @@ been tested for mathematical accuracy (usually not) or whether they've been
 | element_pow3_zn     |    x      x    |    x          |           |            |             |
 | element_pow2_mpz    |    x      x    |    x          |           |            |             |
 | element_pow3_mpz    |    x      x    |    x          |           |            |             |
-| element_is0         |    x      x    |    x          |           |            |             |
-| element_is1         |    x      x    |    x          |           |            |             |
-| element_is_sqr      |    x      x    |    x          |           |            |             |
-| element_cmp         |    x      x    |    x          |           |            |             |
+| element_is0         |    x      x    |    x     e    |           |            |             |
+| element_is1         |    x      x    |    x     e    |           |            |             |
+| element_is_sqr      |    x      x    |    x     e    |           |            |             |
+| element_cmp         |    x      x    |    x     e    |           |            |             |
 | element_clear       |    x      x    |    x     e    |           |            |             |
 | element_random      |    x      x    |    x     e    |           |            |             |
 | element_set0        |    x      x    |    x     e    |           |            |             |

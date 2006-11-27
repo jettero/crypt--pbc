@@ -49,12 +49,13 @@ sub as_bytes {
     return &Crypt::PBC::export_element( $this );
 }
 # }}}
-# as_str {{{
-sub as_str {
+# as_hex {{{
+sub as_hex {
     my $this = shift;
     
     return unpack("H*", $this->as_bytes);
 }
+*as_str = as_hex;
 # }}}
 # as_base64 {{{
 sub as_base64 {

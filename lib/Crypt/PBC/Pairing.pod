@@ -13,8 +13,8 @@ Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
 
 =head1 Initializer Functions
 
-The only thing of use this package does is initialize elements in the
-pairing.  It does many other things behind the scenes though.
+The only thing of use this package does is initialize elements in the pairing.
+It does many other things behind the scenes though.
 
     my $G1_element = $pairing->init_G1;  # returns Crypt::PBC::Element
     my $G2_element = $pairing->init_G2;  # objects
@@ -22,18 +22,18 @@ pairing.  It does many other things behind the scenes though.
     my $Zr_element = $pairing->init_Zr;
 
 The most important thing the Pairing package does is handle memory for you.
-The package is a scalar ref of the C-pointer.  $$pairing is the "address"
-as an integer!
+The package is a scalar ref of the C-pointer.  C<$$pairing> is the "address" as
+an integer!
 
 It's important when clearing the PBC memory that pairings get cleared after
-elements and the Element and Pairing objects handle that on their own.  You
-may safely ignore clearing elements and pairings if you use the OO
-interface.
+elements and the Element and Pairing objects handle that on their own.  You may
+safely ignore clearing elements and pairings if you use the OO interface.
 
-Although, be sure that if you overload DESTROY that you call SUPER::DESTROY!
+Although, be sure that if you overload C<DESTROY> that you call
+C<SUPER::DESTROY()>!
 
 =head1 AUTHOR AND LICENSING
 
-GPL-ish and the XS author is Paul Miller <jettero@cpan.org>.
+GPL-ish and the XS author is Paul Miller C<jettero@cpan.org>.
 
 Please see Crypt::PBC(3) for further information.

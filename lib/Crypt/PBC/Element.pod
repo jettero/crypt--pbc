@@ -26,16 +26,16 @@ should be returned instead.
   my $x = $pairing->init_G1->random->set0->set_to_hash("lol!");
 
 However, functions that return something else ... dont' return elements.
-$string (below) is a MIME encoded string, not an element.
+C<$string> (below) is a MIME encoded string, not an element.
 
   my $string = $x->as_base64;
 
-For more help seting up a new Pairing, see the Crypt::PBC(3) manpage (under new).
+For more help seting up a new Pairing, see the L<Crypt::PBC> manpage (under new).
 
 Best of all, you do not need to keep track of which elements need to be cleared
-when using the OO interface.  Crypt::PBC::Pairing(3) and Crypt::PBC::Element(3)
-keep track of which elements and pairings need to be cleared in the DESTROY
-method.  If you overload DESTROY, be sure to call SUPER::DESTROY!
+when using the OO interface.  L<Crypt::PBC::Pairing> and L<Crypt::PBC::Element>
+keep track of which elements and pairings need to be cleared in the C<DESTROY>
+method.  If you overload C<DESTROY>, be sure to call C<SUPER::DESTROY()>!
 
 =head1 Assignment Functions
 
@@ -53,21 +53,23 @@ method.  If you overload DESTROY, be sure to call SUPER::DESTROY!
     $z->random; # ruin the bigint and replace with boring random bytes
 
     $y->set_to_hash("Poru Mira"); 
-      # Set $element based on the bytes "Poru Mira".  Though, you must use some
-      # kind of hashing algorithm (e.g., Digest::SHA1) to map data to an
-      # element:
-      #
-      # "In general you cannot feed it plaintext. You should only give it
-      # short strings of bytes (e.g. 160 bits if G1 has order around 2^160,
-      # which is the case for most of the bundled pairing parameters)."
-      # -- Lynn
+      # Set $element based on the bytes "Poru Mira".
+      
+You must use some kind of hashing algorithm (e.g., Digest::SHA1(3)) to map data to
+an element.  "In general you cannot feed it plaintext. You should only give it
+short strings of bytes (e.g. 160 bits if G1 has order around 2^160, which is
+the case for most of the bundled pairing parameters)." -- Lynn
 
     my $a = $pairing->init_G1->random;
     my $b = $pairing->init_G1->set( $a );
-     # this makes a new G1 element ($a), sets it to random, makes another G1
-     # ($b) and sets it to the random element $a.  It's probably faster 
-     # this is identical to issuing:
+
+The above makes a new G1 element ($a), sets it to random, then makes another G1
+($b) and sets it to the random value of element $a.  The following is probably
+more clear and is identical to the functions above.  There's more on clone
+later in this document.
+
     my $c = $a->clone;
+    print "You see this I bet!\n" if $c->is_eq( $a ) and $c->is_eq( $b );
 
 =head1 Comparison Functions
 
@@ -90,20 +92,61 @@ method.  If you overload DESTROY, be sure to call SUPER::DESTROY!
 
 =head1 Arithmetic Functions
 
+    my $Zr = $pairing->init_Zr;
+
+These no-argument functions are rather self explainatory.  The only thing
+that's not immediately clear is that $Zr is B<set> to the value of the operation.
+
+    $Zr->square; # $Zr = $Zr * $Zr;
+    $Zr->double; # $Zr = $Zr + $Zr
+    $Zr->invert; # $Zr = 1/$Zr
+    $Zr->halve;  # $Zr = $Zr/2
+    $Zr->neg;    # $Zr = -$Zr
+
+    add
+    sub
+    mul
+    div
+
+    pow_zn pow2_zn pow3_zn
+
 =head1 I/O, Export, and Conversion Functions
 
 libpbc offers a va_args (printf) style output that's probably of limited use
-except for debugging.  Crypt::PBC ports the fprintf() version directly and you
-can use it as incdicated in Crypt::PBC(3).  The Crypt::PBC::Element(3) module
-only uses fprintf() in the stddump and stddump() and errdump() and even then
-only in a limited capacity.
+except for debugging.  Crypt::PBC(3) ports the C<fprintf()> version directly
+and you can use it as incdicated in Crypt::PBC(3).  The Crypt::PBC::Element(3)
+module only uses C<fprintf()> in the stddump and C<stddump()> and C<errdump()>
+and even then only in a limited capacity.
  
     my $element = $pairing->init_G1;
     print "Hey, these don't look like I thought they would:\n";
-    $element->stddump;
-    print " (huh)\n";
-    # You may be surprised to see that a G1 Element is in fact two MPZs!
 
+    $element->stddump; # dumps the element on STDOUT
+
+    # You may be surprised to see that a G1 Element is in fact two MPZs.
+
+    $element->errdump; # dumps the element on STDERR instead of STDOUT
+
+The following will be of major importance to anyone looking to use Crypt::PBC
+for real-life applications.  C<as_bytes()> almost certainly has to be used in
+conjunction with some other algorithm, but that is indeed what it is for.
+
+    my $secret_key_bin = $element->as_bytes;
+
+    my $example_cipher = new Crypt::CBC({
+        header => "randomiv", 
+        cipher => 'Blowfish'
+        key    => $secret_key_bin,
+    });
+
+    my $secret = $example_cipher->encrypt("you can't read this!!");
+
+There are, of course, other ways to export the bytes.  The bigint exporter
+probably only works on Zr elements, but it probalby has uses.
+
+    my $key_hex = $element->as_hex;    # as_str is a synonym for as_hex
+    my $key_b64 = $element->as_base64; # MIME base64 as per RFC 2045
+    my $bigint  = $element->as_bigint; # Math::BigInt
 
 =head1 Miscellaneous Functions
 
@@ -114,6 +157,6 @@ only in a limited capacity.
 
 =head1 AUTHOR AND LICENSING
 
-GPL-ish and the XS author is Paul Miller <jettero@cpan.org>.
+GPL-ish and the XS author is Paul Miller C<jettero@cpan.org>.
 
 Please see Crypt::PBC(3) for further information.

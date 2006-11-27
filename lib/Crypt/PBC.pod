@@ -13,31 +13,31 @@ Crypt::PBC - OO interface for Lynn's PBC library @ Standford
 
 =head1 Nomenclature
 
-The documentation (and error messages) for these modules frequently refer
-to the LHS, the RHS, EXPO, and BASE.  They are the left hand side, right
-hand side, exponent and base.  In an algebraic equation: LHS=RHS and
-LHS=BASE^EXPO.  In other words, the LHS is the element to which a value is
-being assigned.  There may sometimes be more than one RHS, or it might be
-called the a1 or n1; but, there will only be one LHS.
+The documentation (and error messages) for these modules frequently refer to
+the LHS, the RHS, EXPO, and BASE.  They are the left hand side, right hand
+side, exponent and base.  In an algebraic equation: LHS=RHS and LHS=BASE^EXPO.
+In other words, the LHS is the element to which a value is being assigned.
+There may sometimes be more than one RHS, or it might be called the a1 or n1;
+but, there will only be one LHS.
 
 =head1 Perl Module Methods
 
-The Perl Module methods implement an OO interface that the author (Paul)
-highly recommends using.  The only Perl Module OO function in the
-Crypt::PBC package is new().  Please see Crypt::PBC::Pairing(3) and
-Crypt::PBC::Element(3) for the guts of the intended OO interface.
+The Perl Module methods implement an OO interface that the author (Paul) highly
+recommends using.  The only Perl Module OO function in the Crypt::PBC(3)
+package is C<new()>.  Please see C<Crypt::PBC::Pairing> and
+C<Crypt::PBC::Element> for the guts of the intended OO interface.
 
 =head2 Crypt::PBC::new()
 
-Returns a new PBC pairing object.  new() takes, as arguments, either the
-name of a file, a file stream (e.g., new Crypt::PBC(\*STDIN)), or the
-params for a curve as a string.  Ben Lynn provides a zip file of d-type
-curves:
+Returns a new PBC pairing object.  C<new()> takes, as arguments, either the
+name of a file, a file stream (e.g., new C<Crypt::PBC(\*STDIN)>), or the params
+for a curve as a string.  Ben Lynn provides a zip file of d-type curves:
 
-    MNT curve parameters for embedding degree 6 (which I call type D
-    curves), for all D less than a million, and for subgroup sizes at least
-    80 bits and less than 300 bits long. Generated using test programs
-    bundled with PBC library.
+    MNT curve parameters for embedding degree 6 (which I
+    call type D curves), for all D less than a million, and
+    for subgroup sizes at least 80 bits and less than 300
+    bits long. Generated using test programs bundled with
+    PBC library.
 
     http://crypto.stanford.edu/pbc/download.html
 
@@ -181,7 +181,7 @@ was described above.
 
 =head1 XS AUTHOR
 
-Paul Miller <jettero@cpan.org>
+Paul Miller C<jettero@cpan.org>
 
 Paul is using this software in his own projects...  If you find bugs, please
 please please let him know. :) Actually, let him know if you find it handy at
@@ -200,14 +200,12 @@ using this module will somehow make your commercial package GPL should be washed
 away.
 
 I hereby release you from any such silly conditions -- if possible while still
-matching the license from gnu regex.
+matching the license from libpbc.
 
 This package and any modifications you make to it must remain GPL.  Any programs
 you (or your company) write shall remain yours (and under whatever copyright you
 choose) even if you use this package's intended and/or exported interfaces in
 them.
-
-(again, if possible)
 
 Lastly, having said all the above, there may be certain restrictions from
 the PBC library itself that I cannot amend or take away!
