@@ -23,3 +23,4 @@ lib/Crypt/PBC.pod
 lib/Crypt/PBC/Element.pod
 lib/Crypt/PBC/Pairing.pod
 t/35_scopefault.t
+t/20_cmp.t

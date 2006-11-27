@@ -55,7 +55,7 @@ sub as_hex {
     
     return unpack("H*", $this->as_bytes);
 }
-*as_str = as_hex;
+*as_str = *as_hex;
 # }}}
 # as_base64 {{{
 sub as_base64 {
