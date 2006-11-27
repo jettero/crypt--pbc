@@ -1,3 +1,6 @@
+0.4.1-0.5.02:  Sun Nov 26 21:52:00 EST 2006
+   - jettero added a couple more tests and boatloads of docs
+
 0.3.17-0.5.01:  Mon Nov 20 08:38:04 EST 2006
    - jettero completed a few more t/ tests (this time for the earith.xs).
 
