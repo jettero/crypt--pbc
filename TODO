@@ -19,27 +19,27 @@ been tested for mathematical accuracy (usually not) or whether they've been
 +---------------------+----------------+---------------+-----------+------------+-------------+
 | libpbc function     | XS port / Docs | PM OOi / Docs | t/ called | t/ slammed | t/ accuracy |
 +---------------------+----------------+---------------+-----------+------------+-------------+
-| element_fprintf     |    x      x    |    x     x    |           |            |             |
-| element_export      |    x      x    |    x     x    |           |            |             |
-| element_to_mpz      |    x      x    |    x     x    |           |            |             |
-| element_add         |    x      x    |    x          |           |            |             |
-| element_sub         |    x      x    |    x          |           |            |             |
-| element_mul         |    x      x    |    x          |           |            |             |
+| element_fprintf     |    x      x    |    x     e    |           |            |             |
+| element_export      |    x      x    |    x     e    |           |            |             |
+| element_to_mpz      |    x      x    |    x     e    |           |            |             |
+| element_add         |    x      x    |    x     e    |           |            |             |
+| element_sub         |    x      x    |    x     e    |           |            |             |
+| element_mul         |    x      x    |    x     e    |           |            |             |
 | element_mul_zn      |    x      x    |               |           |            |             |
 | element_mul_mpz     |    x      x    |               |           |            |             |
 | element_mul_si      |    x      x    |               |           |            |             |
-| element_div         |    x      x    |    x          |           |            |             |
-| element_double      |    x      x    |    x          |           |            |             |
-| element_halve       |    x      x    |    x          |           |            |             |
-| element_square      |    x      x    |    x          |           |            |             |
-| element_neg         |    x      x    |    x          |           |            |             |
-| element_invert      |    x      x    |    x          |           |            |             |
-| element_pow_zn      |    x      x    |    x          |           |            |             |
-| element_pow_mpz     |    x      x    |    x          |           |            |             |
-| element_pow2_zn     |    x      x    |    x          |           |            |             |
-| element_pow3_zn     |    x      x    |    x          |           |            |             |
-| element_pow2_mpz    |    x      x    |    x          |           |            |             |
-| element_pow3_mpz    |    x      x    |    x          |           |            |             |
+| element_div         |    x      x    |    x     e    |           |            |             |
+| element_double      |    x      x    |    x     e    |           |            |             |
+| element_halve       |    x      x    |    x     e    |           |            |             |
+| element_square      |    x      x    |    x     e    |           |            |             |
+| element_neg         |    x      x    |    x     e    |           |            |             |
+| element_invert      |    x      x    |    x     e    |           |            |             |
+| element_pow_zn      |    x      x    |    x     e    |           |            |             |
+| element_pow_mpz     |    x      x    |    x     e    |           |            |             |
+| element_pow2_zn     |    x      x    |    x     e    |           |            |             |
+| element_pow3_zn     |    x      x    |    x     e    |           |            |             |
+| element_pow2_mpz    |    x      x    |    x     e    |           |            |             |
+| element_pow3_mpz    |    x      x    |    x     e    |           |            |             |
 | element_is0         |    x      x    |    x     e    |           |            |             |
 | element_is1         |    x      x    |    x     e    |           |            |             |
 | element_is_sqr      |    x      x    |    x     e    |           |            |             |

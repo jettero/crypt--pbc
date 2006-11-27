@@ -92,10 +92,12 @@ later in this document.
 
 =head1 Arithmetic Functions
 
-    my $Zr = $pairing->init_Zr;
-
 These no-argument functions are rather self explainatory.  The only thing
-that's not immediately clear is that $Zr is B<set> to the value of the operation.
+that's not immediately clear is that $Zr is B<set> to the value of the
+operation.  These all return $Zr, of course.  Also, these operations work on
+elements in G1, G2, and GT -- although that's not pictured.
+
+    my $Zr = $pairing->init_Zr;
 
     $Zr->square; # $Zr = $Zr * $Zr;
     $Zr->double; # $Zr = $Zr + $Zr
@@ -103,12 +105,36 @@ that's not immediately clear is that $Zr is B<set> to the value of the operation
     $Zr->halve;  # $Zr = $Zr/2
     $Zr->neg;    # $Zr = -$Zr
 
-    add
-    sub
-    mul
-    div
+The following one-argument functions are probably just as clear as the ones
+above.  The B<set>ing of Zr is implicit as it is above and, as above, the
+operations work in G1, G2, and GT.  Watch out though, for these, the element
+types on the LHS must match the RHS.  Crypt::PBC::Element(3) will C<croak()> an
+error if the types don't match.
 
-    pow_zn pow2_zn pow3_zn
+    my $Zr2 = $pairing->init_Zr->random;
+
+    $Zr->add( $Zr2 ); # Zr = Zr + Zr2
+    $Zr->Sub( $Zr2 ); # Zr = Zr - Zr2 -- note the capital S
+    $Zr->mul( $Zr2 ); # Zr = Zr * Zr2
+    $Zr->div( $Zr2 ); # Zr = Zr / Zr2
+
+Assume all the following variables are elements in the indicated groups.  Beware
+that the RHS-a elements must all be the same type as the LHS element.  The RHS-n
+arguments must all be of elements in Zr.  Crypt::PBC::Element(3) will C<croak()>
+an error if the arguments are of the wrong types.
+
+    $G1_l->pow_zn( $G1_a, $Zr_n ); # G1_l = G1_a^Zr_n
+    $G1_l->pow2_zn( $G1_a1, $Zr_n1, $G1_a2, $Zr_n2 ); # l = a1^n1 * a2^n2
+    $G1_l->pow3_zn( $G1_a1, $Zr_n1, $G1_a2, $Zr_n2, $G1_a3, $Zr_n3 );
+      # l = a1^n1 * a2^n2 * a3^n3
+
+These functions are all pretty much the same, but they take bigints for the
+RHS-n arguments.  They will all C<croak()> if the LHS doesn't match the RHS-a or
+if the RHS-n arguments aren't Math::BigInt(3) objects.
+
+    $G1_l->pow_bigint( $G1_a, $BI_n );
+    $G1_l->pow2_bigint( $G1_a1, $BI_n1, $G1_a2, $BI_n2 );
+    $G1_l->pow3_bigint( $G1_a1, $BI_n1, $G1_a2, $BI_n2, $G1_a3, $BI_n3 );
 
 =head1 I/O, Export, and Conversion Functions
 
