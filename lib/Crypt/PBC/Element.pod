@@ -1,6 +1,6 @@
 =head1 NAME
 
-Crypt::PBC::Pairing - OO interface for Lynn's PBC library @ Standford
+Crypt::PBC::Element - OO interface for Lynn's PBC library @ Standford
 
 =head1 SYNOPSIS
 
