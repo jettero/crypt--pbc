@@ -7,7 +7,7 @@ use Crypt::PBC;
 if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { plan tests => 1; skip(1); exit 0; } }
 
 my $curve = new Crypt::PBC("params.txt");
-my @e = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr, undef, 7, new Math::BigInt(19) );
+my @e = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr, 1, new Math::BigInt(19) );
 my @i = ( 0 .. $#e ); # the indicies for permute()
 
 if( -f "slamtest.log" ) {
@@ -17,12 +17,12 @@ if( -f "slamtest.log" ) {
 my %slam_these = (
     pairing_apply => 2,
 
-    random => 1, # technically this should be 0, but this test is not set up for no-args
-    square => 1, # technically this should be 0, but this test is not set up for no-args
-    double => 1, # technically this should be 0, but this test is not set up for no-args
-    halve  => 1, # technically this should be 0, but this test is not set up for no-args
-    neg    => 1, # technically this should be 0, but this test is not set up for no-args
-    invert => 1, # technically this should be 0, but this test is not set up for no-args
+    random => 1, # technically these should be 0, but this test is not set up for no-args
+    square => 1,
+    double => 1,
+    halve  => 1,
+    neg    => 1,
+    invert => 1,
 
     add => 2,
     Sub => 2,
@@ -33,38 +33,66 @@ my %slam_these = (
     mul_int    => 2,
     mul_bigint => 2,
 
-    pow_zn  => 3,
+    pow_zn  => 2,
     pow2_zn => 4,
     pow3_zn => 6,
 
-    pow_bigint  => 3,
+    pow_bigint  => 2,
     pow2_bigint => 4,
     pow3_bigint => 6,
-);
 
-my $skip = 0;
-if( not defined $ENV{REALLY_DO_THIS} ) {
-    $skip = &count_tests;
-    %slam_these = ( random => 1, pairing_apply => 2 );
-}
+    is0    => 1,
+    is1    => 1,
+    is_eq  => 1,
+    is_sqr => 1,
+
+    set0   => 1,
+    set1   => 1,
+
+    set_to_hash   => 1,
+    set_to_int    => 1,
+    set_to_bigint => 1,
+    set           => 1,
+);
 
 #### This test may need some explaining... We wish to pass all
 #### possible all the wrong things and make sure we catch all the
 #### potential sagfaults with perl croak() errors.
 
-my $count = &count_tests;
-if( $skip ) {
-    $skip = $skip - $count;
-    warn " WARNING: skipping $skip of the tests.\n\tTo test them all: SKIP_ALL_BUT=$0 REALLY_DO_THIS=1 make test\n";
-    sleep 1;
-}
-
-plan tests => $count;
+plan tests => int keys %slam_these;
 
 my %huge_cache = ();
 
+my $start_time = time;
+my $total_per  = 0;
+my $last_time  = 0;
+
+$ENV{MAX_PERM_TIME} = 3 unless defined $ENV{MAX_PERM_TIME} and $ENV{MAX_PERM_TIME} >= 0;
+warn "\n\t$0 is set to skip all tests longer than $ENV{MAX_PERM_TIME} seconds (env MAX_PERM_TIME)\n" if $ENV{MAX_PERM_TIME} < 120;
+eval 'use Time::HiRes qw(time)'; # does't matter if this fails...
+warn "\t$0 gives more accurate calls/s estimates if Time::HiRes is installed...\n" if $@;
+
 for my $function (sort slam_sort keys %slam_these) {
     my @a = &permute( $slam_these{$function} => @i );
+
+    if( $total_per > 0 and (my $delta_t = time - $start_time) > 0 ) {
+        my $v = "";
+           $v = ($delta_t / $total_per);
+        my $t = ($v >= 1 ? sprintf('%0.2f s/call', $v) : sprintf('%0.2f calls/s', 1/$v));
+
+        my $m = int @a;
+        if( my $total = ($v * $m) > $ENV{MAX_PERM_TIME} ) {
+            @a = sort { (rand 1) <=> (rand 1) } @a;
+            @a = @a[ 0 .. ( int ($ENV{MAX_PERM_TIME}/$v) ) ];
+
+            my $nc = int @a;
+
+            $m = "$nc (reduced randomly from $m)";
+        }
+         
+        warn " testing $m argument permutations for $function() $t\n" if $last_time != time;
+        $last_time = time;
+    }
 
     for my $a (@a) {
         my $key = "@$a";
@@ -88,6 +116,8 @@ for my $function (sort slam_sort keys %slam_these) {
             }
         }
     }
+
+    $total_per += (int @a);
 
     ok( 1 );
 }
@@ -136,18 +166,5 @@ sub slam_sort {
 
     return $c <=> $d if $c != $d;
     return $a cmp $b;
-}
-# }}}
-# count_tests {{{
-sub count_tests {
-    my $count = 0;
-    my $bases = ( int (grep {ref $_ and $_->isa("Crypt::PBC::Element")} @e) );
-    for my $v (values %slam_these) {
-        for ( 1 .. $v ) {
-            $count += (int @e) ** $_;
-        }
-    }
-
-    return $count * 1 * $bases;
 }
 # }}}
