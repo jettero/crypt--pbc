@@ -67,10 +67,12 @@ my $start_time = time;
 my $total_per  = 0;
 my $last_time  = 0;
 
-$ENV{MAX_PERM_TIME} = 3 unless defined $ENV{MAX_PERM_TIME} and $ENV{MAX_PERM_TIME} >= 0;
-warn "\n\t$0 is set to skip all tests longer than $ENV{MAX_PERM_TIME} seconds (env MAX_PERM_TIME)\n" if $ENV{MAX_PERM_TIME} < 120;
+$ENV{MAX_PERM_TIME} = 1 unless defined $ENV{MAX_PERM_TIME} and $ENV{MAX_PERM_TIME} >= 0;
+warn "\n\t$0 is set to truncate all tests longer than $ENV{MAX_PERM_TIME} second(s) (env MAX_PERM_TIME)\n" if $ENV{MAX_PERM_TIME} < 120;
 eval 'use Time::HiRes qw(time)'; # does't matter if this fails...
 warn "\t$0 gives more accurate calls/s estimates if Time::HiRes is installed...\n" if $@;
+
+my $shh = $ENV{MAX_PERM_TIME} < 15;
 
 for my $function (sort slam_sort keys %slam_these) {
     my @a = &permute( $slam_these{$function} => @i );
@@ -92,7 +94,9 @@ for my $function (sort slam_sort keys %slam_these) {
             $m = "$nc (reduced randomly from $m)";
         }
          
-        warn " testing $m argument permutations for $function() $t\n" if $last_time != time;
+        unless( $shh ) {
+            warn " testing $m argument permutations for $function() $t\n" if $last_time != time;
+        }
         $last_time = time;
     }
 
@@ -110,7 +114,7 @@ for my $function (sort slam_sort keys %slam_these) {
             # We are just looking for segmentation faults for now
             # so we ignore most $@ entirely.
 
-            if( $@ and not $@ =~ m/(?:SCALAR ref|same group|int.provided.*accept|is not a bigint|must be.*(?:G1|G2|GT|Zr))/ ) {
+            if( $@ and not $@ =~ m/(?:SCALAR ref|same group|int.provided.*accept|RHS|LHS|is not a bigint|must be.*(?:G1|G2|GT|Zr))/ ) {
                 open OUTPUT, ">>slamtest.log" or die $!;
                 warn " [logged] \$@=$@";
                 print OUTPUT " function=$function; \$@=$@";
