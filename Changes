@@ -1,3 +1,6 @@
+0.4.1-0.5.04:  Tue Nov 28 10:13:55 EST 2006
+   - jettero added the slamtest
+
 0.4.1-0.5.03:  Sun Nov 26 22:26:33 EST 2006
    - jettero added a memory (leak) test
 

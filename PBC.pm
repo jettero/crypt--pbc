@@ -634,7 +634,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-our $VERSION = '0.4.1-0.5.03';
+our $VERSION = '0.4.1-0.5.04';
 
 sub AUTOLOAD {
     my $constname;
