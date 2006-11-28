@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+# vi:tw=0:
+
+# load this test version, not the installed version:
+BEGIN { system('perl Makefile.PL && make') unless -d 'blib/arch' and -d 'blib/lib'; unshift @INC, 'blib/arch', 'blib/lib' }
+
+use strict;
+use Crypt::PBC;
+
+my $curve = new Crypt::PBC("params.txt");
+my $Zr    = $curve->init_Zr->random;
+my $G1    = $curve->init_G1->random;
+my $G2    = $curve->init_G2->random;
+my $GT    = $curve->init_GT->random;
+
+warn; $Zr->is_eq( $G1 );
+warn; $G1->is_eq( $G2 );
+warn; $G2->is_eq( $GT );
+warn; $GT->is_eq( $Zr );

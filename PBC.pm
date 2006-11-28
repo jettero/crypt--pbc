@@ -195,7 +195,7 @@ sub is_eq {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS should both have types" unless $tt{$$this}{t} and $tt{$$that}{t};
+    croak "LHS and RHS should both have types" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$that}{t};
 
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
@@ -203,6 +203,11 @@ sub is_eq {
 # is_sqr {{{
 sub is_sqr {
     my $this = shift;
+    my $type = $tt{$$this}{t};
+
+    croak "LHS should have a type" unless $tt{$$this}{t};
+    return 1 if $type eq "G1";
+    return 1 if $type eq "G2";
 
     return &Crypt::PBC::element_is_sqr( $this );
 }
@@ -606,10 +611,10 @@ sub _stype {
     return;
 }
 
-sub init_G1 { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $this->_stype($that, "G1"); $that }
-sub init_G2 { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $this->_stype($that, "G2"); $that }
-sub init_GT { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $this->_stype($that, "GT"); $that }
-sub init_Zr { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $this->_stype($that, "Zr"); $that }
+sub init_G1 { my $this = shift; my $that = &Crypt::PBC::element_init_G1( $this ); $this->_stype($that => "G1"); $that }
+sub init_G2 { my $this = shift; my $that = &Crypt::PBC::element_init_G2( $this ); $this->_stype($that => "G2"); $that }
+sub init_GT { my $this = shift; my $that = &Crypt::PBC::element_init_GT( $this ); $this->_stype($that => "GT"); $that }
+sub init_Zr { my $this = shift; my $that = &Crypt::PBC::element_init_Zr( $this ); $this->_stype($that => "Zr"); $that }
 sub DESTROY { my $this = shift; my $that = &Crypt::PBC::pairing_clear(   $this ); }
 
 # }}}
