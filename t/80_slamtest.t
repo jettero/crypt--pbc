@@ -114,7 +114,7 @@ for my $function (sort slam_sort keys %slam_these) {
             # We are just looking for segmentation faults for now
             # so we ignore most $@ entirely.
 
-            if( $@ and not $@ =~ m/(?:SCALAR ref|same group|int.provided.*accept|RHS|LHS|is not a bigint|must be.*(?:G1|G2|GT|Zr))/ ) {
+            if( $@ and not $@ =~ m/(?:SCALAR ref|HASH ref|same group|int.provided.*accept|RHS|LHS|is not a bigint|must be.*(?:G1|G2|GT|Zr))/ ) {
                 open OUTPUT, ">>slamtest.log" or die $!;
                 warn " [logged] \$@=$@";
                 print OUTPUT " function=$function; \$@=$@";
