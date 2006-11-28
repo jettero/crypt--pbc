@@ -1,5 +1,11 @@
+0.4.2-0.7.15:  Tue Nov 28 10:16:07 EST 2006
+   - jettero reversioned the package in preparation for launch.
+
 0.4.1-0.5.04:  Tue Nov 28 10:13:55 EST 2006
-   - jettero added the slamtest
+   - jettero added the slamtest, which slams functions with all the wrong
+     arguments, literally, in the permutation sense.  It ran all night.
+     The test in the shipped-package is _much_ shorter, but can be extended
+     with 'MAX_PERM_TIME=1000 make test'
 
 0.4.1-0.5.03:  Sun Nov 26 22:26:33 EST 2006
    - jettero added a memory (leak) test
