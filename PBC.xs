@@ -5,13 +5,11 @@
 #include "XSUB.h"
 
 #include "ppport.h"
-#include "const-c.inc"
 
 MODULE = Crypt::PBC		PACKAGE = Crypt::PBC		
 
 PROTOTYPES: ENABLE
 
-INCLUDE:   const-xs.inc
 INCLUDE: pairing.xs
 INCLUDE:   einit.xs
 INCLUDE:  earith.xs

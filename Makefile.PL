@@ -5,8 +5,7 @@ WriteMakefile(
     NAME              => 'Crypt::PBC',
     VERSION_FROM      => 'PBC.pm',
     PREREQ_PM         => { 
-        'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0, 
-        'Math::BigInt' => 0, 'ExtUtils::Constant::WriteConstants' => 0
+        'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0, 'Math::BigInt' => 0,
     },
 
     ($] >= 5.005 ?
@@ -21,15 +20,4 @@ WriteMakefile(
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },
 
-);
-
-use ExtUtils::Constant;
-
-my @names = (qw());
-ExtUtils::Constant::WriteConstants(
-    NAME         => 'Crypt::PBC',
-    NAMES        => \@names,
-    DEFAULT_TYPE => 'IV',
-    C_FILE       => 'const-c.inc',
-    XS_FILE      => 'const-xs.inc',
 );
