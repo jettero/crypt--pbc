@@ -53,10 +53,12 @@ Mixing and matching direct calls with the Perl Module methods is a sure way
 to run into trouble, since the Perl Module methods tag the PBC elements
 with a type.
 
-=head2 NOTE: Use the Object Oriented Interface
-
++++ NOTE +++
+ 
 You can use these functions successfully, but the intended interface was
-described above. Crypt::PBC::Element(3) gives a much clearer picture.
+described above. Crypt::PBC::Element(3) describes that interface in detail.
+
++++ /NOTE +++
 
 =head2 Pairing Functions
 
