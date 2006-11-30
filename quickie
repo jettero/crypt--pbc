@@ -13,7 +13,5 @@ my $G1    = $curve->init_G1->random;
 my $G2    = $curve->init_G2->random;
 my $GT    = $curve->init_GT->random;
 
-warn; $Zr->is_eq( $G1 );
-warn; $G1->is_eq( $G2 );
-warn; $G2->is_eq( $GT );
-warn; $GT->is_eq( $Zr );
+
+# do things here:
