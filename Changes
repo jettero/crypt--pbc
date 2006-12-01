@@ -1,5 +1,6 @@
 0.4.2-0.7.16:  Fri Dec  1 09:20:30 EST 2006
    - jettero made more synonyms for pairing_apply because of frequent typos
+   - jettero fixed several documenation typos
 
 0.4.2-0.7.15:  Tue Nov 28 10:16:07 EST 2006
    - jettero reversioned the package in preparation for launch.
