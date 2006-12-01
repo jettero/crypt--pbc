@@ -14,4 +14,6 @@ my $G2    = $curve->init_G2->random;
 my $GT    = $curve->init_GT->random;
 
 
-# do things here:
+my $s   = $curve->init_Zr->random;
+my $Q_i = $curve->init_G1->set_to_hash("fuckah!");
+my $d_i = $curve->init_G2->pow_zn( $Q_i, $s );
