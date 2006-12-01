@@ -214,6 +214,13 @@ them.
 Lastly, having said all the above, there may be certain restrictions from
 the PBC library itself that I cannot amend or take away!
 
+=head1 SPECIAL THANKS
+
+Without the direction of Dr. Leszek T. Lilien
+(http://www.cs.wmich.edu/~llilien/), I never would have heard of IBE/PBC --
+much less develop any interest in it.  Crypto is not his specialty, but
+like any good professor, he's interested in everything.
+
 =head1 SEE ALSO
 
     http://crypto.stanford.edu/pbc/

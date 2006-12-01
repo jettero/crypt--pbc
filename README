@@ -1,6 +1,3 @@
-Crypt-PBC version 0.01
-======================
-
 INSTALLATION
 
 To install this module type the following:
@@ -13,3 +10,12 @@ To install this module type the following:
 COPYRIGHT
 
 Copyright (C) 2006 by Paul Miller
+
+SYNOPSIS
+
+    use Crypt::PBC;
+
+    my $pairing = new Crypt::PBC("params.txt");
+    my $G1      = $pairing->init_G1->random;
+    my $G2      = $pairing->init_G2->random->double->square;
+    my $GT      = $pairing->init_GT->pairing_apply( $G1, $G2 );
