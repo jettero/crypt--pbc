@@ -13,7 +13,9 @@ earith.xs
 ecomp.xs
 einit.xs
 pairing.xs
-params.txt
+params_a.txt
+params_d.txt
+params_e.txt
 t/13_1op_arith.t
 t/13_2op_arith.t
 t/15_mpz.t

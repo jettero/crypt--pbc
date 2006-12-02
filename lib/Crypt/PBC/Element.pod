@@ -1,6 +1,6 @@
 =head1 NAME
 
-Crypt::PBC::Element - OO interface for the Standford PBC library
+Crypt::PBC::Element - OO interface for the Stanford PBC library
 
 =head1 SYNOPSIS
 

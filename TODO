@@ -1,4 +1,14 @@
 
+ ** Updated: 12/02 **
+
+ It would seem G1 and G2 are interchangable in some curves!
+
+     "It turns out type A, A1 and E pairings are symmetric, and types D, F have
+     G1 being a group whose elements have a shorter representation than G2's
+     and G1 and G2 are not interchangeable." --Lynn
+
+ I may need to rethink the argument type restrictions at some point.
+
  ** Updated: 11/28 **
 
  - There is no params support at all yet, and there probably should be.
