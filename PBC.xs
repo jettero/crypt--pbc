@@ -62,3 +62,13 @@ element_to_mpz(element)
 
     OUTPUT:
     RETVAL
+
+int 
+element_length_in_bytes(element)
+    element_t * element
+
+    CODE:
+    RETVAL = element_length_in_bytes(*element);
+
+    OUTPUT:
+    RETVAL

@@ -86,8 +86,11 @@ for my $function (sort slam_sort keys %slam_these) {
 
         my $m = int @a;
         if( my $total = ($v * $m) > $ENV{MAX_PERM_TIME} ) {
+            my $mpti = int ($ENV{MAX_PERM_TIME}/$v);
+               $mpti = 1 if $mpti < 1;
+
             @a = sort { (rand 1) <=> (rand 1) } @a;
-            @a = @a[ 0 .. ( int ($ENV{MAX_PERM_TIME}/$v) ) ];
+            @a = @a[ 0 .. $mpti ];
 
             my $nc = int @a;
 
@@ -108,6 +111,10 @@ for my $function (sort slam_sort keys %slam_these) {
         $huge_cache{$key} = $args;
 
         for my $e (@e) {
+            open OUTPUT, ">>slamtest.log" or die $!;
+            print OUTPUT " function=$function; args=[@$args]\n";
+            close OUTPUT;
+
             next unless ref $e and $e->isa("Crypt::PBC::Element");
             eval '$e->random->' . $function . '(@$args)';
 

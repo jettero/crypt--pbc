@@ -2,17 +2,32 @@
 # vi:tw=0:
 
 # load this test version, not the installed version:
-BEGIN { system('perl Makefile.PL && make') unless -d 'blib/arch' and -d 'blib/lib'; unshift @INC, 'blib/arch', 'blib/lib' }
+BEGIN { system('perl Makefile.PL') unless -f 'Makefile'; system("make"); unshift @INC, 'blib/arch', 'blib/lib' }
 
 use strict;
 use Crypt::PBC;
 
-my $curve = new Crypt::PBC("params_e.txt");
+my $curve = new Crypt::PBC("params_d.txt");
 my $Zr    = $curve->init_Zr->random;
 my $G1    = $curve->init_G1->random;
 my $G2    = $curve->init_G2->random;
 my $GT    = $curve->init_GT->random;
 
-my $s   = $curve->init_Zr->random;
-my $Q_i = $curve->init_G1->set_to_hash("fuckah!");
-my $d_i = $curve->init_G2->pow_zn( $Q_i, $s );
+print "under d-type curves:\n";
+print "G1: "; $G1->stddump; print "\n";
+print "G2: "; $G2->stddump; print "\n";
+print "GT: "; $GT->stddump; print "\n";
+
+print "\n";
+print "under a-type curves:\n";
+$curve = new Crypt::PBC("params_a.txt");
+$G1 = $curve->init_G1->random;
+$G2 = $curve->init_G2->random;
+$GT = $curve->init_GT->random;
+print "G1: "; $G1->stddump; print "\n";
+print "G2: "; $G2->stddump; print "\n";
+print "GT: "; $GT->stddump; print "\n";
+
+# my $s   = $curve->init_Zr->random;
+# my $Q_i = $curve->init_G1->set_to_hash("fuckah!");
+# my $d_i = $curve->init_G2->pow_zn( $Q_i, $s );
