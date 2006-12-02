@@ -10,6 +10,10 @@ our %tt; # This maps our element types and our pairings.  Arguably this should b
          # done in the element references themselves, but those are scalar refs, not
          # hash refs.
 
+use overload 
+    '""'       => sub { my $this = shift; "Crypt::PBC::Element-$tt{$$this}{t}#$$this" },
+    'nomethod' => sub { my $this = shift; my $that = pop; croak "arithmetic operation '$that' not defined for $this" };
+
 1;
 
 # DESTROY {{{
@@ -147,7 +151,7 @@ sub set {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$that}{b};
+    croak "LHS and RHS must be the same" unless $tt{$$this}{t} eq $tt{$$that}{t};
 
     &Crypt::PBC::element_set($this, $that);
 
@@ -195,7 +199,7 @@ sub is_eq {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS should both be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$that}{b};
+    croak "LHS and RHS should both have types" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$that}{t};
 
     return not &Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're the same
 }
@@ -205,7 +209,7 @@ sub is_sqr {
     my $this = shift;
     my $type = $tt{$$this}{t};
 
-    croak "LHS should have a type" unless $type;
+    croak "LHS should have a type" unless $tt{$$this}{t};
     return 1 if $type eq "G1";
     return 1 if $type eq "G2";
 
@@ -220,8 +224,8 @@ sub pow_zn {
     my $base = shift;
     my $expo = shift;
 
-    croak "LHS and BASE must be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$base}{b};
-    croak "EXPO must be of type Zr"                       unless $tt{$$expo}{t} eq "Zr";
+    croak "LHS and BASE must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$base}{t};
+    croak "EXPO must be of type Zr"                unless $tt{$$expo}{t} eq "Zr";
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
 
@@ -236,10 +240,10 @@ sub pow2_zn {
     my $a2 = shift;
     my $n2 = shift;
 
-    croak "LHS and a1 must be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$a1}{b};
-    croak "LHS and a2 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a2}{b};
-    croak "n1 must be of type Zr"                       unless $tt{$$n1}{t} eq "Zr";
-    croak "n2 must be of type Zr"                       unless $tt{$$n2}{t} eq "Zr";
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "n1 must be of type Zr"                unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                unless $tt{$$n2}{t} eq "Zr";
 
     &Crypt::PBC::element_pow2_zn( $this, $a1, $n1, $a2, $n2 );
 
@@ -256,12 +260,12 @@ sub pow3_zn {
     my $a3 = shift;
     my $n3 = shift;
 
-    croak "LHS and a1 must be the same size (in bytes)" unless $tt{$$this}and $tt{$$this}{b} == $tt{$$a1}{b};
-    croak "LHS and a2 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a2}{b};
-    croak "LHS and a3 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a3}{b};
-    croak "n1 must be of type Zr"                       unless $tt{$$n1}{t} eq "Zr";
-    croak "n2 must be of type Zr"                       unless $tt{$$n2}{t} eq "Zr";
-    croak "n3 must be of type Zr"                       unless $tt{$$n3}{t} eq "Zr";
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "LHS and a3 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a3}{t};
+    croak "n1 must be of type Zr"                unless $tt{$$n1}{t} eq "Zr";
+    croak "n2 must be of type Zr"                unless $tt{$$n2}{t} eq "Zr";
+    croak "n3 must be of type Zr"                unless $tt{$$n3}{t} eq "Zr";
 
     &Crypt::PBC::element_pow3_zn( $this, $a1, $n1, $a2, $n2, $a3, $n3 );
 
@@ -276,7 +280,7 @@ sub pow_bigint {
     my $expo = shift;
 
     croak "EXPO provided is not a bigint" unless ref $expo and $expo->isa("Math::BigInt");
-    croak "LHS and BASE must be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$base}{b};
+    croak "LHS and BASE must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$base}{t};
 
     &Crypt::PBC::element_pow_mpz( $this, $base, $expo->{value} );
 
@@ -293,8 +297,8 @@ sub pow2_bigint {
 
     croak "n1 provided is not a bigint" unless ref $n1 and $n1->isa("Math::BigInt");
     croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
-    croak "LHS and a1 must be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$a1}{b};
-    croak "LHS and a2 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a2}{b};
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
 
     &Crypt::PBC::element_pow2_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value} );
 
@@ -315,9 +319,9 @@ sub pow3_bigint {
     croak "n2 provided is not a bigint" unless ref $n2 and $n2->isa("Math::BigInt");
     croak "n3 provided is not a bigint" unless ref $n3 and $n2->isa("Math::BigInt");
 
-    croak "LHS and a1 must be the same size (in bytes)" unless $tt{$$this} and $tt{$$this}{b} == $tt{$$a1}{b};
-    croak "LHS and a2 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a2}{b};
-    croak "LHS and a3 must be the same size (in bytes)" unless $tt{$$this}{b} == $tt{$$a3}{b};
+    croak "LHS and a1 must be of the same group" unless $tt{$$this}{t} and $tt{$$this}{t} eq $tt{$$a1}{t};
+    croak "LHS and a2 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a2}{t};
+    croak "LHS and a3 must be of the same group" unless $tt{$$this}{t} eq $tt{$$a3}{t};
 
     &Crypt::PBC::element_pow3_mpz( $this, $a1, $n1->{value}, $a2, $n2->{value}, $a3, $n3->{value} );
 
@@ -333,7 +337,7 @@ sub square {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs}{b};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -350,7 +354,7 @@ sub double {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs}{b};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -367,7 +371,7 @@ sub halve {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs}{b};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -384,7 +388,7 @@ sub neg {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs}{b};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -401,7 +405,7 @@ sub invert {
     my $rhs  = shift;
 
     if( $rhs ) {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs}{b};
+        croak "LHS and RHS must be of the same group" unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs}{t};
 
     } else {
         $rhs = $lhs;
@@ -421,13 +425,14 @@ sub add {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 must be the same size (in bytes)" 
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b} and $tt{$$rhs1}{b} == $tt{$$rhs2}{b};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_add( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
+        croak "LHS and RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_add( $lhs, $lhs, $rhs1 );
     }
@@ -442,13 +447,14 @@ sub Sub {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 must be the same size (in bytes)" 
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b} and $tt{$$rhs1}{b} == $tt{$$rhs2}{b};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_sub( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
+        croak "LHS and RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_sub( $lhs, $lhs, $rhs1 );
     }
@@ -463,13 +469,14 @@ sub mul {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 must be the same size (in bytes)" 
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b} and $tt{$$rhs1}{b} == $tt{$$rhs2}{b};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_mul( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
+        croak "LHS and RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_mul( $lhs, $lhs, $rhs1 );
     }
@@ -484,13 +491,14 @@ sub div {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 and RHS2 must be the same size (in bytes)" 
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b} and $tt{$$rhs1}{b} == $tt{$$rhs2}{b};
+        croak "LHS, RHS1 and RHS2 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs1}{t} eq $tt{$$rhs2}{t};
 
         &Crypt::PBC::element_div( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "LHS and RHS must be the same size (in bytes)" unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
+        croak "LHS and RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
 
         &Crypt::PBC::element_div( $lhs, $lhs, $rhs1 );
     }
@@ -506,14 +514,14 @@ sub mul_zn {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 must be the same size (in bytes) and RHS2 must be in Zr"
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b} and $tt{$$rhs2}{t} eq "Zr";
+        croak "LHS, RHS1 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t} and $tt{$$rhs2}{t} eq "Zr";
 
         &Crypt::PBC::element_mul_zn( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "RHS must be in Zr"
-        unless $tt{$$lhs} and $tt{$$rhs1}{t} eq "Zr";
+        croak "RHS should be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$rhs1}{t} eq "Zr";
 
         &Crypt::PBC::element_mul_zn( $lhs, $lhs, $rhs1 );
     }
@@ -528,14 +536,14 @@ sub mul_int {
     my $rhs2 = shift;
 
     if( $rhs2 ) {
-        croak "LHS, RHS1 must be the same size (in bytes)"
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
-        croak "RHS2 must be an integer..." unless $rhs2 =~ m/^\-?[0-9]+$/s;
+        croak "LHS, RHS1 must be of the same group" 
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
+        croak "int provided ($rhs2) is not acceptable" unless $rhs2 =~ m/^\-?[0-9]+$/s;
 
         &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "RHS must be an integer" unless $rhs1 =~ m/^\-?[0-9]+$/s;
+        croak "int provided ($rhs1) is not acceptable" unless $rhs1 =~ m/^\-?[0-9]+$/s;
 
         &Crypt::PBC::element_mul_si( $lhs, $lhs, $rhs1 );
     }
@@ -551,13 +559,13 @@ sub mul_bigint {
 
     if( $rhs2 ) {
         croak "LHS, RHS1 must be of the same group" 
-        unless $tt{$$lhs} and $tt{$$lhs}{b} == $tt{$$rhs1}{b};
-        croak "RHS2 must be a bigint" unless ref $rhs2 and $rhs2->isa("Math::BigInt");
+        unless $tt{$$lhs}{t} and $tt{$$lhs}{t} eq $tt{$$rhs1}{t};
+        croak "int provided is not a bigint" unless ref $rhs2 and $rhs2->isa("Math::BigInt");
 
         &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "RHS must be a bigint" unless ref $rhs1 and $rhs1->isa("Math::BigInt");
+        croak "int provided is not a bigint" unless ref $rhs1 and $rhs1->isa("Math::BigInt");
 
         &Crypt::PBC::element_mul_si( $lhs, $lhs, $rhs1 );
     }
@@ -603,7 +611,6 @@ sub _stype {
     $Crypt::PBC::Element::tt{$$that} = {
         t => $type,
         p => $this,
-        b => &Crypt::PBC::element_length_in_bytes( $that ),
     };
 
     return;
@@ -648,15 +655,10 @@ XSLoader::load('Crypt::PBC', $VERSION);
 
 1;
 
-# sub set_symmetric  { my $this = shift; $this->{_sym} = 1 }
-# sub set_asymmetric { my $this = shift; $this->{_sym} = 0 }
-
 sub new {
     my $class = shift;
     my $that;
     my $arg = shift; 
-
-    # $this->{_sym} = 0; # by default we're asymmetric, like in d-type curves
 
     if( ref($arg) eq "GLOB" ) {
         $that = &Crypt::PBC::pairing_init_stream($arg);

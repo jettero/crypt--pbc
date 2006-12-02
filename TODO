@@ -9,6 +9,12 @@
 
  I may need to rethink the argument type restrictions at some point.
 
+   - you cannot tell if elements are compatible by their
+     element_size_in_bytes(), nor by their element->field->order
+   - A GT is compatible with a G2 and a G1 is compatible with a G2 under a
+     symmetric curve, which -- I think -- can be detected if a G1 and a G2 are
+     the same size and order?
+
  ** Updated: 11/28 **
 
  - There is no params support at all yet, and there probably should be.

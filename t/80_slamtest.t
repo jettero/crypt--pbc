@@ -111,11 +111,12 @@ for my $function (sort slam_sort keys %slam_these) {
         $huge_cache{$key} = $args;
 
         for my $e (@e) {
+            next unless ref $e and $e->isa("Crypt::PBC::Element");
+
             open OUTPUT, ">>slamtest.log" or die $!;
-            print OUTPUT " function=$function; args=[@$args]\n";
+            print OUTPUT "e=$e; function=$function; args=[@$args];\n";
             close OUTPUT;
 
-            next unless ref $e and $e->isa("Crypt::PBC::Element");
             eval '$e->random->' . $function . '(@$args)';
 
             # We are just looking for segmentation faults for now
