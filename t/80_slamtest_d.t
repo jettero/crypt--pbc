@@ -67,7 +67,7 @@ my $start_time = time;
 my $total_per  = 0;
 my $last_time  = 0;
 
-$ENV{MAX_PERM_TIME} = 1 unless defined $ENV{MAX_PERM_TIME} and $ENV{MAX_PERM_TIME} >= 0;
+$ENV{MAX_PERM_TIME} = 0.05 unless defined $ENV{MAX_PERM_TIME} and $ENV{MAX_PERM_TIME} >= 0;
 warn "\n\t$0 is set to truncate all tests longer than $ENV{MAX_PERM_TIME} second(s) (env MAX_PERM_TIME)\n" if $ENV{MAX_PERM_TIME} < 120;
 eval 'use Time::HiRes qw(time)'; # does't matter if this fails...
 warn "\t$0 gives more accurate calls/s estimates if Time::HiRes is installed...\n" if $@;
