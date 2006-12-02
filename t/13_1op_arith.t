@@ -7,7 +7,7 @@ if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { p
 
 use Crypt::PBC;
 
-open IN, "params.txt" or die "couldn't open params: $!";
+open IN, "params_d.txt" or die "couldn't open params: $!";
 my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 
 my @lhs = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr );

@@ -9,7 +9,7 @@ use Crypt::PBC;
 
 plan tests => 3;
 
-my $curve = new Crypt::PBC("params.txt");
+my $curve = new Crypt::PBC("params_d.txt");
 
 TRIVIAL: {
     my $Zr1 = $curve->init_Zr->set_to_int( 53 );

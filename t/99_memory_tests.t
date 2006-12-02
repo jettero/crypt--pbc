@@ -20,7 +20,7 @@ my $size = undef;
 my $last = undef;
 for (1 .. $epochs+4) { # we skip the first 4 (takes perl a while to calm down... *shrug*)
     SCOPE1: { 
-        my $pair = new Crypt::PBC("params.txt");
+        my $pair = new Crypt::PBC("params_d.txt");
 
         SCOPE2: {
             my $G1 = $pair->init_G1->random;

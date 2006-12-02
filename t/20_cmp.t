@@ -7,7 +7,7 @@ if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { p
 
 use Crypt::PBC;
 
-my $c   = new Crypt::PBC("params.txt");
+my $c   = new Crypt::PBC("params_d.txt");
 my @all = ( $c->init_G1, $c->init_G2, $c->init_GT, $c->init_Zr );
 my @tz  = @all[2,3];
 my @noT = @all[0,1,3];

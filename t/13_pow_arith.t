@@ -7,7 +7,7 @@ if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { p
 
 use Crypt::PBC;
 
-my $curve = new Crypt::PBC('params.txt');
+my $curve = new Crypt::PBC('params_d.txt');
 
 my $G1_a = $curve->init_G1; my $G1_b = $curve->init_G1; my $G1_c = $curve->init_G1; my $G1_d = $curve->init_G1;
 my $Zr_a = $curve->init_Zr; my $Zr_b = $curve->init_Zr; my $Zr_c = $curve->init_Zr;

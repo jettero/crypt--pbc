@@ -11,7 +11,7 @@ my $global_c;
 my $global_e;
 
 FILE: {
-    my $c = new Crypt::PBC("params.txt");
+    my $c = new Crypt::PBC("params_d.txt");
     my $e = $c->init_G1->set_to_hash( "lol!" );
 
     $global_e = $e;
@@ -21,7 +21,7 @@ FILE: {
 }
 
 GLOB: {
-    open IN, "params.txt" or die "lol: $!";
+    open IN, "params_d.txt" or die "lol: $!";
     my $c = new Crypt::PBC(\*IN); close IN;
     my $e = $c->init_G1->set_to_hash( "lol!" );
 

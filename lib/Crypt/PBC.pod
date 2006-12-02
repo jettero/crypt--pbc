@@ -6,7 +6,7 @@ Crypt::PBC - OO interface for the Stanford PBC library
 
     use Crypt::PBC;
 
-    my $pairing = new Crypt::PBC("params.txt");
+    my $pairing = new Crypt::PBC("params_d.txt");
     my $G1      = $pairing->init_G1->random;
     my $G2      = $pairing->init_G2->random->double->square;
     my $GT      = $pairing->init_GT->pairing_apply( $G1, $G2 );

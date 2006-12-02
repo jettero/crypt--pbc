@@ -27,7 +27,7 @@ my $epochs = 3;
 plan tests => 4 * $epochs;
 
 for ( 1 .. $epochs ) {
-    open IN, "params.txt" or die "couldn't open params: $!";
+    open IN, "params_d.txt" or die "couldn't open params: $!";
     my $curv1 = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
     my $g1_1  = $curv1->init_G1->set_to_hash("test !!");
     my $g2_1  = $curv1->init_G2->set_to_hash("test !!");

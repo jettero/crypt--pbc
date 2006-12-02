@@ -6,7 +6,7 @@ use Crypt::PBC;
 
 if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { plan tests => 1; skip(1); exit 0; } }
 
-my $curve = new Crypt::PBC("params.txt");
+my $curve = new Crypt::PBC("params_d.txt");
 my @e = ( $curve->init_G1, $curve->init_G2, $curve->init_GT, $curve->init_Zr, 1, new Math::BigInt(19) );
 my @i = ( 0 .. $#e ); # the indicies for permute()
 

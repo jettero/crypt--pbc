@@ -26,7 +26,7 @@ use Crypt::PBC;
 
 # SETUP
 
-open IN, "params.txt" or die "couldn't open params: $!";
+open IN, "params_d.txt" or die "couldn't open params: $!";
 my $curve = &Crypt::PBC::pairing_init_stream(\*IN); close IN;
 my $P     = $curve->init_G2->random; # generator in G1 -- even though it's in G2
 my $s     = $curve->init_Zr->random; # master secret

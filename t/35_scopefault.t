@@ -15,12 +15,12 @@ BIGGER_SCOPE: {
     my $e;
 
     HRM1: {
-        my $c = new Crypt::PBC("params.txt");
+        my $c = new Crypt::PBC("params_d.txt");
            $e = $c->init_G1->set_to_hash( "lol!" );
     }
 
     HRM2: {
-        my $d = new Crypt::PBC("params.txt");
+        my $d = new Crypt::PBC("params_d.txt");
         my $f = $d->init_G1->set_to_hash( "lol!" );
     }
 
