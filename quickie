@@ -7,7 +7,7 @@ BEGIN { system('perl Makefile.PL') unless -f 'Makefile'; system("make"); unshift
 use strict;
 use Crypt::PBC;
 
-my $curve = new Crypt::PBC("params_d.txt");
+my $curve = new Crypt::PBC("params_a.txt");
 my $Zr    = $curve->init_Zr->random;
 my $G1    = $curve->init_G1->random;
 my $G2    = $curve->init_G2->random;
@@ -15,7 +15,5 @@ my $GT    = $curve->init_GT->random;
 
 print "$G1:\n"; $G1->stddump; print "\no: ", &Crypt::PBC::element_order($G1), "\n\n";
 print "$G2:\n"; $G2->stddump; print "\no: ", &Crypt::PBC::element_order($G2), "\n\n";
-print "$GT:\n"; $GT->stddump; print "\no: ", &Crypt::PBC::element_order($GT), "\n\n";
 
-$G2->double($GT); warn "2T";
-$GT->double($G2); warn "T2";
+$G1->double($G2);
