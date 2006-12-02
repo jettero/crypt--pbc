@@ -15,6 +15,9 @@
      symmetric curve, which -- I think -- can be detected if a G1 and a G2 are
      the same size and order?
 
+   - "The next release will have int pairing_is_symmetric(pairing_ptr p)
+     function, which tells you when G1 and G2 are the same. " -- Lynn
+
  ** Updated: 11/28 **
 
  - There is no params support at all yet, and there probably should be.
