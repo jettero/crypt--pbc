@@ -1,5 +1,8 @@
 0.4.2-0.7.17:  Sat Dec  2 09:21:55 EST 2006
-   - jettero lol
+   - This is a documentation fix only.
+   - There will be a new version very soon though.  I need to make serious
+     changes to the argument type restrictions as they should apparently not be
+     the same on different types of curves (symmetric vs asymmetric curves).
 
 0.4.2-0.7.16:  Fri Dec  1 09:20:30 EST 2006
    - jettero made more synonyms for pairing_apply because of frequent typos
