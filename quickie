@@ -13,7 +13,5 @@ my $G1    = $curve->init_G1->random;
 my $G2    = $curve->init_G2->random;
 my $GT    = $curve->init_GT->random;
 
-print "$G1:\n"; $G1->stddump; print "\no: ", &Crypt::PBC::element_order($G1), "\n\n";
-print "$G2:\n"; $G2->stddump; print "\no: ", &Crypt::PBC::element_order($G2), "\n\n";
-
-$G1->double($G2);
+$GT->e_hat($G1, $G2);
+$GT->e_hat($G2, $G1);

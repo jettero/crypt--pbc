@@ -582,9 +582,12 @@ sub pairing_apply {
     my $rhs2 = shift;
     my $pair = $tt{$$this}{p};
 
+    my $c1 = $tt{$$rhs1}{c};
+    my $c2 = $tt{$$rhs2}{c};
+
     croak "group type for LHS must be GT"  unless $tt{$$this}{t} eq "GT";
-    croak "group type for RHS1 must be G1" unless $tt{$$rhs1}{t} eq "G1";
-    croak "group type for RHS2 must be G2" unless $tt{$$rhs2}{t} eq "G2";
+    croak "group type for RHS1 must be G1" unless $c1 eq "G1" or $c1 eq "G[12]";
+    croak "group type for RHS2 must be G2" unless $c2 eq "G2" or $c2 eq "G[12]";
 
     &Crypt::PBC::pairing_apply( $this => ($rhs1, $rhs2) => $pair );
 
