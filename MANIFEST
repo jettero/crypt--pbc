@@ -28,4 +28,5 @@ t/35_scopefault.t
 t/20_cmp.t
 t/13_mul_znmpz.t
 t/99_memory_tests.t
-t/80_slamtest.t
+t/80_slamtest_a.t
+t/80_slamtest_d.t

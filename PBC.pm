@@ -117,6 +117,7 @@ sub set_to_hash {
     my $this = shift;
     my $hash = shift;
 
+    croak "provide something to set the element to" unless defined $hash and length $hash > 0;
     &Crypt::PBC::element_from_hash($this, $hash);
 
     $this;
