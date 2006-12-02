@@ -1,6 +1,8 @@
-0.7.17.1-0.4.2:  Sat Dec  2 09:54 EST 2006
-   - I reversed the ordering of the version numbers so CPAN will detect
-     subtle version changes better
+0.7.18.1-0.4.2:  Sat Dec  2 09:54 EST 2006
+   - I created a slow but reasonably accurate way of detecting whether the
+     pairing is symmetric, for purposes of deciding whether G1 and G2 are
+     algebraically similar.  This is for my own testing purposes until Ben
+     adds pairing_is_symmetric() to libpbc.
 
 0.4.2-0.7.17.1:  Sat Dec  2 09:36:55 EST 2006
    - this is a bugfix for the version released 15 minutes ago.
