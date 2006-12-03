@@ -64,8 +64,9 @@ sub as_hex {
 # as_base64 {{{
 sub as_base64 {
     my $this = shift;
+    my $arg  = shift || "";
     
-    my $that = encode_base64($this->as_bytes, "");
+    my $that = encode_base64($this->as_bytes, $arg);
     $that =~ s/\n$//sg;
 
     return $that;
