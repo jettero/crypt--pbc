@@ -13,7 +13,7 @@ WriteMakefile(
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
 
     LIBS              => ['-lpbc '],
-    DEFINE            => '',
+    DEFINE            => (0 ? '-DPBC_DEBUG' : ""),
     INC               => '-I/usr/include/pbc/',
     clean => { FILES => " slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {

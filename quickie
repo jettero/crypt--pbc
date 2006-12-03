@@ -15,3 +15,7 @@ my $GT    = $curve->init_GT->random;
 
 $GT->e_hat($G1, $G2);
 $GT->e_hat($G2, $G1);
+
+$GT+$G1;
+
+# &Crypt::PBC::element_double($GT, $G1); # under PBC_DEBUG, this auto-complains
