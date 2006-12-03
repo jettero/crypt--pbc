@@ -65,7 +65,7 @@ sub as_hex {
 sub as_base64 {
     my $this = shift;
     
-    my $that = encode_base64($this->as_bytes);
+    my $that = encode_base64($this->as_bytes, "");
     $that =~ s/\n$//sg;
 
     return $that;
