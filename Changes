@@ -1,3 +1,7 @@
+0.7.18.1-0.4.2:  Sat Dec  9 12:14:56 EST 2006
+   - jettero made pow_zn capable of taking a single argument, which should
+     be pretty clear
+
 0.7.18.1-0.4.2:  Sat Dec  2 09:54 EST 2006
    - I created a slow but reasonably accurate way of detecting whether the
      pairing is symmetric, for purposes of deciding whether G1 and G2 are
@@ -10,8 +14,9 @@
 0.4.2-0.7.17:  Sat Dec  2 09:21:55 EST 2006
    - This is a documentation fix only.
    - There will be a new version very soon though.  I need to make serious
-     changes to the argument type restrictions as they should apparently not be
-     the same on different types of curves (symmetric vs asymmetric curves).
+     changes to the argument type restrictions as they should apparently
+     not be the same on different types of curves (symmetric vs asymmetric
+     curves).
 
 0.4.2-0.7.16:  Fri Dec  1 09:20:30 EST 2006
    - jettero made more synonyms for pairing_apply because of frequent typos

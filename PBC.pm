@@ -226,8 +226,13 @@ sub pow_zn {
     my $base = shift;
     my $expo = shift;
 
+    if( defined $base and not defined $expo ) {
+        $expo = $base;
+        $base = $this;
+    }
+
     croak "LHS and BASE must be algebraically similar" unless exists $tt{$$this} and $tt{$$this}{c} eq $tt{$$base}{c};
-    croak "EXPO must be of type Zr"                unless $tt{$$expo}{t} eq "Zr";
+    croak "EXPO must be of type Zr"                    unless $tt{$$expo}{t} eq "Zr";
 
     &Crypt::PBC::element_pow_zn( $this, $base, $expo );
 

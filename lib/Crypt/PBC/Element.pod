@@ -148,7 +148,9 @@ that the RHS-a elements must all be the same type as the LHS element.  The RHS-n
 arguments must all be of elements in Zr.  Crypt::PBC::Element(3) will C<croak()>
 an error if the arguments are of the wrong types.
 
+    $G1_l->pow_zn( $Zr_n ); # G1_l = G1_l^Zr_n
     $G1_l->pow_zn( $G1_a, $Zr_n ); # G1_l = G1_a^Zr_n
+
     $G1_l->pow2_zn( $G1_a1, $Zr_n1, $G1_a2, $Zr_n2 ); # l = a1^n1 * a2^n2
     $G1_l->pow3_zn( $G1_a1, $Zr_n1, $G1_a2, $Zr_n2, $G1_a3, $Zr_n3 );
       # l = a1^n1 * a2^n2 * a3^n3
