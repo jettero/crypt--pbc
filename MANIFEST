@@ -30,3 +30,4 @@ t/13_mul_znmpz.t
 t/99_memory_tests.t
 t/80_slamtest_a.t
 t/80_slamtest_d.t
+t/14_pow_zn_one_arg.t
