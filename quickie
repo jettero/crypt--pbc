@@ -7,7 +7,7 @@ BEGIN { system('perl Makefile.PL') unless -f 'Makefile'; system("make"); unshift
 use strict;
 use Crypt::PBC;
 
-my $curve = new Crypt::PBC("params_a.txt");
+my $curve = new Crypt::PBC("params_d.txt");
 my $Zr    = $curve->init_Zr->random;
 my $G1    = $curve->init_G1->random;
 my $G2    = $curve->init_G2->random;
@@ -16,6 +16,3 @@ my $GT    = $curve->init_GT->random;
 $GT->e_hat($G1, $G2);
 $GT->e_hat($G2, $G1);
 
-$GT+$G1;
-
-# &Crypt::PBC::element_double($GT, $G1); # under PBC_DEBUG, this auto-complains
