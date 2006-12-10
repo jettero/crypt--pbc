@@ -71,6 +71,12 @@ later in this document.
     my $c = $a->clone;
     print "You see this I bet!\n" if $c->is_eq( $a ) and $c->is_eq( $b );
 
+This will come in handing when transfering keys between nodes.
+
+    my $d_i_a = $pairing->init_G1->random;
+    my $bytes = $d_i->as_bytes;
+    my $d_i_b = $pairing->init_G1->set_to_bytes( $bytes );
+
 =head1 Comparison Functions
 
     my $z = $pairing->init_G1->random;

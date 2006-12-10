@@ -131,6 +131,10 @@ described above. Crypt::PBC::Element(3) describes that interface in detail.
       # which is the case for most of the bundled pairing parameters)."
       # -- Lynn
 
+    &Crypt::PBC::element_from_bytes( $element, $bytes ); 
+      # Set $element based on the bytes in $bytes.  this probably isn't useful
+      # unless $bytes is like $spewed_result from element_export() below.
+
 =head2 Arithmetic Functions
 
     # lhs=rhs1+rhs2 -- make sure these are all the same type ...
