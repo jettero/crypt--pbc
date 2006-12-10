@@ -119,3 +119,16 @@ element_from_hash(element,hash)
     CODE:
     ptr = SvPV(hash, len);
     element_from_hash(*element, ptr, len);
+
+void
+element_from_bytes(element,data)
+    element_t * element
+    SV * data
+
+    PREINIT:
+    STRLEN len;
+    char * ptr;
+
+    CODE:
+    ptr = SvPV(data, len);
+    element_from_bytes(*element, ptr); // , len);

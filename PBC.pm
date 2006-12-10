@@ -113,6 +113,17 @@ sub random {
     return $this;
 }
 # }}}
+# set_to_bytes {{{
+sub set_to_bytes {
+    my $this = shift;
+    my $data = shift;
+
+    croak "provide something to set the element to" unless defined $data and length $data > 0;
+    &Crypt::PBC::element_from_bytes($this, $data);
+
+    $this;
+}
+# }}}
 # set_to_hash {{{
 sub set_to_hash {
     my $this = shift;

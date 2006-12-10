@@ -50,6 +50,7 @@ my %slam_these = (
     set1   => 1,
 
     set_to_hash   => 1,
+    set_to_bytes  => 1,
     set_to_int    => 1,
     set_to_bigint => 1,
     set           => 1,
