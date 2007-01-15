@@ -43,9 +43,9 @@ but, there will only be one LHS.
 =head1 Perl Module Methods
 
 The Perl Module methods implement an OO interface that the author (Paul) highly
-recommends using.  The only Perl Module OO function in the Crypt::PBC(3)
-package is C<new()>.  Please see C<Crypt::PBC::Pairing> and
-C<Crypt::PBC::Element> for the guts of the intended OO interface.
+recommends using.  The only Perl Module OO function in the L<Crypt::PBC>
+package is C<new()>.  Please see L<Crypt::PBC::Pairing> and
+L<Crypt::PBC::Element> for the guts of the intended OO interface.
 
 =head2 Crypt::PBC::new()
 
@@ -76,7 +76,7 @@ with a type.
 +++ NOTE +++
  
 You can use these functions successfully, but the intended interface was
-described above. Crypt::PBC::Element(3) describes that interface in detail.
+described above. L<Crypt::PBC::Element> describes that interface in detail.
 
 +++ /NOTE +++
 
@@ -251,4 +251,4 @@ like any good professor, he's interested in everything.
 
     http://groups.google.com/group/pbc-devel
 
-perl(1), Crypt::PBC::Pairing(3), Crypt::PBC::Element(3)
+perl(1), L<Crypt::PBC::Pairing>, L<Crypt::PBC::Element>

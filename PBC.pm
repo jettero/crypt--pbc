@@ -635,14 +635,8 @@ sub _stype {
         c => $type,
     };
 
-    if( $type =~ m/G[12]/ ) {
-        # this is slow and spurious, but Ben is authoring an actual pairing function
-        my $_G1 = &Crypt::PBC::element_length_in_bytes( &Crypt::PBC::element_init_G1( $this ) );
-        my $_G2 = &Crypt::PBC::element_length_in_bytes( &Crypt::PBC::element_init_G2( $this ) );
-
-        if( $_G1 == $_G2 ) {
-            $Crypt::PBC::Element::tt{$$that}{c} = "G[12]";
-        }
+    if( $type =~ m/G[12]/ and &Crypt::PBC::pairing_is_symmetric($this) ) {
+        $Crypt::PBC::Element::tt{$$that}{c} = "G[12]";
     }
 
     return;
@@ -671,7 +665,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-our $VERSION = '0.7.18.3-0.4.2';
+our $VERSION = '0.7.20.0-0.4.3';
 
 sub AUTOLOAD {
     my $constname;
@@ -697,9 +691,9 @@ sub new {
 
     } elsif( $arg !~ m/\n/ and -f $arg ) {
 
-        open PARAM_IN, $arg or croak "couldn't open param file ($arg): $!";
-        $that = &Crypt::PBC::pairing_init_stream(\*PARAM_IN); close PARAM_IN;
-        close PARAM_IN;
+        open my $in, $arg or croak "couldn't open param file ($arg): $!";
+        $that = &Crypt::PBC::pairing_init_stream($in);
+        close $in;
 
     } elsif( $arg ) {
         $arg =~ s/^\s*//s;

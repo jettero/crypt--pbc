@@ -1,3 +1,7 @@
+0.7.20.0-0.4.3:  Mon Jan 15 11:00:57 EST 2007
+   - jettero told PBC.pm and pairing.xs about the new
+     pairing_is_symmetric() function
+
 0.7.18.3-0.4.2:  Sun Dec 10 10:27:32 EST 2006
    - jettero added element_from_bytes and set_to_bytes
 

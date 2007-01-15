@@ -48,3 +48,13 @@ pairing_apply(LHS,RHS1,RHS2,pairing)
 
     CODE:
     pairing_apply(*LHS, *RHS1, *RHS2, *pairing);
+
+int 
+pairing_is_symmetric(me)
+    pairing_t * me
+
+    CODE:
+    RETVAL = pairing_is_symmetric(*me);
+
+    OUTPUT:
+    RETVAL

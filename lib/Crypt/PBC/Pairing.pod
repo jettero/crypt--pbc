@@ -36,4 +36,4 @@ C<SUPER::DESTROY()>!
 
 GPL-ish and the XS author is Paul Miller C<jettero@cpan.org>.
 
-Please see Crypt::PBC(3) for further information.
+Please see L<Crypt::PBC> for further information.

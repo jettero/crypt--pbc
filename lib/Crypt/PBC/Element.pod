@@ -55,7 +55,7 @@ method.  If you overload C<DESTROY>, be sure to call C<SUPER::DESTROY()>!
     $y->set_to_hash("Poru Mira"); 
       # Set $element based on the bytes "Poru Mira".
       
-You must use some kind of hashing algorithm (e.g., Digest::SHA1(3)) to map data to
+You must use some kind of hashing algorithm (e.g., L<Digest::SHA1>) to map data to
 an element.  "In general you cannot feed it plaintext. You should only give it
 short strings of bytes (e.g. 160 bits if G1 has order around 2^160, which is
 the case for most of the bundled pairing parameters)." -- Lynn
@@ -124,7 +124,7 @@ deal faster.
 The following one-argument functions are probably just as clear as the ones
 above.  The B<set>ing of Zr is implicit as it is above and, as above, the
 operations work in G1, G2, and GT.  Watch out though, for these, the element
-types on the LHS must match the RHS.  Crypt::PBC::Element(3) will C<croak()> an
+types on the LHS must match the RHS.  L<Crypt::PBC::Element> will C<croak()> an
 error if the types don't match.
 
     my $Zr2 = $pairing->init_Zr->random;
@@ -142,7 +142,7 @@ also a great deal faster.
     $Zr->set( $a )->div( $Zr2 ); # Zr = $Zr/$Zr2
 
 There are two more multiplication functions to choose from.  They take perl
-integers and Math::BigInt(3) objects.
+integers and L<Math::BigInt> objects.
    
     my $a = $Zr->set_to_int(7)->mul_int( 5 )->clone;
     my $b = $Zr->set_to_int(7)->mul_bigint( new Math::BigInt( 5 ) )->clone;
@@ -151,7 +151,7 @@ integers and Math::BigInt(3) objects.
 
 Assume all the following variables are elements in the indicated groups.  Beware
 that the RHS-a elements must all be the same type as the LHS element.  The RHS-n
-arguments must all be of elements in Zr.  Crypt::PBC::Element(3) will C<croak()>
+arguments must all be of elements in Zr.  L<Crypt::PBC::Element> will C<croak()>
 an error if the arguments are of the wrong types.
 
     $G1_l->pow_zn( $Zr_n ); # G1_l = G1_l^Zr_n
@@ -163,7 +163,7 @@ an error if the arguments are of the wrong types.
 
 These functions are all pretty much the same, but they take bigints for the
 RHS-n arguments.  They will all C<croak()> if the LHS doesn't match the RHS-a or
-if the RHS-n arguments aren't Math::BigInt(3) objects.
+if the RHS-n arguments aren't L<Math::BigInt> objects.
 
     $G1_l->pow_bigint( $G1_a, $BI_n );
     $G1_l->pow2_bigint( $G1_a1, $BI_n1, $G1_a2, $BI_n2 );
@@ -186,8 +186,8 @@ be in G1 and RHS2 must be in G2.
 =head1 I/O, Export, and Conversion Functions
 
 libpbc offers a va_args (printf) style output that's probably of limited use
-except for debugging.  Crypt::PBC(3) ports the C<fprintf()> version directly
-and you can use it as incdicated in Crypt::PBC(3).  The Crypt::PBC::Element(3)
+except for debugging.  L<Crypt::PBC> ports the C<fprintf()> version directly
+and you can use it as incdicated in L<Crypt::PBC>.  The L<Crypt::PBC::Element>
 module only uses C<fprintf()> in the stddump and C<stddump()> and C<errdump()>
 and even then only in a limited capacity.
  
@@ -232,4 +232,4 @@ probably only works on Zr elements, but it probalby has uses.
 
 GPL-ish and the XS author is Paul Miller C<jettero@cpan.org>.
 
-Please see Crypt::PBC(3) for further information.
+Please see L<Crypt::PBC> for further information.
