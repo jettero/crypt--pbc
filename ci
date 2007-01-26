@@ -1,15 +1,18 @@
 #!/bin/bash
+# $Id: ci 35.480.he6bvF6LXPCcviw5/YCTAlC5AbA 2007-01-25 07:23:22 -0500 $
 # vi:syntax=gentoo-init-d:
 
 source /sbin/functions.sh
 set -e; trap "eend 997" ERR
 
-ebegin "checking MANIFEST";
-./distclean
-eend $?
+figlet 'Checking IN'
 
 ebegin "pulling/merging updates"
 cg update
+eend $?
+
+ebegin "rcskeywords -m"
+rcskeywords -m
 eend $?
 
 ebegin "updating update index (cache)"
@@ -19,7 +22,7 @@ eend $?
 
 ebegin "committing changes"
 if [ -z "$*" ]; then
-    cg commit -m "$0"
+    cg commit
 
 else 
     cg commit -m "$*"
@@ -29,3 +32,4 @@ eend $?
 ebegin "pushing commit to repo"
 cg push
 eend $?
+
