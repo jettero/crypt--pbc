@@ -1,5 +1,13 @@
-0.7.20.0-0.4.4:  Mon Jan 15 11:00:57 EST 2007
-   - jettero changed the version number in the pm file
+0.7.20.0-0.4.6:  Mon Feb 01 15:00 EST 2007
+   - jettero changed the version number in the pm file and ran the usual battery of tests
+   - interestingly, 0.7.20-0.4.5 was never released due to bugs in some esoteric math problem in Ben's cache.
+
+0.7.20.0-0.4.5:  Mon Feb 01 15:00 EST 2007
+   - jettero changed the version number in the pm file and ran the usual battery of tests
+   - several tests failed... investigating...
+
+0.7.20.0-0.4.4:  Mon Jan 30??? EST 2007
+   - jettero changed the version number in the pm file and made sure all the tests complete
 
 0.7.20.0-0.4.3:  Mon Jan 15 11:00:57 EST 2007
    - jettero told PBC.pm and pairing.xs about the new
