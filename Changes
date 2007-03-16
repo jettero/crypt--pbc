@@ -1,3 +1,6 @@
+0.7.20.0-0.4.7:  Mon Feb 01 15:00 EST 2007
+   - jettero changed the version number in the pm file and ran the usual battery of tests
+
 0.7.20.0-0.4.6:  Mon Feb 01 15:00 EST 2007
    - jettero changed the version number in the pm file and ran the usual battery of tests
    - interestingly, 0.7.20-0.4.5 was never released due to bugs in some esoteric math problem in Ben's cache.
