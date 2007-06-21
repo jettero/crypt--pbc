@@ -78,7 +78,7 @@ my $shh = $ENV{MAX_PERM_TIME} < 15;
 for my $function (sort slam_sort keys %slam_these) {
     my @a = &permute( $slam_these{$function} => @i );
 
-    # warn " [31mWARN($function, " . (int @a) . ")[0m";
+    warn " [31mWARN($function, " . (int @a) . ")[0m";
 
     if( $total_per > 0 and (my $delta_t = time - $start_time) > 0 ) {
         my $v = "";

@@ -129,7 +129,10 @@ sub set_to_hash {
     my $hash = shift;
 
     croak "provide something to set the element to" unless defined $hash and length $hash > 0;
+    my $type = $tt{$$this}{t};
+    warn " >type=$type; hash=$hash...@_...<\n"; 
     &Crypt::PBC::element_from_hash($this, $hash);
+    warn " <type=$type; hash=$hash...@_...>\n"; 
 
     $this;
 }
@@ -139,7 +142,7 @@ sub set_to_int {
     my $this = shift;
     my $int  = shift;
 
-    croak "int provided ($int) is not acceptable" unless $int =~ m/^\-?[0-9]+$/s;
+    croak "int provided ($int) is not acceptable" unless $int =~ m/^\-?[0-9]+\z/s;
 
     &Crypt::PBC::element_set_si($this, $int);
 
@@ -219,11 +222,13 @@ sub is_eq {
 # is_sqr {{{
 sub is_sqr {
     my $this = shift;
-    my $type = $tt{$$this}{t};
 
     croak "LHS should have a type" unless exists $tt{$$this};
+    my $type = $tt{$$this}{t};
+
     return 1 if $type eq "G1";
     return 1 if $type eq "G2";
+    return 1 if $type eq "GT";
 
     return &Crypt::PBC::element_is_sqr( $this );
 }
@@ -295,6 +300,11 @@ sub pow_bigint {
     my $this = shift;
     my $base = shift;
     my $expo = shift;
+
+    if( defined $base and not defined $expo ) {
+        $expo = $base;
+        $base = $this;
+    }
 
     croak "EXPO provided is not a bigint" unless ref $expo and $expo->isa("Math::BigInt");
     croak "LHS and BASE must be algebraically similar" unless exists $tt{$$this} and $tt{$$this}{c} eq $tt{$$base}{c};
@@ -555,12 +565,12 @@ sub mul_int {
     if( $rhs2 ) {
         croak "LHS, RHS1 must be algebraically similar" 
         unless exists $tt{$$lhs} and $tt{$$lhs}{c} eq $tt{$$rhs1}{c};
-        croak "int provided ($rhs2) is not acceptable" unless $rhs2 =~ m/^\-?[0-9]+$/s;
+        croak "int provided ($rhs2) is not acceptable" unless $rhs2 =~ m/^\-?[0-9]+\z/s;
 
         &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
 
     } else {
-        croak "int provided ($rhs1) is not acceptable" unless $rhs1 =~ m/^\-?[0-9]+$/s;
+        croak "int provided ($rhs1) is not acceptable" unless $rhs1 =~ m/^\-?[0-9]+\z/s;
 
         &Crypt::PBC::element_mul_si( $lhs, $lhs, $rhs1 );
     }
@@ -664,7 +674,7 @@ our @ISA = qw(Exporter);
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-our $VERSION = '0.7.20.0-0.4.9';
+our $VERSION = '0.7.20.0-0.4.10';
 
 sub AUTOLOAD {
     my $constname;
@@ -698,7 +708,7 @@ sub new {
         $arg =~ s/^\s*//s;
         $arg =~ s/\s*$//s;
 
-        if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+$/s ) {
+        if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+\z/s ) {
             $that = &Crypt::PBC::pairing_init_str($arg);
 
         } else {

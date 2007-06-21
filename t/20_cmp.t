@@ -9,12 +9,11 @@ use Crypt::PBC;
 
 my $c   = new Crypt::PBC("params_d.txt");
 my @all = ( $c->init_G1, $c->init_G2, $c->init_GT, $c->init_Zr );
-my @tz  = @all[2,3];
 my @noT = @all[0,1,3];
 
-plan tests => 4*@tz + @noT + 2;
+plan tests => 4*1 + @noT + 2;
 
-for my $e (@tz) {
+for my $e ($all[3]) { # this used to test over 2 and 3, but when GT became Zr^k, 1=0 sorta...
     $e->set0; ok( $e->is0 and not $e->is1 );
     $e->set1; ok( $e->is1 and not $e->is0 );
 

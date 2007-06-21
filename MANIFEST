@@ -33,3 +33,4 @@ t/80_slamtest_d.t
 t/14_pow_zn_one_arg.t
 t/14_from_bytes.t
 pbctest.c
+params_d159.txt
