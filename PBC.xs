@@ -1,4 +1,4 @@
-#include <pbc.h>
+#include <pbc/pbc.h>
 
 #include "EXTERN.h"
 #include "perl.h"
