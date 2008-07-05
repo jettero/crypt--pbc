@@ -15,6 +15,7 @@ WriteMakefile(
     VERSION_FROM      => 'PBC.pm',
     PREREQ_PM         => { 
         'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0, 'Math::BigInt' => 0,
+        version=>0.75,
     },
 
     ($] >= 5.005 ?
