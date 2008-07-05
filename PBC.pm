@@ -130,9 +130,9 @@ sub set_to_hash {
 
     croak "provide something to set the element to" unless defined $hash and length $hash > 0;
     my $type = $tt{$$this}{t};
-    warn " >type=$type; hash=$hash...@_...<\n"; 
+  # warn " >type=$type; hash=$hash...@_...<\n"; 
     &Crypt::PBC::element_from_hash($this, $hash);
-    warn " <type=$type; hash=$hash...@_...>\n"; 
+  # warn " <type=$type; hash=$hash...@_...>\n"; 
 
     $this;
 }
