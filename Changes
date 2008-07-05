@@ -6,18 +6,23 @@
      reports will stop when they don't have libpbc)
 
 0.7.20.0-0.4.7:  Mon Feb 01 15:00 EST 2007
-   - jettero changed the version number in the pm file and ran the usual battery of tests
+   - jettero changed the version number in the pm file and ran
+     the usual battery of tests
 
 0.7.20.0-0.4.6:  Mon Feb 01 15:00 EST 2007
-   - jettero changed the version number in the pm file and ran the usual battery of tests
-   - interestingly, 0.7.20-0.4.5 was never released due to bugs in some esoteric math problem in Ben's cache.
+   - jettero changed the version number in the pm file and ran
+     the usual battery of tests
+   - interestingly, 0.7.20-0.4.5 was never released due to bugs
+     in some esoteric math problem in Ben's cache.
 
 0.7.20.0-0.4.5:  Mon Feb 01 15:00 EST 2007
-   - jettero changed the version number in the pm file and ran the usual battery of tests
+   - jettero changed the version number in the pm file and ran
+     the usual battery of tests
    - several tests failed... investigating...
 
 0.7.20.0-0.4.4:  Mon Jan 30??? EST 2007
-   - jettero changed the version number in the pm file and made sure all the tests complete
+   - jettero changed the version number in the pm file and made
+     sure all the tests complete
 
 0.7.20.0-0.4.3:  Mon Jan 15 11:00:57 EST 2007
    - jettero told PBC.pm and pairing.xs about the new
@@ -27,38 +32,41 @@
    - jettero added element_from_bytes and set_to_bytes
 
 0.7.18.3-0.4.2:  Sat Dec  9 12:14:56 EST 2006
-   - jettero made pow_zn capable of taking a single argument, which should
-     be pretty clear
+   - jettero made pow_zn capable of taking a single argument,
+     which should be pretty clear
    - jettero added a tests for that
 
 0.7.18.1-0.4.2:  Sat Dec  2 09:54 EST 2006
-   - I created a slow but reasonably accurate way of detecting whether the
-     pairing is symmetric, for purposes of deciding whether G1 and G2 are
-     algebraically similar.  This is for my own testing purposes until Ben
-     adds pairing_is_symmetric() to libpbc.
+   - I created a slow but reasonably accurate way of detecting
+     whether the pairing is symmetric, for purposes of deciding
+     whether G1 and G2 are algebraically similar.  This is for my
+     own testing purposes until Ben adds pairing_is_symmetric()
+     to libpbc.
 
 0.4.2-0.7.17.1:  Sat Dec  2 09:36:55 EST 2006
    - this is a bugfix for the version released 15 minutes ago.
 
 0.4.2-0.7.17:  Sat Dec  2 09:21:55 EST 2006
    - This is a documentation fix only.
-   - There will be a new version very soon though.  I need to make serious
-     changes to the argument type restrictions as they should apparently
-     not be the same on different types of curves (symmetric vs asymmetric
-     curves).
+   - There will be a new version very soon though.  I need to
+     make serious changes to the argument type restrictions as
+     they should apparently not be the same on different types of
+     curves (symmetric vs asymmetric curves).
 
 0.4.2-0.7.16:  Fri Dec  1 09:20:30 EST 2006
-   - jettero made more synonyms for pairing_apply because of frequent typos
+   - jettero made more synonyms for pairing_apply because of
+     frequent typos
    - jettero fixed several documenation typos
 
 0.4.2-0.7.15:  Tue Nov 28 10:16:07 EST 2006
    - jettero reversioned the package in preparation for launch.
 
 0.4.1-0.5.04:  Tue Nov 28 10:13:55 EST 2006
-   - jettero added the slamtest, which slams functions with all the wrong
-     arguments, literally, in the permutation sense.  It ran all night.
-     The test in the shipped-package is _much_ shorter, but can be extended
-     with 'MAX_PERM_TIME=1000 make test'
+   - jettero added the slamtest, which slams functions with all
+     the wrong arguments, literally, in the permutation sense.
+     It ran all night.  The test in the shipped-package is _much_
+     shorter, but can be extended with 'MAX_PERM_TIME=1000 make
+     test'
 
 0.4.1-0.5.03:  Sun Nov 26 22:26:33 EST 2006
    - jettero added a memory (leak) test
@@ -67,33 +75,37 @@
    - jettero added a couple more tests and boatloads of docs
 
 0.3.17-0.5.01:  Mon Nov 20 08:38:04 EST 2006
-   - jettero completed a few more t/ tests (this time for the earith.xs).
+   - jettero completed a few more t/ tests (this time for the
+     earith.xs).
 
 0.3.17-0.5.00:  Thu Nov 16 20:03:34 EST 2006
-   - jettero reversioned the package to represent the version of libpbc it
-     is intended to work with in addition to the version of the perl API.
-     0.3.17-0.5.00 means PBC.pm version 0.5.00 intended to work with libpbc
-     0.3.17.
+   - jettero reversioned the package to represent the version of
+     libpbc it is intended to work with in addition to the
+     version of the perl API.  0.3.17-0.5.00 means PBC.pm version
+     0.5.00 intended to work with libpbc 0.3.17.
 
 0.10:  Tue Nov 14 07:12:55 EST 2006
-   - jettero added a bit of type-saftey to PBC.pm. It seems libpbc
-     segfaults when the LHS and BASE of pow_zn() aren't in the same group,
-     or when pairing_apply() is applied on arguments that aren't
-     GT=e_hat(G1, G2); and that took some figurin'.
+   - jettero added a bit of type-saftey to PBC.pm. It seems
+     libpbc segfaults when the LHS and BASE of pow_zn() aren't in
+     the same group, or when pairing_apply() is applied on
+     arguments that aren't GT=e_hat(G1, G2); and that took some
+     figurin'.
 
 0.09:  Sun Nov 12 15:13:33 EST 2006
-   - jettero started using element2bytes instead of element2mpz to print
-     elements. Many of the elements are atually quadratics, and poly coeffs
-     and the PBC crew do not make it simple to get to the mpzs.
+   - jettero started using element2bytes instead of element2mpz
+     to print elements. Many of the elements are atually
+     quadratics, and poly coeffs and the PBC crew do not make it
+     simple to get to the mpzs.
 
 0.08:  Sun Nov 12 11:23:48 EST 2006
-   - jettero noticed possible bugs in either the init or as_str of
-     elements...
+   - jettero noticed possible bugs in either the init or as_str
+     of elements...
 
 0.07:  Sun Nov 12 09:03:27 EST 2006
    - jettero fixed my changelog app
 
 0.01  Fri Nov 10 23:07:15 2006
-    - I got this package all skeled up ...  I need a small part of it for a
-      school project so I'm going to focus on that part first.
+    - I got this package all skeled up ...  I need a small part
+      of it for a school project so I'm going to focus on that
+      part first.
 
