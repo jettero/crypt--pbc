@@ -665,11 +665,7 @@ package Crypt::PBC;
 use strict;
 use warnings;
 use Carp;
-
-require Exporter;
-use AutoLoader;
-
-our @ISA = qw(Exporter);
+use base 'Exporter';
 
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
@@ -725,4 +721,4 @@ sub new {
 
 # }}}
 
-__END__
+1;

@@ -22,7 +22,7 @@ t/13_2op_arith.t
 t/15_mpz.t
 t/13_pow_arith.t
 TODO
-lib/Crypt/PBC.pod
+PBC.pod
 lib/Crypt/PBC/Element.pod
 lib/Crypt/PBC/Pairing.pod
 t/35_scopefault.t
@@ -35,3 +35,4 @@ t/14_pow_zn_one_arg.t
 t/14_from_bytes.t
 pbctest.c
 params_d159.txt
+Build.PL

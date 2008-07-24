@@ -4,16 +4,16 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#include "ppport.h"
+#include "../../ppport.h"
 
 MODULE = Crypt::PBC		PACKAGE = Crypt::PBC		
 
 PROTOTYPES: ENABLE
 
-INCLUDE: pairing.xs
-INCLUDE:   einit.xs
-INCLUDE:  earith.xs
-INCLUDE:   ecomp.xs
+INCLUDE: ../../pairing.xs
+INCLUDE:   ../../einit.xs
+INCLUDE:  ../../earith.xs
+INCLUDE:   ../../ecomp.xs
 
 void
 element_fprintf(stream,format,element)

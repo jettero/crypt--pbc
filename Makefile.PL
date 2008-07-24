@@ -1,26 +1,31 @@
-use strict;
-use lib qw(inc);
-use Devel::CheckLib;
-use ExtUtils::MakeMaker;
 
-check_lib_or_exit( lib => [qw(pbc)], header => "pbc/pbc.h" );
+open DUMP, ">Makefile" or die $!;
+print DUMP << "EOMF"
+default: Build Makefile
+	./Build
 
-WriteMakefile(
-    NAME              => 'Crypt::PBC',
-    VERSION_FROM      => 'PBC.pm',
-    PREREQ_PM         => { 
-        'MIME::Base64' => 0, 'Math::BigInt::GMP' => 0, 'Math::BigInt' => 0,
-        version=>0.75,
-    },
+Makefile: Makefile.PL
+	$^X Makefile.PL
 
-    ($] >= 5.005 ?
-      (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
-       AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
+Build: Build.PL
+	$^X Build.PL
 
-    LIBS => ['-lpbc'],
-    clean => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
-    depend => {
-        "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
-    },
+.PHONY: default distclean
 
-);
+distclean: Build Makefile
+	./Build \$@
+
+test: Build Makefile
+	./Build \$@
+
+dist: Build Makefile
+	./Build \$@
+
+.SUFFIXES:  # This turns off the built in rules.  It is necessary to do so because of the %: rule
+
+%:
+	./Build \$@
+
+EOMF
+
+# meh
