@@ -36,3 +36,4 @@ t/14_from_bytes.t
 pbctest.c
 params_d159.txt
 Build.PL
+META.yml
