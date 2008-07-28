@@ -1,3 +1,6 @@
+0.7.21.2.4.18: Mon Jul 28 16:39:23 EDT 2008
+   - I added libchecks to the other .PL
+
 0.7.21.1.4.18: Thu Jul 24 06:54:02 EDT 2008
    - brought M::B into the mix.  EU::MM will cause version.pm
      problems eventually.

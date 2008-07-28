@@ -1,3 +1,8 @@
+use strict;
+use lib qw(inc);
+use Devel::CheckLib;
+
+check_lib_or_exit( lib => [qw(pbc)], header => "pbc/pbc.h" );
 
 open DUMP, ">Makefile" or die $!;
 print DUMP << "EOMF"
