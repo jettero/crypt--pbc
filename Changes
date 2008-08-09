@@ -1,3 +1,8 @@
+0.8: Sat Aug  9 07:55:29 EDT 2008
+   - I have given up on version.pm and Module::Build.  They both
+     cause more problems than they solve.
+   - I added the libpbc version to the README
+
 0.7.21.3.4.18: Thu Jul 31 14:33:42 EDT 2008
    - removed the Makefile.PL, causes problems
 

@@ -1,14 +1,6 @@
-INSTALLATION
+LIBPBC
 
-To install this module type the following:
-
-  0. install libpbc and libpbc-dev
-
-  1.
-       perl Build.PL
-       ./Build
-       ./Build test
-       ./Build install
+This is tested against libpbc version 0.4.18 .
 
 COPYRIGHT
 

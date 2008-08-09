@@ -670,7 +670,7 @@ use base 'Exporter';
 our %EXPORT_TAGS = ( 'all' => [ qw( ) ] ); 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw( );
-use version; our $VERSION = qv('0.7.20.3.4.18');
+our $VERSION = 0.8;
 
 sub AUTOLOAD {
     my $constname;
