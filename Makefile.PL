@@ -3,7 +3,23 @@ use lib qw(inc);
 use Devel::CheckLib;
 use ExtUtils::MakeMaker;
 
-check_lib_or_exit( lib => [qw(pbc)], header => "pbc/pbc.h" );
+eval { assert_lib( lib => [qw(pbc)], header => "pbc/pbc.h" ); };
+if( $@ ) {
+    warn "Error locating libpbc: $@";
+    local $| = 1;
+    print "Would you like to download and build libpbc automatically? (y/N enter) ";
+    my $res = <>;
+    if( $res =~ m/y/i ) {
+        my $ver = "0.4.18";
+        exit 0 unless &grab_libpbc($ver);
+        exit 0 unless &unpack_libpbc($ver);
+
+    } else {
+        exit 0;
+    }
+}
+
+my @libs = "-lpbc";
 
 WriteMakefile(
     NAME              => 'Crypt::PBC',
@@ -18,10 +34,65 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
 
-    LIBS => ['-lpbc'],
+    LIBS => \@libs,
     clean => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },
 
 );
+
+sub unpack_libpbc {
+    my $ver = shift;
+    return 1 if -d "pbc-$ver";
+
+    my $worked = 0;
+    eval {
+        eval "require Archive::Tar;"; die $@ if $@;
+        my $tar = Archive::Tar->new;
+
+        $tar->read("pbc-$ver.tar.gz", 1);
+        $tar->extract;
+
+        $worked = 1 if -x "pbc-$ver/configure";
+    };
+    warn "Archive::Tar unpack problem: $@\n" if $@;
+
+    unless( $worked ) {
+    }
+
+    warn "failed to unpack pbc\n" unless $worked;
+    $worked;
+}
+
+sub grab_libpbc {
+    my $ver = shift;
+    return 1 if -f "pbc-$ver.tar.gz";
+
+    my $worked = 0;
+    eval {
+        eval "require LWP::UserAgent"; die $@ if $@;
+        my $ua = LWP::UserAgent->new;
+           $ua->agent("crypt-pbc-fetcher/1.0");
+
+        my $req = HTTP::Request->new(GET => "http://voltar.org/pbcfiles/pbc-$ver.tar.gz");
+        my $res = $ua->request($req, "pbc-$ver.tar.gz");
+
+        $worked = 1 if $res->is_success;
+    };
+    warn "LWP fetch problem: $@\n" if $@;
+
+    unless( $worked ) {
+        if( 0 != system(wget => '-O', "pbc-$ver.tar.gz", "http://voltar.org/pbcfiles/pbc-$ver.tar.gz") ) {
+            warn "couldn't fetch with wget...\n";
+            if( 0 != system(curl => '-o', "pbc-$ver.tar.gz", "http://voltar.org/pbcfiles/pbc-$ver.tar.gz") ) {
+                warn "couldn't fetch with curl ...\n";
+            }
+        }
+
+        $worked = 1 if -f "pbc-$ver.tar.gz";
+    }
+
+    warn "failed to download pbc\n" unless $worked;
+    $worked;
+}
