@@ -1,5 +1,5 @@
 
- ** Updated: 12/02 **
+ ** Updated: 12/02/2006 **
 
  It would seem G1 and G2 are interchangable in some curves!
 
@@ -18,7 +18,7 @@
    - "The next release will have int pairing_is_symmetric(pairing_ptr p)
      function, which tells you when G1 and G2 are the same. " -- Lynn
 
- ** Updated: 11/28 **
+ ** Updated: 11/28/2006 **
 
  - There is no params support at all yet, and there probably should be.
  - There are no mathematical tests at all yet, and there probably should
