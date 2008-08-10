@@ -3,6 +3,10 @@ use lib qw(inc);
 use Devel::CheckLib;
 use ExtUtils::MakeMaker;
 
+my $ver    = "0.4.18";
+my @libs   = "-lpbc";
+my $extlib = 0;
+
 eval { assert_lib( lib => [qw(pbc)], header => "pbc/pbc.h" ); };
 if( $@ ) {
     warn "Error locating libpbc: $@";
@@ -10,16 +14,14 @@ if( $@ ) {
     print "Would you like to download and build libpbc automatically? (y/N enter) ";
     my $res = <>;
     if( $res =~ m/y/i ) {
-        my $ver = "0.4.18";
         exit 0 unless &grab_libpbc($ver);
         exit 0 unless &unpack_libpbc($ver);
+        exit 0 unless &build_libpbc($ver);
 
     } else {
         exit 0;
     }
 }
-
-my @libs = "-lpbc";
 
 WriteMakefile(
     NAME              => 'Crypt::PBC',
@@ -34,13 +36,33 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
 
-    LIBS => \@libs,
-    clean => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
+	($extlib ? (MYEXTLIB => 'libpbc/.libs/libpbc$(LIB_EXT)') :()),
+
+    LIBS   => \@libs,
+    clean  => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },
 
 );
+
+sub build_libpbc {
+    my $ver = shift;
+    # @libs = ();
+    $extlib = 1;
+
+    # we don't literally build it, we add things to the makefile
+    *MY::postamble = \&postamble;
+}
+
+sub postamble {
+"
+PBC\$(OBJ_EXT) : \$(MYEXTLIB)
+
+\$(MYEXTLIB):
+	cd pbc-$ver && ./configure && \$(MAKE) \$(PASTHRU)
+";
+}
 
 sub unpack_libpbc {
     my $ver = shift;
@@ -59,6 +81,9 @@ sub unpack_libpbc {
     warn "Archive::Tar unpack problem: $@\n" if $@;
 
     unless( $worked ) {
+        if( system("gzip -dc pbc-$ver.tar.gz | tar -xvf -") == 0 ) {
+            $worked = 1 if -x "pbc-$ver/configure";
+        }
     }
 
     warn "failed to unpack pbc\n" unless $worked;
