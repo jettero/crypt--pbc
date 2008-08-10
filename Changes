@@ -1,6 +1,9 @@
 0.8: Sun Aug 10 07:03:58 EDT 2008
    - there were bugs in the manifest, so some of the tests
      weren't shipping.
+   - I taught the distribution to pull libpbc, build, and link
+     against it.  I expect it won't work reliably on other
+     systems, but it works fine on mine.
 
 0.8: Sat Aug  9 07:55:29 EDT 2008
    - I have given up on version.pm and Module::Build.  They both

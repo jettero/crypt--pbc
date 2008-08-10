@@ -5,6 +5,7 @@ use ExtUtils::MakeMaker;
 
 my $ver    = "0.4.18";
 my @libs   = "-lpbc";
+my @inc    = (qw(-I/usr/include/pbc -I/usr/local/include/pbc));
 my $extlib = 0;
 
 eval { assert_lib( lib => [qw(pbc)], header => "pbc/pbc.h" ); };
@@ -12,7 +13,8 @@ if( $@ ) {
     warn "Error locating libpbc: $@";
     local $| = 1;
     print "Would you like to download and build libpbc automatically? (y/N enter) ";
-    my $res = <>;
+    print "\n";
+    my $res = ($ENV{BUILD_HERE} || <>);
     if( $res =~ m/y/i ) {
         exit 0 unless &grab_libpbc($ver);
         exit 0 unless &unpack_libpbc($ver);
@@ -36,9 +38,10 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
 
-	($extlib ? (MYEXTLIB => 'libpbc/.libs/libpbc$(LIB_EXT)') :()),
+	($extlib ? (MYEXTLIB => "pbc-$ver/.libs/libpbc.so") :()),
 
-    LIBS   => \@libs,
+    INC    => "@inc",
+    LIBS   => "@libs",
     clean  => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
@@ -48,7 +51,8 @@ WriteMakefile(
 
 sub build_libpbc {
     my $ver = shift;
-    # @libs = ();
+    @libs = ("-Lpbc-$ver/.libs/ -lpbc");
+    @inc  = "-Ipbc-$ver/include";
     $extlib = 1;
 
     # we don't literally build it, we add things to the makefile
@@ -67,6 +71,8 @@ PBC\$(OBJ_EXT) : \$(MYEXTLIB)
 sub unpack_libpbc {
     my $ver = shift;
     return 1 if -d "pbc-$ver";
+
+    warn "unpacking libpbc from pbc-$ver.tar.gz...\n";
 
     my $worked = 0;
     eval {
@@ -93,6 +99,8 @@ sub unpack_libpbc {
 sub grab_libpbc {
     my $ver = shift;
     return 1 if -f "pbc-$ver.tar.gz";
+
+    warn "downloading libpbc from http://voltar.org/pbcfiles/pbc-$ver.tar.gz...\n";
 
     my $worked = 0;
     eval {
