@@ -36,3 +36,6 @@ pbctest.c
 params_d159.txt
 Makefile.PL
 META.yml
+t/03_testnew.t
+t/09_pairings_tests.t
+t/10_test_symmetric.t
