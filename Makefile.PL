@@ -50,9 +50,10 @@ WriteMakefile(
 
 sub build_libpbc {
     my $ver = shift;
+
 	@extra = (
         MYEXTLIB => "libpbc.a",
-        INC      => "-Ipbc-$ver/include @inc",
+        INC      => "-Ipbc-$ver/include",
         LIBS     => "-lgmp",
     );
 

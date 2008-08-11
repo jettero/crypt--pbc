@@ -1,3 +1,7 @@
+0.85: Mon Aug 11 12:05:47 EDT 2008
+   - introduced a bug in the Makefile.PL while fixing something
+     else.
+
 0.81: Mon Aug 11 07:17:47 EDT 2008
    - minor doc fixes were necessary
 
