@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 my $ver    = "0.4.18";
 my @extra  = (
     LIBS => ['-lpbc'],
-    INC  => [my @inc = qw(-I/usr/include/pbc -I/usr/local/include/pbc)],
+    INC  => join(" ", map {"-I$_"} (my @inc = qw(/usr/include/pbc /usr/local/include/pbc))),
 );
 
 eval { assert_lib( lib => [qw(pbc)], incpath =>[@inc], header => "pbc.h" ); };
