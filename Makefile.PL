@@ -4,11 +4,12 @@ use Devel::CheckLib;
 use ExtUtils::MakeMaker;
 
 my $ver    = "0.4.18";
-my @libs   = "-lpbc";
-my @inc    = (qw(-I/usr/include/pbc -I/usr/local/include/pbc));
-my $extlib = 0;
+my @extra  = (
+    LIBS => ['-lpbc'],
+    INC  => [qw(-I/usr/include/pbc -I/usr/local/include/pbc)],
+);
 
-eval { assert_lib( lib => [qw(pbc)], header => "pbc/pbc.h" ); };
+eval { assert_lib( lib => [qw(pbc)], incpath =>[@inc], header => "pbc.h" ); };
 if( $@ ) {
     warn "Error locating libpbc: $@";
     local $| = 1;
@@ -38,11 +39,9 @@ WriteMakefile(
       (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
 
-	($extlib ? (MYEXTLIB => "pbc-$ver/.libs/libpbc.so") :()),
+    @extra,
 
-    INC    => "@inc",
-    LIBS   => "@libs",
-    clean  => { FILES => ".pbctest slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
+    clean  => { FILES => ".pbctest pbc-$ver.tar.gz pbc-$ver slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },
@@ -51,9 +50,12 @@ WriteMakefile(
 
 sub build_libpbc {
     my $ver = shift;
-    @libs = ("-Lpbc-$ver/.libs/ -lpbc");
-    @inc  = "-Ipbc-$ver/include";
-    $extlib = 1;
+	@extra = (
+        LIBS     => ("-Lpbc-$ver/.libs/ -lpbc"),
+        MYEXTLIB => "pbc-$ver/.libs/libpbc.so",
+        INC      => "-Ipbc-$ver/include",
+        OBJECT   => "PBC.o pbc-$ver/.libs/libpbc.a",
+    );
 
     # we don't literally build it, we add things to the makefile
     *MY::postamble = \&postamble;
