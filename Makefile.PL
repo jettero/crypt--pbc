@@ -53,7 +53,12 @@ sub build_libpbc {
 	@extra = (
         MYEXTLIB => "libpbc.a",
         INC      => "-Ipbc-$ver/include @inc",
+        LIBS     => "-lgmp",
     );
+
+    warn "(You do need libgmp installed in order for this PBC.so to function...)\n";
+    check_lib_or_exit( lib => 'gmp' );
+    warn "(... it seems you have libgmp.  Nevermind.)\n";
 
     # we don't literally build it, we add things to the makefile
     *MY::postamble = \&postamble;
