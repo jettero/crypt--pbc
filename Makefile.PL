@@ -41,7 +41,7 @@ WriteMakefile(
 
     @extra,
 
-    clean  => { FILES => ".pbctest pbc-$ver.tar.gz pbc-$ver slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
+    clean  => { FILES => "libpbc.a .pbctest pbc-$ver.tar.gz pbc-$ver slamtest.log " . join(" ", grep {s/\.c$//} <*.c>) },
     depend => {
         "PBC.c" => " earith.xs ecomp.xs einit.xs pairing.xs ",
     },
@@ -51,10 +51,8 @@ WriteMakefile(
 sub build_libpbc {
     my $ver = shift;
 	@extra = (
-        LIBS     => ("-Lpbc-$ver/.libs/ -lpbc"),
-        MYEXTLIB => "pbc-$ver/.libs/libpbc.so",
+        MYEXTLIB => "libpbc.a",
         INC      => "-Ipbc-$ver/include @inc",
-        OBJECT   => join(" ", "PBC.o", map {chomp $_; $_} `cat olst.txt`),
     );
 
     # we don't literally build it, we add things to the makefile
@@ -65,7 +63,10 @@ sub postamble {
 "
 PBC\$(OBJ_EXT) : \$(MYEXTLIB)
 
-\$(MYEXTLIB):
+\$(MYEXTLIB): pbc-$ver/.libs/libpbc.so
+	\$(AR) \(AR_STATIC_ARGS) \$@ pbc-$ver/.libs/*.o
+
+pbc-$ver/.libs/libpbc.so:
 	cd pbc-$ver && ./configure && \$(MAKE) \$(PASTHRU)
 ";
 }
