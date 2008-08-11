@@ -73,55 +73,54 @@ Mixing and matching direct calls with the Perl Module methods is a sure way
 to run into trouble, since the Perl Module methods tag the PBC elements
 with a type.
 
-+++ NOTE +++
- 
-You can use these functions successfully, but the intended interface was
-described above. L<Crypt::PBC::Element> describes that interface in detail.
-
-+++ /NOTE +++
-
 =head2 Pairing Functions
 
+(You can use these functions successfully, but the intended interface was
+described above. L<Crypt::PBC::Element> describes that interface in detail.)
+
     # Initialize a pairing from an open file handle
-    my $pairing = &Crypt::PBC::pairing_init_stream(\*STDIN);
+    my $pairing = Crypt::PBC::pairing_init_stream(\*STDIN);
 
     # Initialize a pairing from a a $string
-    my $pairing = &Crypt::PBC::pairing_init_str($string);
+    my $pairing = Crypt::PBC::pairing_init_str($string);
 
     # Clear the memory malloced for the pairing
-    &Crypt::PBC::pairing_clear($pairing);
+    Crypt::PBC::pairing_clear($pairing);
 
     # Apply the pairing.  Be careful here.  If you pass the wrong type of
     # elements, GT = apply(G1, G2), this will segmentation fault!  Please
     # see the PBC documentation for further information:
     #   http://crypto.stanford.edu/pbc/manual/
-    &Crypt::PBC::pairing_apply($LHS, $RHS1, $RHS2, $pairing);
+    Crypt::PBC::pairing_apply($LHS, $RHS1, $RHS2, $pairing);
 
 =head2 Element Initializer and Assignment Functions
 
-    my $element_in_G1 = &Crypt::PBC::element_init_G1($pairing);
-    my $element_in_G2 = &Crypt::PBC::element_init_G2($pairing);
-    my $element_in_GT = &Crypt::PBC::element_init_GT($pairing);
-    my $element_in_Zr = &Crypt::PBC::element_init_Zr($pairing);
+(You can use these functions successfully, but the intended interface was
+described above. L<Crypt::PBC::Element> describes that interface in detail.)
+
+    my $element_in_G1 = Crypt::PBC::element_init_G1($pairing);
+    my $element_in_G2 = Crypt::PBC::element_init_G2($pairing);
+    my $element_in_GT = Crypt::PBC::element_init_GT($pairing);
+    my $element_in_Zr = Crypt::PBC::element_init_Zr($pairing);
 
     # Do not forget to clear your memory!
-    &Crypt::PBC::element_clear( $element ); # in any group
+    Crypt::PBC::element_clear( $element ); # in any group
 
     # assign some random to $element
     # (uses /dev/urandom if possible, or rand() if necessary)
-    &Crypt::PBC::element_random( $element );
-    &Crypt::PBC::element_set0( $element ); # set to 0
-    &Crypt::PBC::element_set1( $element ); # set to 1
-    &Crypt::PBC::element_set( $a, $b );    # a=b
-    &Crypt::PBC::element_set_si( $a, 5 );  # a=5
+    Crypt::PBC::element_random( $element );
+    Crypt::PBC::element_set0( $element ); # set to 0
+    Crypt::PBC::element_set1( $element ); # set to 1
+    Crypt::PBC::element_set( $a, $b );    # a=b
+    Crypt::PBC::element_set_si( $a, 5 );  # a=5
 
-    &Crypt::PBC::element_set_mpz( $a, $bigint ); 
+    Crypt::PBC::element_set_mpz( $a, $bigint ); 
       # For this one, construct a Math::BigInt::GMP and pass that for
       # $bigint. Alternatively, you can construct a $i=Math::BigInt and
       # pass the $i->{value}.  (That interface is probably not well
       # supported but is the only one of which the author is aware.)
 
-    &Crypt::PBC::element_from_hash( $element, $hash ); 
+    Crypt::PBC::element_from_hash( $element, $hash ); 
       # Set $element based on the bytes in $hash.  You must use some kind
       # of hashing algorithm (e.g., Digest::SHA1) to map data to an
       # element:
@@ -131,76 +130,85 @@ described above. L<Crypt::PBC::Element> describes that interface in detail.
       # which is the case for most of the bundled pairing parameters)."
       # -- Lynn
 
-    &Crypt::PBC::element_from_bytes( $element, $bytes ); 
+    Crypt::PBC::element_from_bytes( $element, $bytes ); 
       # Set $element based on the bytes in $bytes.  this probably isn't useful
       # unless $bytes is like $spewed_result from element_export() below.
 
 =head2 Arithmetic Functions
 
+(You can use these functions successfully, but the intended interface was
+described above. L<Crypt::PBC::Element> describes that interface in detail.)
+
     # lhs=rhs1+rhs2 -- make sure these are all the same type ...
-    &Crypt::PBC::element_add($lhs, $rhs1, $rhs2);
-    &Crypt::PBC::element_sub($lhs, $rhs1, $rhs2); # lhs=rhs1-rhs2
-    &Crypt::PBC::element_mul($lhs, $rhs1, $rhs2);
-    &Crypt::PBC::element_div($lhs, $rhs1, $rhs2);
+    Crypt::PBC::element_add($lhs, $rhs1, $rhs2);
+    Crypt::PBC::element_sub($lhs, $rhs1, $rhs2); # lhs=rhs1-rhs2
+    Crypt::PBC::element_mul($lhs, $rhs1, $rhs2);
+    Crypt::PBC::element_div($lhs, $rhs1, $rhs2);
 
     # (whatever these mean is in the context of the $pairing)
-    &Crypt::PBC::element_double($lhs, $rhs); # lhs = 2*rhs 
-    &Crypt::PBC::element_halve( $lhs, $rhs); # lhs = rhs/2
-    &Crypt::PBC::element_square($lhs, $rhs); # lhs = rhs^2
-    &Crypt::PBC::element_neg(   $lhs, $rhs); # (please see the PBC docs)
-    &Crypt::PBC::element_invert($lhs, $rhs); # lhs = 1/rhs
+    Crypt::PBC::element_double($lhs, $rhs); # lhs = 2*rhs 
+    Crypt::PBC::element_halve( $lhs, $rhs); # lhs = rhs/2
+    Crypt::PBC::element_square($lhs, $rhs); # lhs = rhs^2
+    Crypt::PBC::element_neg(   $lhs, $rhs); # (please see the PBC docs)
+    Crypt::PBC::element_invert($lhs, $rhs); # lhs = 1/rhs
 
     # Here's a few other choices for mul
-    &Crypt::PBC::element_mul_zn( $lhs, $rhs1, $rhs2 );
+    Crypt::PBC::element_mul_zn( $lhs, $rhs1, $rhs2 );
       # $rhs1 and $lhs should be of the same type, but here $rhs2 should be
       # in Zr instead of being in the same group like in element_mul()
       # above 
 
-    &Crypt::PBC::element_mul_mpz( $lhs, $rhs1, $rhs2 );
+    Crypt::PBC::element_mul_mpz( $lhs, $rhs1, $rhs2 );
       # For this one, construct a Math::BigInt::GMP and pass that for
       # $rhs2 or pass $i->{value} from a Math::BigInt.
 
-    &Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
+    Crypt::PBC::element_mul_si( $lhs, $rhs1, $rhs2 );
       # Here, $rhs2 is a regular old integer...
 
-    &Crypt::PBC::element_pow_zn( $lhs, $a, $n); # lhs = a^n
-    &Crypt::PBC::element_pow2_zn($lhs, $a1, $n1, $a2, $n2); # a1^n1 * a2^n2
-    &Crypt::PBC::element_pow3_zn($lhs, $a1, $n1, $a2, $n2, $a3, $n3);
+    Crypt::PBC::element_pow_zn( $lhs, $a, $n); # lhs = a^n
+    Crypt::PBC::element_pow2_zn($lhs, $a1, $n1, $a2, $n2); # a1^n1 * a2^n2
+    Crypt::PBC::element_pow3_zn($lhs, $a1, $n1, $a2, $n2, $a3, $n3);
       # in the above, the lhs and a\d+ should be in the same group, n\d+ in Zr
 
-    &Crypt::PBC::element_pow_mpz( $lhs, $a, $n);
-    &Crypt::PBC::element_pow2_mpz($lhs, $a1, $n1, $a2, $n2);
-    &Crypt::PBC::element_pow3_mpz($lhs, $a1, $n1, $a2, $n2, $a3, $n3);
+    Crypt::PBC::element_pow_mpz( $lhs, $a, $n);
+    Crypt::PBC::element_pow2_mpz($lhs, $a1, $n1, $a2, $n2);
+    Crypt::PBC::element_pow3_mpz($lhs, $a1, $n1, $a2, $n2, $a3, $n3);
       # like the _zn functions, but n\d+ should be Math::BigInt::GMP
       # or pass $i->{value} from a Math::BigInt.
 
 =head2 Comparison Functions
 
-    &Crypt::PBC::element_is0( $a );    # 1 when $a is 0
-    &Crypt::PBC::element_is1( $a );    # 1 when $a is 1
-    &Crypt::PBC::element_cmp( $a,$b ); # paradoxically, false when $a == $b
-    &Crypt::PBC::element_is_sqr( $a ); # 1 when $a is a perfect square ...
+(You can use these functions successfully, but the intended interface was
+described above. L<Crypt::PBC::Element> describes that interface in detail.)
+
+    Crypt::PBC::element_is0( $a );    # 1 when $a is 0
+    Crypt::PBC::element_is1( $a );    # 1 when $a is 1
+    Crypt::PBC::element_cmp( $a,$b ); # paradoxically, false when $a == $b
+    Crypt::PBC::element_is_sqr( $a ); # 1 when $a is a perfect square ...
      # see the PBC docs for words like "residue"
 
 =head2 Export and Output
 
+(You can use these functions successfully, but the intended interface was
+described above. L<Crypt::PBC::Element> describes that interface in detail.)
+
     # Please check the PBC docs ...
-    &Crypt::PBC::element_fprintf(\*OUTFILE, $format, $element);
-    &Crypt::PBC::element_fprintf(\*STDOUT, "example element=\%B\n", $element);
+    Crypt::PBC::element_fprintf(\*OUTFILE, $format, $element);
+    Crypt::PBC::element_fprintf(\*STDOUT, "example element=\%B\n", $element);
     # (You may be surprised how many bigints are in these group elements.)
 
-    my $spewed_result = &Crypt::PBC::export_element($element);
+    my $spewed_result = Crypt::PBC::export_element($element);
     # These are bytes, dumped from the $element, that can be used to
     # reconstruct the element or used for interacting with real life data.
 
     # Example:
     my $cipher = new Crypt::CBC({
         header => "randomiv", 
-        key    => &Crypt::PBC::export_element($element), 
+        key    => Crypt::PBC::export_element($element), 
         cipher => 'Blowfish', # hehe
     });
 
-    my $big = &Crypt::PBC::element_to_mpz( $element );
+    my $big = Crypt::PBC::element_to_mpz( $element );
     # Returns a Math::BigInt::GMP, not a Math::BigInt!  WARNING: the
     # DESTROY() method from Math::BigInt::GMP will be missing unless you
     # require that package into your program.  You'll want to do that or you'll
@@ -209,7 +217,7 @@ described above. L<Crypt::PBC::Element> describes that interface in detail.
 
 =head1 XS AUTHOR
 
-Paul Miller C<jettero@cpan.org>
+Paul Miller <jettero@cpan.org>
 
 Paul is using this software in his own projects...  If you find bugs, please
 please please let him know. :) Actually, let him know if you find it handy at
@@ -220,23 +228,12 @@ for help, he will most likely try to give it.
 
 =head1 COPYRIGHT
 
-GPL! (and/or whatever license the gnu regex engine is under)
+Copyright (c) 2008 Paul Miller -- LGPL [attached]
 
-Though, additionally, I will say that I'll be tickled if you were to include
-this package in any commercial endeavor.  Also, any thoughts to the effect that
-using this module will somehow make your commercial package GPL should be washed
-away.
-
-I hereby release you from any such silly conditions -- if possible while still
-matching the license from libpbc.
-
-This package and any modifications you make to it must remain GPL.  Any programs
-you (or your company) write shall remain yours (and under whatever copyright you
-choose) even if you use this package's intended and/or exported interfaces in
-them.
-
-Lastly, having said all the above, there may be certain restrictions from
-the PBC library itself that I cannot amend or take away!
+This interface is intended to be LGPL to whatever extent allowed by the license
+for the pbc library itself.  That license is GPL and probably therefore makes
+this package GPL.  I'm not expert on these matters, so I'm choosing LGPL if
+possible.
 
 =head1 SPECIAL THANKS
 

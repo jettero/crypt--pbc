@@ -34,6 +34,6 @@ C<SUPER::DESTROY()>!
 
 =head1 AUTHOR AND LICENSING
 
-GPL-ish and the XS author is Paul Miller C<jettero@cpan.org>.
+GPL-ish licensing with the author: Paul Miller <jettero@cpan.org>.
 
 Please see L<Crypt::PBC> for further information.
