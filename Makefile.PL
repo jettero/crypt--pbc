@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 my $ver    = "0.4.18";
 my @extra  = (
     LIBS => ['-lpbc'],
-    INC  => [qw(-I/usr/include/pbc -I/usr/local/include/pbc)],
+    INC  => [my @inc = qw(-I/usr/include/pbc -I/usr/local/include/pbc)],
 );
 
 eval { assert_lib( lib => [qw(pbc)], incpath =>[@inc], header => "pbc.h" ); };
@@ -53,8 +53,8 @@ sub build_libpbc {
 	@extra = (
         LIBS     => ("-Lpbc-$ver/.libs/ -lpbc"),
         MYEXTLIB => "pbc-$ver/.libs/libpbc.so",
-        INC      => "-Ipbc-$ver/include",
-        OBJECT   => "PBC.o pbc-$ver/.libs/libpbc.a",
+        INC      => "-Ipbc-$ver/include @inc",
+        OBJECT   => join(" ", "PBC.o", map {chomp} `cat olst.txt`),
     );
 
     # we don't literally build it, we add things to the makefile
