@@ -64,7 +64,7 @@ sub postamble {
 PBC\$(OBJ_EXT) : \$(MYEXTLIB)
 
 \$(MYEXTLIB): pbc-$ver/.libs/libpbc.so
-	\$(AR) \(AR_STATIC_ARGS) \$@ pbc-$ver/.libs/*.o
+	\$(AR) \$(AR_STATIC_ARGS) \$@ pbc-$ver/.libs/*.o
 
 pbc-$ver/.libs/libpbc.so:
 	cd pbc-$ver && ./configure && \$(MAKE) \$(PASTHRU)
