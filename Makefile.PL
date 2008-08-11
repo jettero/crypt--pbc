@@ -54,7 +54,7 @@ sub build_libpbc {
         LIBS     => ("-Lpbc-$ver/.libs/ -lpbc"),
         MYEXTLIB => "pbc-$ver/.libs/libpbc.so",
         INC      => "-Ipbc-$ver/include @inc",
-        OBJECT   => join(" ", "PBC.o", map {chomp} `cat olst.txt`),
+        OBJECT   => join(" ", "PBC.o", map {chomp $_; $_} `cat olst.txt`),
     );
 
     # we don't literally build it, we add things to the makefile
