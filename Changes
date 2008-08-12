@@ -1,3 +1,8 @@
+0.851: Tue Aug 12 07:09:26 EDT 2008
+   - Wow, newbie error.  I can't use <> in the Makefile.PL
+     because it tries to slurp each INSTALLDIR=site type argument
+     as an input file...  Doh
+
 0.85: Mon Aug 11 12:05:47 EDT 2008
    - introduced a bug in the Makefile.PL while fixing something
      else.

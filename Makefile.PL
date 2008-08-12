@@ -15,7 +15,7 @@ if( $@ ) {
     local $| = 1;
     print "Would you like to download and build libpbc automatically? (y/N enter) ";
     print "\n";
-    my $res = ($ENV{BUILD_HERE} || <>);
+    my $res = ($ENV{BUILD_HERE} || <STDIN>);
     if( $res =~ m/y/i ) {
         exit 0 unless &grab_libpbc($ver);
         exit 0 unless &unpack_libpbc($ver);
