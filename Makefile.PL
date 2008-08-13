@@ -3,13 +3,16 @@ use lib qw(inc);
 use Devel::CheckLib;
 use ExtUtils::MakeMaker;
 
+my @libpath = qw(/lib /usr/lib /usr/local/lib);
+my @incpath = qw(/usr/include/pbc /usr/local/include/pbc /usr/include /usr/local/include);
+
 my $ver    = "0.4.18";
 my @extra  = (
     LIBS => ['-lpbc'],
-    INC  => join(" ", map {"-I$_"} (my @inc = qw(/usr/include/pbc /usr/local/include/pbc))),
+    INC  => join(" ", map {"-I$_"} (@incpath)),
 );
 
-eval { assert_lib( lib => [qw(pbc)], incpath =>[@inc], header => "pbc.h" ); };
+eval { assert_lib( lib => [qw(pbc)], libpath=>\@libpath, incpath =>\@incpath, header => "pbc.h" ); };
 if( $@ ) {
     warn "Error locating libpbc: $@";
     local $| = 1;
@@ -58,7 +61,7 @@ sub build_libpbc {
     );
 
     warn "(You do need libgmp installed in order for this PBC.so to function...)\n";
-    check_lib_or_exit( lib => 'gmp' );
+    check_lib_or_exit( lib => 'gmp', libpath => \@libpath );
     warn "(... it seems you have libgmp.  Nevermind.)\n";
 
     # we don't literally build it, we add things to the makefile

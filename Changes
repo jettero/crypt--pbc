@@ -1,3 +1,9 @@
+0.852: Wed Aug 13 16:29:37 EDT 2008
+   - A cpan tester informed me that his libgmp was in /usr/local
+     ... that's kindof a no brainer.  I added some rudimentary
+     libpaths to the Makefile.PL; I should probably make it use
+     some system paths.  Later.
+
 0.851: Tue Aug 12 07:09:26 EDT 2008
    - Wow, newbie error.  I can't use <> in the Makefile.PL
      because it tries to slurp each INSTALLDIR=site type argument
