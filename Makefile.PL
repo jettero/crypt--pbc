@@ -12,7 +12,7 @@ my @extra  = (
     INC  => join(" ", map {"-I$_"} (@incpath)),
 );
 
-eval { assert_lib( lib => [qw(pbc)], libpath=>\@libpath, incpath =>\@incpath, header => "pbc.h" ); };
+eval { assert_lib( lib => 'pbc', libpath=>\@libpath, incpath=>\@incpath, header => "pbc.h" ); };
 if( $@ ) {
     warn "Error locating libpbc: $@";
     local $| = 1;
@@ -61,7 +61,7 @@ sub build_libpbc {
     );
 
     warn "(You do need libgmp installed in order for this PBC.so to function...)\n";
-    check_lib_or_exit( lib => 'gmp', libpath => \@libpath );
+    check_lib_or_exit( lib => 'gmp', libpath=>\@libpath, incpath=>\@incpath, header=>"gmp.h" );
     warn "(... it seems you have libgmp.  Nevermind.)\n";
 
     # we don't literally build it, we add things to the makefile
@@ -69,6 +69,9 @@ sub build_libpbc {
 }
 
 sub postamble {
+    my @CFLAGS = map {"-I$_"} @incpath;
+    my @LFLAGS = map {"-L$_"} @libpath;
+
 "
 PBC\$(OBJ_EXT) : \$(MYEXTLIB)
 
@@ -76,8 +79,9 @@ PBC\$(OBJ_EXT) : \$(MYEXTLIB)
 	\$(AR) \$(AR_STATIC_ARGS) \$@ pbc-$ver/.libs/*.o
 
 pbc-$ver/.libs/libpbc.so:
-	cd pbc-$ver && ./configure && \$(MAKE) \$(PASTHRU)
+	cd pbc-$ver && CFLAGS='@CFLAGS' CPPFLAGS='@CFLAGS' LDFLAGS='@LFLAGS' ./configure && \$(MAKE) \$(PASTHRU)
 ";
+
 }
 
 sub unpack_libpbc {
