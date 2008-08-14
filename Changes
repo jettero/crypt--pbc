@@ -1,3 +1,8 @@
+0.853: Thu Aug 14 12:05:26 EDT 2008
+   - Fixed a build problem for bsd 
+   - Fixed an eval { use Something } problem in a test.
+     It now reads eval q{ use something };  ... grrz.
+
 0.852: Wed Aug 13 16:29:37 EDT 2008
    - A cpan tester informed me that his libgmp was in /usr/local
      ... that's kindof a no brainer.  I added some rudimentary
