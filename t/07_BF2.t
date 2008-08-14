@@ -7,14 +7,14 @@ if( defined $ENV{SKIP_ALL_BUT} ) { unless( $0 =~ m/\Q$ENV{SKIP_ALL_BUT}\E/ ) { p
 
 my $bf = 0;
 my $sh = 0;
-eval {
+eval q{
     use Crypt::CBC;
     use Crypt::Blowfish;
 
     $bf = 1;
 };
 
-eval {
+eval q{
     use Digest::SHA1 qw(sha1);
 
     $sh = 1;
