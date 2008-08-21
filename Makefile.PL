@@ -15,10 +15,7 @@ my @extra  = (
 eval { assert_lib( lib => 'pbc', libpath=>\@libpath, incpath=>\@incpath, header => "pbc.h" ); };
 if( $@ ) {
     warn "Error locating libpbc: $@";
-    local $| = 1;
-    print "Would you like to download and build libpbc automatically? (y/N enter) ";
-    print "\n";
-    my $res = ($ENV{BUILD_HERE} || <STDIN>);
+    my $res = ($ENV{BUILD_HERE} || prompt("Would you like to download and build libpbc automatically? [y/N]", "n"));
     if( $res =~ m/y/i ) {
         exit 0 unless &grab_libpbc($ver);
         exit 0 unless &unpack_libpbc($ver);

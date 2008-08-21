@@ -1,3 +1,7 @@
+0.854: Thu Aug 21 06:21:28 EDT 2008
+   - Used EU::MM's prompt() instead of rolling my own.  BingOS++.
+     Woops.
+
 0.853: Thu Aug 14 12:05:26 EDT 2008
    - Fixed a build problem for bsd 
    - Fixed an eval { use Something } problem in a test.
