@@ -83,7 +83,7 @@ pbc-$ver/.libs/libpbc.so:
 
 sub unpack_libpbc {
     my $ver = shift;
-    return 1 if -d "pbc-$ver";
+    return 1 if -d "pbc-$ver" or $ENV{SKIP_DOWNLOAD};
 
     warn "unpacking libpbc from pbc-$ver.tar.gz...\n";
 
@@ -111,7 +111,7 @@ sub unpack_libpbc {
 
 sub grab_libpbc {
     my $ver = shift;
-    return 1 if -f "pbc-$ver.tar.gz";
+    return 1 if -f "pbc-$ver.tar.gz" or $ENV{SKIP_DOWNLOAD};
 
     warn "downloading libpbc from http://voltar.org/pbcfiles/pbc-$ver.tar.gz...\n";
 
