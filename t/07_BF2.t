@@ -55,7 +55,7 @@ my $w    = $curve->init_GT->pow_zn( $g_id, $r ); # w is the part you'd xor(w,M) 
 my $w_from_U = $curve->init_GT->e_hat( $d_id, $U );
 
 ok( $w_from_U->is_eq( $w ) );
-ok( $w_from_U->as_bytes, $w->as_bytes ); # binary gook
+ok( $w_from_U->as_bytes, $w->as_bytes ); # binary good
 ok( $w_from_U->as_str,   $w->as_str   ); # hexidecimal
 
 if( $bf ) {
