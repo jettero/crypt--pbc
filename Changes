@@ -1,3 +1,6 @@
+0.855: Fri Mar 27 18:42:50 EDT 2009
+   - added chrony's meta.yml stuff for the github repo
+
 0.854: Thu Aug 21 06:21:28 EDT 2008
    - Used EU::MM's prompt() instead of rolling my own.  BingOS++.
      Woops.

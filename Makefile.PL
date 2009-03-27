@@ -17,9 +17,9 @@ if( $@ ) {
     warn "Error locating libpbc: $@";
     my $res = ($ENV{BUILD_HERE} || prompt("Would you like to download and build libpbc automatically? [y/N]", "n"));
     if( $res =~ m/y/i ) {
-        exit 0 unless &grab_libpbc($ver);
-        exit 0 unless &unpack_libpbc($ver);
-        exit 0 unless &build_libpbc($ver);
+        exit 0 unless grab_libpbc($ver);
+        exit 0 unless unpack_libpbc($ver);
+        exit 0 unless build_libpbc($ver);
 
     } else {
         exit 0;
@@ -38,6 +38,18 @@ WriteMakefile(
     ($] >= 5.005 ?
       (ABSTRACT_FROM  => 'lib/Crypt/PBC.pod',
        AUTHOR         => 'Paul Miller <jettero@cpan.org>') : ()),
+
+    ($ExtUtils::MakeMaker::VERSION ge '6.48'? 
+        (MIN_PERL_VERSION => 5.008,
+            META_MERGE => {
+                keywords => [qw(pbc ecc crypt boneh ibe)],
+                resources=> {
+                    repository => 'http://github.com/jettero/crypt--pbc/tree',
+                },
+            },
+
+        LICENSE	=> 'lgpl2',
+    ) : ()),
 
     @extra,
 
