@@ -48,7 +48,7 @@ WriteMakefile(
                 },
             },
 
-        LICENSE	=> 'lgpl2',
+        LICENSE	=> 'LGPl',
     ) : ()),
 
     @extra,
