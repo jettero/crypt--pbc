@@ -44,7 +44,7 @@ WriteMakefile(
             META_MERGE => {
                 keywords => [qw(pbc ecc crypt boneh ibe)],
                 resources=> {
-                    repository => 'http://github.com/jettero/crypt--pbc/tree',
+                    repository => 'http://github.com/jettero/crypt--pbc/',
                 },
             },
 
