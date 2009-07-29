@@ -1,19 +1,4 @@
 pairing_t *
-pairing_init_stream(stream)
-    FILE * stream
-
-    PREINIT:
-    pairing_t * pairing = malloc( sizeof(pairing_t) );
-
-    CODE:
-    // fprintf(stderr, " ... malloced a pairing ... \n");
-    pairing_init_set_str(*pairing, stream);
-    RETVAL = pairing;
-
-    OUTPUT:
-    RETVAL
-
-pairing_t *
 pairing_init_str(str)
     SV * str
 
@@ -24,7 +9,8 @@ pairing_init_str(str)
 
     CODE:
     ptr = SvPV(str, len);
-    pairing_init_set_buf(*pairing, ptr, len);
+    if( pairing_init_set_buf(*pairing, ptr, len))
+        pbc_die("pairing init failed");
     RETVAL = pairing;
 
     OUTPUT:
