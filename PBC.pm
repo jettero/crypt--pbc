@@ -665,21 +665,22 @@ package Crypt::PBC;
 use strict;
 use warnings;
 use Carp;
-use base 'Exporter';
 
-our %EXPORT_TAGS = ( 'all' => [ qw( ) ] );
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT = qw( );
 our $VERSION = '0.9000';
 
-sub AUTOLOAD {
-    my $constname;
-    our $AUTOLOAD; ($constname = $AUTOLOAD) =~ s/.*:://;
-    croak "Crypt::PBC::constant not defined" if $constname eq 'constant';
-    my ($error, $val) = constant($constname);
-    if( $error ) { croak $error }
-    goto &$AUTOLOAD;
-}
+#    use base 'Exporter';
+#    our %EXPORT_TAGS = ( 'all' => [ qw( ) ] );
+#    our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+#    our @EXPORT = qw( );
+#
+#    sub AUTOLOAD {
+#        my $constname;
+#        our $AUTOLOAD; ($constname = $AUTOLOAD) =~ s/.*:://;
+#        croak "Crypt::PBC::constant wtf($AUTOLOAD, $constname) not defined" if $constname eq 'constant';
+#        my ($error, $val) = constant($constname);
+#        if( $error ) { croak $error }
+#        goto &$AUTOLOAD;
+#    }
 
 require XSLoader;
 XSLoader::load('Crypt::PBC', $VERSION);
