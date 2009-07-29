@@ -692,28 +692,38 @@ sub new {
     my $that;
     my $arg = shift;
 
-    if( ref($arg) eq "GLOB" ) {
-        $that = Crypt::PBC::pairing_init_stream($arg);
+    TOP: {
+        warn "here-top";
 
-    } elsif( $arg !~ m/\n/ and -f $arg ) {
+        if( ref($arg) eq "GLOB" ) {
+            my $contents = do { local $/; <$arg> };
 
-        open my $in, $arg or croak "couldn't open param file ($arg): $!";
-        $that = Crypt::PBC::pairing_init_stream($in);
-        close $in;
+            $arg = $contents;
+            redo TOP;
 
-    } elsif( $arg ) {
-        $arg =~ s/^\s*//s;
-        $arg =~ s/\s*$//s;
+        } elsif( $arg !~ m/\n/ and -f $arg ) {
+            open my $in, $arg or croak "couldn't open param file ($arg): $!";
+            my $contents = do { local $/; <$in> }; close $in;
 
-        if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+\z/s ) {
-            $that = Crypt::PBC::pairing_init_str($arg);
+            $arg = $contents;
+            redo TOP;
+
+        } elsif( $arg ) {
+            $arg =~ s/^\s*//s;
+            $arg =~ s/\s*$//s;
+
+            warn "here-string";
+
+            if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+\z/s ) {
+                $that = Crypt::PBC::pairing_init_str($arg);
+
+            } else {
+                croak "either the filename doesn't exist or that param string is unparsable: $arg";
+            }
 
         } else {
-            croak "either the filename doesn't exist or that param string is unparsable: $arg";
+            croak "you must pass a file, glob (stream), or init params to new()";
         }
-
-    } else {
-        croak "you must pass a file, glob (stream), or init params to new()";
     }
 
     croak "something went wrong ... you must pass a file, glob (stream), or init params to new()" unless $$that>0;
