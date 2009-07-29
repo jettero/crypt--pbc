@@ -7,7 +7,7 @@ pairing_init_stream(stream)
 
     CODE:
     // fprintf(stderr, " ... malloced a pairing ... \n");
-    pairing_init_inp_str(*pairing, stream);
+    pairing_init_set_str(*pairing, stream);
     RETVAL = pairing;
 
     OUTPUT:
@@ -24,7 +24,7 @@ pairing_init_str(str)
 
     CODE:
     ptr = SvPV(str, len);
-    pairing_init_inp_buf(*pairing, ptr, len);
+    pairing_init_set_buf(*pairing, ptr, len);
     RETVAL = pairing;
 
     OUTPUT:

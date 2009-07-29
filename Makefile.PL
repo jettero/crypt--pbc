@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 my @libpath = qw(/lib /usr/lib /usr/local/lib);
 my @incpath = qw(/usr/include/pbc /usr/local/include/pbc /usr/include /usr/local/include);
 
-my $ver    = "0.4.18";
+my $ver    = "0.5.0";
 my @extra  = (
     LIBS => ['-lpbc'],
     INC  => join(" ", map {"-I$_"} (@incpath)),
@@ -14,6 +14,10 @@ my @extra  = (
 
 eval { assert_lib( lib => 'pbc', libpath=>\@libpath, incpath=>\@incpath, header => "pbc.h" ); };
 if( $@ ) {
+
+    warn "\nYou can get debian binaries from https://voltar.org/pbcfiles\n\n";
+    sleep 1;
+
     warn "Error locating libpbc: $@";
     my $res = ($ENV{BUILD_HERE} || prompt("Would you like to download and build libpbc automatically? [y/N]", "n"));
     if( $res =~ m/y/i ) {
