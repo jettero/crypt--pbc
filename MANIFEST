@@ -6,6 +6,7 @@ PBC.xs
 README
 TODO
 contrib/c_quicky.c
+contrib/libtest.c
 contrib/quicky
 earith.xs
 ecomp.xs
