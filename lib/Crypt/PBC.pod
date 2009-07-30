@@ -78,9 +78,6 @@ with a type.
 (You can use these functions successfully, but the intended interface was
 described above. L<Crypt::PBC::Element> describes that interface in detail.)
 
-    # Initialize a pairing from an open file handle
-    my $pairing = Crypt::PBC::pairing_init_stream(\*STDIN);
-
     # Initialize a pairing from a a $string
     my $pairing = Crypt::PBC::pairing_init_str($string);
 
