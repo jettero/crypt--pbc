@@ -11,7 +11,7 @@ my $global_c;
 my $global_e;
 
 FILE: {
-    my $c = Crypt::PBC->new("params_a.txt");
+    my $c = Crypt::PBC->new("params_d.txt");
     my $e = $c->init_G1->set_to_hash( "lol!" );
 
     $global_e = $e;
