@@ -166,7 +166,8 @@ sub set {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS must be algebraically similar" unless $tt{$$this}{c} eq $tt{$$that}{c};
+    croak "LHS and RHS must be algebraically similar ($tt{$$this}{c} vs $tt{$$that}{c})"
+        unless $tt{$$this}{c} eq $tt{$$that}{c};
 
     Crypt::PBC::element_set($this, $that);
 
@@ -214,7 +215,8 @@ sub is_eq {
     my $this = shift;
     my $that = shift;
 
-    croak "LHS and RHS should both have types" unless exists $tt{$$this} and $tt{$$this}{c} eq $tt{$$that}{c};
+    croak "LHS and RHS must be algebraically similar ($tt{$$this}{c} vs $tt{$$that}{c}) "
+        unless exists $tt{$$this} and $tt{$$this}{c} eq $tt{$$that}{c};
 
     return not Crypt::PBC::element_cmp( $this, $that ); # returns 0 if they're algebraically similar
 }
