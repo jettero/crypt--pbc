@@ -14,12 +14,12 @@ my @extra  = (
 
 eval { assert_lib( lib => 'pbc', libpath=>\@libpath, incpath=>\@incpath, header => "pbc.h" ); };
 if( $@ ) {
+    warn "Error locating libpbc version 0.5.1: $@";
 
-    warn "\nYou can get debian binaries from https://voltar.org/pbcfiles\n\n";
+    warn "\nYou can get the latest debian binaries from https://voltar.org/pbcfiles\n\n";
     sleep 1;
 
-    warn "Error locating libpbc: $@";
-    my $res = ($ENV{BUILD_HERE} || prompt("Would you like to download and build libpbc automatically? [y/N]", "n"));
+    my $res = ($ENV{BUILD_HERE} || prompt("Would you like to download and build libpbc from tarball automatically? [y/N]", "n"));
     if( $res =~ m/y/i ) {
         exit 0 unless grab_libpbc($ver);
         exit 0 unless unpack_libpbc($ver);

@@ -215,11 +215,14 @@ sub assert_lib {
     } 
 
     # now do each library in turn with no headers
-    my($ch, $cfile) = File::Temp::tempfile(
-        'assertlibXXXXXXXX', SUFFIX => '.c'
-    );
-    print $ch "int main(void) { return 0; }\n";
-    close($ch);
+    #j my($ch, $cfile) = File::Temp::tempfile(
+    #j     'assertlibXXXXXXXX', SUFFIX => '.c'
+    #j );
+    #j print $ch "int main(void) { return 0; }\n";
+    #j close($ch);
+
+    my $cfile = "contrib/libtest.c";
+
     for my $lib ( @libs ) {
         my $exefile = File::Temp::mktemp( 'assertlibXXXXXXXX' ) . $Config{_exe};
         my @sys_cmd;
@@ -245,7 +248,7 @@ sub assert_lib {
         push @missing, $lib if $rv != 0 || ! -x $exefile; 
         _cleanup_exe($exefile);
     } 
-    unlink $cfile;
+    #j unlink $cfile;
 
     my $miss_string = join( q{, }, map { qq{'$_'} } @missing );
     die("Can't link/include $miss_string\n") if @missing;
