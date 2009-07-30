@@ -1,11 +1,11 @@
-# $Id: CheckLib.pm,v 1.22 2008/03/12 19:52:50 drhyde Exp $
+# $Id: CheckLib.pm,v 1.25 2008/10/27 12:16:23 drhyde Exp $
 
 package #
 Devel::CheckLib;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.5';
+$VERSION = '0.6';
 use Config;
 
 use File::Spec;
@@ -31,8 +31,6 @@ library and its headers are available.
 
 =head1 SYNOPSIS
 
-    # in a Makefile.PL or Build.PL
-    use lib qw(inc);
     use Devel::CheckLib;
 
     check_lib_or_exit( lib => 'jpeg', header => 'jpeglib.h' );
@@ -40,6 +38,13 @@ library and its headers are available.
   
     # or prompt for path to library and then do this:
     check_lib_or_exit( lib => 'jpeg', libpath => $additional_path );
+
+=head1 USING IT IN Makefile.PL or Build.PL
+
+If you want to use this from Makefile.PL or Build.PL, do
+not simply copy the module into your distribution as this may cause
+problems when PAUSE and search.cpan.org index the distro.  Instead, use
+the use-devel-checklib script.
 
 =head1 HOW IT WORKS
 
@@ -89,6 +94,8 @@ representing additional paths to search for libraries.
 a C<ExtUtils::MakeMaker>-style space-seperated list of
 libraries (each preceded by '-l') and directories (preceded by '-L').
 
+This can also be supplied on the command-line.
+
 =back
 
 And libraries are no use without header files, so ...
@@ -109,6 +116,8 @@ representing additional paths to search for headers.
 
 a C<ExtUtils::MakeMaker>-style space-seperated list of
 incpaths, each preceded by '-I'.
+
+This can also be supplied on the command-line.
 
 =back
 
@@ -150,14 +159,27 @@ sub assert_lib {
         if $args{incpath};
 
     # work-a-like for Makefile.PL's LIBS and INC arguments
+    # if given as command-line argument, append to %args
+    for my $arg (@ARGV) {
+        for my $mm_attr_key qw(LIBS INC) {
+            if (my ($mm_attr_value) = $arg =~ /\A $mm_attr_key = (.*)/x) {
+            # it is tempting to put some \s* into the expression, but the
+            # MM command-line parser only accepts LIBS etc. followed by =,
+            # so we should not be any more lenient with whitespace than that
+                $args{$mm_attr_key} .= " $mm_attr_value";
+            }
+        }
+    }
+
+    # using special form of split to trim whitespace
     if(defined($args{LIBS})) {
-        foreach my $arg (split(/\s+/, $args{LIBS})) {
+        foreach my $arg (split(' ', $args{LIBS})) {
             die("LIBS argument badly-formed: $arg\n") unless($arg =~ /^-l/i);
             push @{$arg =~ /^-l/ ? \@libs : \@libpaths}, substr($arg, 2);
         }
     }
     if(defined($args{INC})) {
-        foreach my $arg (split(/\s+/, $args{INC})) {
+        foreach my $arg (split(' ', $args{INC})) {
             die("INC argument badly-formed: $arg\n") unless($arg =~ /^-I/);
             push @incpaths, substr($arg, 2);
         }
@@ -296,11 +318,15 @@ It has been tested with varying degrees on rigourousness on:
 
 =item IBM's tools on AIX
 
+=item SGI's tools on Irix 6.5
+
 =item Microsoft's tools on Windows
 
 =item MinGW on Windows (with Strawberry Perl)
 
 =item Borland's tools on Windows
+
+=item QNX
 
 =back
 
