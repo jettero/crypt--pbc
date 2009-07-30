@@ -693,8 +693,6 @@ sub new {
     my $arg = shift;
 
     TOP: {
-        warn "here-top";
-
         if( ref($arg) eq "GLOB" ) {
             my $contents = do { local $/; <$arg> };
 
@@ -711,8 +709,6 @@ sub new {
         } elsif( $arg ) {
             $arg =~ s/^\s*//s;
             $arg =~ s/\s*$//s;
-
-            warn "here-string";
 
             if( $arg =~ m/^(?s:type\s+[a-z]+\s*|[a-z0-9]+\s+[0-9]+\s*)+\z/s ) {
                 $that = Crypt::PBC::pairing_init_str($arg);

@@ -10,13 +10,8 @@ pairing_init_str(str)
     CODE:
     ptr = SvPV(str, len);
 
-    fprintf(stderr, "c-here(%d) len=%d\n", __LINE__, len);
-    fprintf(stderr, "[1;30m%s\n[m", ptr);
-
     if( pairing_init_set_buf(*pairing, ptr, len) )
         pbc_die("pairing init failed");
-
-    fprintf(stderr, "c-here(%d)\n", __LINE__);
 
     RETVAL = pairing;
 
