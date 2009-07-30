@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 my @libpath = qw(/lib /usr/lib /usr/local/lib);
 my @incpath = qw(/usr/include/pbc /usr/local/include/pbc /usr/include /usr/local/include);
 
-my $ver    = "0.5.0";
+my $ver    = "0.5.1";
 my @extra  = (
     LIBS => ['-lpbc'],
     INC  => join(" ", map {"-I$_"} (@incpath)),
